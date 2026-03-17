@@ -40,7 +40,7 @@ export function HeroSection() {
       </div>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Left — Copy */}
           <div>
             <motion.div
@@ -53,7 +53,7 @@ export function HeroSection() {
 
             <motion.h1
               {...fadeUpProps(0.12)}
-              className="text-5xl md:text-6xl font-bold text-white leading-tight mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-5 sm:mb-6"
               style={{ fontFamily: "var(--font-cinzel)" }}
             >
               Seu link.
@@ -64,7 +64,7 @@ export function HeroSection() {
 
             <motion.p
               {...fadeUpProps(0.24)}
-              className="text-white/55 text-lg leading-relaxed mb-10 max-w-lg"
+              className="text-white/55 text-base sm:text-lg leading-relaxed mb-8 sm:mb-10 max-w-lg"
             >
               Crie uma página de links elegante que centraliza tudo que você cria — em segundos.
               Conecte sua audiência ao seu Instagram, YouTube, curso e muito mais.

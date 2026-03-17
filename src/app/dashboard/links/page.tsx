@@ -7,6 +7,7 @@ import {
   closestCenter,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   type DragEndEvent,
@@ -52,7 +53,8 @@ export default function LinksPage() {
   const [spotifyUri, setSpotifyUri] = useState("");
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
@@ -180,11 +182,11 @@ export default function LinksPage() {
   };
 
   return (
-    <div className="p-6 max-w-2xl">
+    <div className="p-4 sm:p-6 max-w-2xl">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">Links</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-white">Links</h1>
           <p className="text-white/40 text-sm mt-0.5">
             Arraste para reordenar. Clique para editar.
           </p>
@@ -233,7 +235,7 @@ export default function LinksPage() {
 
       {/* Add dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-stylo-surface border-white/10 text-white max-w-md">
+        <DialogContent className="bg-stylo-surface border-white/10 text-white w-[calc(100vw-2rem)] max-w-md mx-auto">
           <DialogHeader>
             <DialogTitle className="text-white">Adicionar conteúdo</DialogTitle>
           </DialogHeader>

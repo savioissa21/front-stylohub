@@ -111,7 +111,7 @@ export default function AnalyticsPage() {
     : [];
 
   return (
-    <div className="p-6 max-w-3xl space-y-6">
+    <div className="p-4 sm:p-6 max-w-3xl space-y-5 sm:space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-white">Analytics</h1>
         <p className="text-white/40 text-sm mt-0.5">Desempenho da sua página.</p>

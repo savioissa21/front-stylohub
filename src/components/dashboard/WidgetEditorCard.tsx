@@ -9,8 +9,6 @@ import {
   Youtube,
   Music2,
   Trash2,
-  Eye,
-  EyeOff,
   Type,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
@@ -124,30 +122,18 @@ export function WidgetEditorCard({
         </div>
 
         {/* Controls */}
-        <div className="flex items-center gap-2 shrink-0">
-          {/* Visibility toggle */}
-          <button
-            onClick={() => onToggleVisibility(widget.id)}
-            className="text-white/30 hover:text-white/60 transition-colors"
-            title={widget.isActive ? "Ocultar" : "Mostrar"}
-          >
-            {widget.isActive ? <Eye size={16} /> : <EyeOff size={16} />}
-          </button>
-
-          {/* Active switch */}
+        <div className="flex items-center gap-3 shrink-0">
           <Switch
             checked={widget.isActive}
             onCheckedChange={() => onToggleVisibility(widget.id)}
             className="data-[state=checked]:bg-stylo-gold"
           />
-
-          {/* Delete */}
           <button
             onClick={() => onDelete(widget.id)}
-            className="text-white/20 hover:text-red-400 transition-colors ml-1"
+            className="text-white/20 hover:text-red-400 transition-colors p-1 -mr-1"
             title="Excluir"
           >
-            <Trash2 size={15} />
+            <Trash2 size={16} />
           </button>
         </div>
       </div>

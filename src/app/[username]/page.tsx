@@ -56,7 +56,7 @@ export default async function PublicProfilePage({
       {/* Inject theme CSS variables and body background */}
       <ThemeRenderer theme={profile.theme} />
 
-      <main className="min-h-screen flex flex-col items-center pt-16 pb-8 px-4">
+      <main className="min-h-screen flex flex-col items-center pt-12 pb-10 px-4">
         <div className="w-full max-w-sm">
           {/* Avatar */}
           <div className="flex justify-center mb-4">

@@ -39,7 +39,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="p-6 max-w-2xl space-y-8">
+    <div className="p-4 sm:p-6 max-w-2xl space-y-6 sm:space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-white">Configurações</h1>
         <p className="text-white/40 text-sm mt-0.5">Gerencie sua conta e preferências.</p>
