@@ -8,7 +8,7 @@ function getButtonRadius(buttonStyle: Theme["buttonStyle"]) {
   switch (buttonStyle) {
     case "PILL":
       return "9999px";
-    case "SHARP":
+    case "SQUARED":
       return "4px";
     case "ROUNDED":
     default:
@@ -66,7 +66,7 @@ export function LivePreviewMobile() {
   const profile = usePreviewStore((s) => s.profile);
 
   const theme: Theme = profile?.theme ?? {
-    bgType: "SOLID",
+    bgType: "SOLID_COLOR",
     bgValue: "#09090B",
     primaryColor: "#D4AF37",
     textColor: "#FFFFFF",

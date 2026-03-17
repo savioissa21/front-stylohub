@@ -130,12 +130,16 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
+    font-family: inherit;
   }
   html {
     @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  button, input, textarea, select, optgroup {
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   }
 }
 

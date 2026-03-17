@@ -24,7 +24,7 @@ export function ThemeRenderer({ theme }: ThemeRendererProps) {
     const radius =
       theme.buttonStyle === "PILL"
         ? "9999px"
-        : theme.buttonStyle === "SHARP"
+        : theme.buttonStyle === "SQUARED"
         ? "4px"
         : "12px";
     root.style.setProperty("--profile-btn-radius", radius);

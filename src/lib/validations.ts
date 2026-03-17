@@ -30,11 +30,11 @@ export const resetPasswordSchema = z
   });
 
 export const updateThemeSchema = z.object({
-  bgType: z.enum(["SOLID", "GRADIENT", "IMAGE"]),
+  bgType: z.enum(["SOLID_COLOR", "GRADIENT", "IMAGE"]),
   bgValue: z.string().min(1),
   primaryColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Cor hexadecimal inválida"),
   textColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Cor hexadecimal inválida"),
-  buttonStyle: z.enum(["ROUNDED", "SHARP", "PILL"]),
+  buttonStyle: z.enum(["ROUNDED", "SQUARED", "PILL"]),
   isCustom: z.boolean(),
 });
 

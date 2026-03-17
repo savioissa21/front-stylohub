@@ -1,7 +1,7 @@
 import type { Widget } from "./widget";
 
-export type BgType = "SOLID" | "GRADIENT" | "IMAGE";
-export type ButtonStyle = "ROUNDED" | "SHARP" | "PILL";
+export type BgType = "SOLID_COLOR" | "GRADIENT" | "IMAGE";
+export type ButtonStyle = "ROUNDED" | "SQUARED" | "PILL";
 export type Plan = "FREE" | "PRO";
 
 export interface Theme {

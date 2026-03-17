@@ -24,7 +24,7 @@ const PRESETS: ThemePreset[] = [
     description: "Elegante e luxuoso",
     preview: { bg: "#09090B", button: "#D4AF37", text: "#FFFFFF" },
     theme: {
-      bgType: "SOLID",
+      bgType: "SOLID_COLOR",
       bgValue: "#09090B",
       primaryColor: "#D4AF37",
       textColor: "#FFFFFF",
@@ -38,11 +38,11 @@ const PRESETS: ThemePreset[] = [
     description: "Minimalismo absoluto",
     preview: { bg: "#000000", button: "#FFFFFF", text: "#FFFFFF" },
     theme: {
-      bgType: "SOLID",
+      bgType: "SOLID_COLOR",
       bgValue: "#000000",
       primaryColor: "#FFFFFF",
       textColor: "#FFFFFF",
-      buttonStyle: "SHARP",
+      buttonStyle: "SQUARED",
       isCustom: false,
     },
   },
@@ -52,7 +52,7 @@ const PRESETS: ThemePreset[] = [
     description: "Limpo e profissional",
     preview: { bg: "#FAFAFA", button: "#111111", text: "#111111" },
     theme: {
-      bgType: "SOLID",
+      bgType: "SOLID_COLOR",
       bgValue: "#FAFAFA",
       primaryColor: "#111111",
       textColor: "#111111",
@@ -66,7 +66,7 @@ const PRESETS: ThemePreset[] = [
     description: "Criativo e ousado",
     preview: { bg: "#0D0D1A", button: "#9B59B6", text: "#FFFFFF" },
     theme: {
-      bgType: "SOLID",
+      bgType: "SOLID_COLOR",
       bgValue: "#0D0D1A",
       primaryColor: "#9B59B6",
       textColor: "#FFFFFF",

@@ -14,14 +14,14 @@ import { Label } from "@/components/ui/label";
 import type { UpdateThemeRequest, BgType, ButtonStyle } from "@/types/profile";
 
 const BG_TYPE_OPTIONS: { value: BgType; label: string }[] = [
-  { value: "SOLID", label: "Sólido" },
+  { value: "SOLID_COLOR", label: "Sólido" },
   { value: "GRADIENT", label: "Gradiente" },
   { value: "IMAGE", label: "Imagem" },
 ];
 
 const BUTTON_STYLE_OPTIONS: { value: ButtonStyle; label: string; preview: string }[] = [
   { value: "ROUNDED", label: "Arredondado", preview: "rounded-xl" },
-  { value: "SHARP", label: "Reto", preview: "rounded" },
+  { value: "SQUARED", label: "Reto", preview: "rounded" },
   { value: "PILL", label: "Pílula", preview: "rounded-full" },
 ];
 
@@ -34,7 +34,7 @@ export default function AppearancePage() {
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
-  const [bgType, setBgType] = useState<BgType>(profile?.theme.bgType ?? "SOLID");
+  const [bgType, setBgType] = useState<BgType>(profile?.theme.bgType ?? "SOLID_COLOR");
   const [bgValue, setBgValue] = useState(profile?.theme.bgValue ?? "#09090B");
   const [primaryColor, setPrimaryColor] = useState(profile?.theme.primaryColor ?? "#D4AF37");
   const [textColor, setTextColor] = useState(profile?.theme.textColor ?? "#FFFFFF");
@@ -163,7 +163,7 @@ export default function AppearancePage() {
         </div>
 
         {/* Background value */}
-        {bgType === "SOLID" && (
+        {bgType === "SOLID_COLOR" && (
           <ColorPicker
             label="Cor do fundo"
             value={bgValue}
