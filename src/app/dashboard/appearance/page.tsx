@@ -65,7 +65,7 @@ export default function AppearancePage() {
       primaryColor,
       textColor,
       buttonStyle,
-      isCustom: true,
+      isCustom: false,
     };
     setIsSaving(true);
     try {

@@ -1,12 +1,3 @@
-/**
- * NOTE: This file is intentionally placed at app/username/page.tsx for scaffolding purposes.
- * In a real Next.js application with dynamic routing, this file should be at:
- *   app/[username]/page.tsx
- * with params: { username: string } resolved by the Next.js router.
- *
- * The implementation below is written as if it were the dynamic route.
- */
-
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
