@@ -19,6 +19,7 @@ import {
 } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { Plus, Link2, Youtube, Music2, ClipboardList } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 
 import { useProfile } from "@/hooks/queries/useProfile";
@@ -274,15 +275,25 @@ export default function LinksPage() {
             strategy={verticalListSortingStrategy}
           >
             <div className="space-y-2">
-              {sortedWidgets.map((widget) => (
-                <WidgetEditorCard
-                  key={widget.id}
-                  widget={widget}
-                  onUpdate={handleUpdate}
-                  onDelete={handleDelete}
-                  onToggleVisibility={handleToggleVisibility}
-                />
-              ))}
+              <AnimatePresence mode="popLayout" initial={false}>
+                {sortedWidgets.map((widget) => (
+                  <motion.div
+                    key={widget.id}
+                    layout
+                    initial={{ opacity: 0, y: -6, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: -16, scale: 0.97, transition: { duration: 0.15 } }}
+                    transition={{ duration: 0.18, ease: "easeOut" }}
+                  >
+                    <WidgetEditorCard
+                      widget={widget}
+                      onUpdate={handleUpdate}
+                      onDelete={handleDelete}
+                      onToggleVisibility={handleToggleVisibility}
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
           </SortableContext>
         </DndContext>

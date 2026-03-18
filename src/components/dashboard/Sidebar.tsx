@@ -7,6 +7,7 @@ import {
   Palette,
   BarChart2,
   Users,
+  QrCode,
   Settings,
   Crown,
   Lock,
@@ -37,6 +38,7 @@ const NAV_ITEMS: NavItem[] = [
     proLocked: true,
   },
   { label: "Leads", icon: <Users size={18} />, href: "/dashboard/leads", proLocked: true },
+  { label: "QR Code", icon: <QrCode size={18} />, href: "/dashboard/qrcode" },
   { label: "Configurações", icon: <Settings size={18} />, href: "/dashboard/settings" },
   { label: "Assinatura", icon: <Crown size={18} />, href: "/dashboard/billing" },
 ];

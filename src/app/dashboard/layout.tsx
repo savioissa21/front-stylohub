@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Link2, Palette, BarChart2, Settings, Crown, LogOut } from "lucide-react";
+import { Link2, Palette, BarChart2, QrCode, Settings, LogOut } from "lucide-react";
 
 import { useAuth } from "@/providers/AuthProvider";
 import { useProfile } from "@/hooks/queries/useProfile";
@@ -16,8 +16,8 @@ const MOBILE_NAV = [
   { label: "Links", icon: Link2, href: "/dashboard/links" },
   { label: "Aparência", icon: Palette, href: "/dashboard/appearance" },
   { label: "Analytics", icon: BarChart2, href: "/dashboard/analytics" },
+  { label: "QR Code", icon: QrCode, href: "/dashboard/qrcode" },
   { label: "Config", icon: Settings, href: "/dashboard/settings" },
-  { label: "Plano", icon: Crown, href: "/dashboard/billing" },
 ];
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
