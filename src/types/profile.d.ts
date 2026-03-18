@@ -1,7 +1,8 @@
 import type { Widget } from "./widget";
 
 export type BgType = "SOLID_COLOR" | "GRADIENT" | "IMAGE";
-export type ButtonStyle = "ROUNDED" | "SQUARED" | "PILL";
+export type ButtonStyle = "ROUNDED" | "SQUARED" | "PILL" | "OUTLINE" | "HARD_SHADOW";
+export type ShadowStyle = "NONE" | "SOFT" | "GLOW" | "HARD";
 export type Plan = "FREE" | "PRO";
 
 export interface Theme {
@@ -11,6 +12,9 @@ export interface Theme {
   textColor: string;
   buttonStyle: ButtonStyle;
   isCustom: boolean;
+  // PRO fields
+  borderColor: string;
+  shadowStyle: ShadowStyle;
 }
 
 export interface Profile {
@@ -28,4 +32,6 @@ export interface UpdateThemeRequest {
   textColor: string;
   buttonStyle: ButtonStyle;
   isCustom: boolean;
+  borderColor: string;
+  shadowStyle: ShadowStyle;
 }

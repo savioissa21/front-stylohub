@@ -4,16 +4,31 @@ import { usePreviewStore } from "@/store/usePreviewStore";
 import type { Widget } from "@/types/widget";
 import type { Theme } from "@/types/profile";
 
-function getButtonRadius(buttonStyle: Theme["buttonStyle"]) {
-  switch (buttonStyle) {
-    case "PILL":
-      return "9999px";
-    case "SQUARED":
-      return "4px";
-    case "ROUNDED":
-    default:
-      return "12px";
-  }
+function getButtonStyle(theme: Theme): React.CSSProperties {
+  const borderColor = theme.borderColor ?? theme.primaryColor;
+  const isOutline = theme.buttonStyle === "OUTLINE";
+
+  const radius =
+    theme.buttonStyle === "PILL" ? "9999px" :
+    theme.buttonStyle === "SQUARED" || theme.buttonStyle === "HARD_SHADOW" ? "4px" :
+    "12px";
+
+  const shadow = (() => {
+    switch (theme.shadowStyle) {
+      case "SOFT": return "0 4px 12px rgba(0,0,0,0.30)";
+      case "GLOW": return `0 0 14px 3px ${theme.primaryColor}55`;
+      case "HARD": return `3px 3px 0px 0px ${borderColor}`;
+      default: return "none";
+    }
+  })();
+
+  return {
+    backgroundColor: isOutline ? "transparent" : theme.primaryColor,
+    border: isOutline ? `2px solid ${borderColor}` : "none",
+    color: isOutline ? borderColor : (theme.textColor === theme.primaryColor ? "#000" : theme.textColor),
+    borderRadius: radius,
+    boxShadow: shadow,
+  };
 }
 
 function MockWidget({ widget, theme }: { widget: Widget; theme: Theme }) {
@@ -22,11 +37,7 @@ function MockWidget({ widget, theme }: { widget: Widget; theme: Theme }) {
   if (widget.type === "LINK") {
     return (
       <div
-        style={{
-          backgroundColor: theme.primaryColor,
-          borderRadius: getButtonRadius(theme.buttonStyle),
-          color: theme.textColor === theme.primaryColor ? "#000" : theme.textColor,
-        }}
+        style={getButtonStyle(theme)}
         className="w-full py-2.5 text-center text-xs font-semibold truncate px-3"
       >
         {widget.config.title || "Link"}
@@ -72,6 +83,8 @@ export function LivePreviewMobile() {
     textColor: "#FFFFFF",
     buttonStyle: "ROUNDED",
     isCustom: false,
+    borderColor: "#D4AF37",
+    shadowStyle: "NONE",
   };
 
   const bgStyle: React.CSSProperties =

@@ -34,8 +34,10 @@ export const updateThemeSchema = z.object({
   bgValue: z.string().min(1),
   primaryColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Cor hexadecimal inválida"),
   textColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Cor hexadecimal inválida"),
-  buttonStyle: z.enum(["ROUNDED", "SQUARED", "PILL"]),
+  buttonStyle: z.enum(["ROUNDED", "SQUARED", "PILL", "OUTLINE", "HARD_SHADOW"]),
   isCustom: z.boolean(),
+  borderColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Cor hexadecimal inválida"),
+  shadowStyle: z.enum(["NONE", "SOFT", "GLOW", "HARD"]),
 });
 
 export const addLinkWidgetSchema = z.object({

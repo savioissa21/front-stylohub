@@ -30,6 +30,8 @@ const PRESETS: ThemePreset[] = [
       textColor: "#FFFFFF",
       buttonStyle: "ROUNDED",
       isCustom: false,
+      borderColor: "#D4AF37",
+      shadowStyle: "NONE",
     },
   },
   {
@@ -41,9 +43,11 @@ const PRESETS: ThemePreset[] = [
       bgType: "SOLID_COLOR",
       bgValue: "#000000",
       primaryColor: "#FFFFFF",
-      textColor: "#FFFFFF",
+      textColor: "#000000",
       buttonStyle: "SQUARED",
       isCustom: false,
+      borderColor: "#FFFFFF",
+      shadowStyle: "NONE",
     },
   },
   {
@@ -55,9 +59,11 @@ const PRESETS: ThemePreset[] = [
       bgType: "SOLID_COLOR",
       bgValue: "#FAFAFA",
       primaryColor: "#111111",
-      textColor: "#111111",
+      textColor: "#FAFAFA",
       buttonStyle: "PILL",
       isCustom: false,
+      borderColor: "#111111",
+      shadowStyle: "NONE",
     },
   },
   {
@@ -72,6 +78,8 @@ const PRESETS: ThemePreset[] = [
       textColor: "#FFFFFF",
       buttonStyle: "PILL",
       isCustom: false,
+      borderColor: "#9B59B6",
+      shadowStyle: "NONE",
     },
   },
 ];
