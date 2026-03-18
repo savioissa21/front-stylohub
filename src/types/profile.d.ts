@@ -20,6 +20,7 @@ export interface Theme {
 export interface Profile {
   id: string;
   username: string;
+  avatarUrl?: string;
   theme: Theme;
   plan: Plan;
   widgets: Widget[];

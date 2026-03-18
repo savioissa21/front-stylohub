@@ -68,6 +68,7 @@ export const creatorApi = {
   createCheckout: () => api.post("/api/creator/subscription/checkout"),
   getLeads: () => api.get("/api/creator/profile/leads"),
   deleteLead: (leadId: string) => api.delete(`/api/creator/profile/leads/${leadId}`),
+  updateAvatar: (url: string) => api.patch("/api/creator/profile/avatar", { url }),
 };
 
 // ── Public Profile ───────────────────────────────────────────

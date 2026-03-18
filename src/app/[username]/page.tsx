@@ -21,9 +21,26 @@ export async function generateMetadata({
   try {
     const res = await publicApi.getProfile(username);
     const profile: Profile = res.data;
+    const title = `@${profile.username} | Stylohub`;
+    const description = `Todos os links de @${profile.username} em um só lugar. Acessa agora!`;
+    const imageUrl = profile.avatarUrl ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.username)}&background=D4AF37&color=000&size=400&bold=true`;
     return {
-      title: `@${profile.username} | Stylohub`,
-      description: `Confira todos os links de @${profile.username} em um só lugar.`,
+      title,
+      description,
+      openGraph: {
+        title,
+        description,
+        url: `https://stylohub.app/${username}`,
+        siteName: "Stylohub",
+        images: [{ url: imageUrl, width: 400, height: 400, alt: `Avatar de @${profile.username}` }],
+        type: "profile",
+      },
+      twitter: {
+        card: "summary",
+        title,
+        description,
+        images: [imageUrl],
+      },
     };
   } catch {
     return { title: "Perfil não encontrado | Stylohub" };
@@ -61,16 +78,27 @@ export default async function PublicProfilePage({
         <div className="w-full max-w-sm">
           {/* Avatar */}
           <div className="flex justify-center mb-4">
-            <div
-              className="w-20 h-20 rounded-full border-2 flex items-center justify-center text-2xl font-bold"
-              style={{
-                borderColor: `${profile.theme.primaryColor}60`,
-                backgroundColor: `${profile.theme.primaryColor}20`,
-                color: profile.theme.primaryColor,
-              }}
-            >
-              {profile.username.charAt(0).toUpperCase()}
-            </div>
+            {profile.avatarUrl ? (
+              <img
+                src={profile.avatarUrl}
+                alt={`@${profile.username}`}
+                width={80}
+                height={80}
+                className="w-20 h-20 rounded-full object-cover border-2"
+                style={{ borderColor: `${profile.theme.primaryColor}60` }}
+              />
+            ) : (
+              <div
+                className="w-20 h-20 rounded-full border-2 flex items-center justify-center text-2xl font-bold"
+                style={{
+                  borderColor: `${profile.theme.primaryColor}60`,
+                  backgroundColor: `${profile.theme.primaryColor}20`,
+                  color: profile.theme.primaryColor,
+                }}
+              >
+                {profile.username.charAt(0).toUpperCase()}
+              </div>
+            )}
           </div>
 
           {/* Username & bio */}

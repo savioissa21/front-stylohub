@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Loader2, Camera, User, Lock, Crown } from "lucide-react";
+import { Loader2, Camera, User, Lock, Crown, Upload } from "lucide-react";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { useProfile } from "@/hooks/queries/useProfile";
 import { useUpdateTheme } from "@/hooks/mutations/useUpdateTheme";
@@ -10,6 +11,7 @@ import { creatorApi } from "@/lib/api";
 import { usePreviewStore } from "@/store/usePreviewStore";
 import { ColorPicker } from "@/components/dashboard/ColorPicker";
 import { GradientBuilder } from "@/components/dashboard/GradientBuilder";
+import { UpgradeModal } from "@/components/dashboard/UpgradeModal";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import type { UpdateThemeRequest, BgType, ButtonStyle, ShadowStyle } from "@/types/profile";
@@ -65,17 +67,18 @@ const SHADOW_OPTIONS: { value: ShadowStyle; label: string; desc: string }[] = [
 
 // ─── PRO Lock overlay ─────────────────────────────────────────────────────────
 
-function ProLock({ title }: { title: string }) {
+function ProLock({ title, onUpgrade }: { title: string; onUpgrade: (f: string) => void }) {
   return (
-    <section className="bg-stylo-surface border border-white/10 rounded-2xl p-6 relative overflow-hidden">
-      <div className="absolute inset-0 bg-stylo-dark/70 backdrop-blur-[2px] flex flex-col items-center justify-center z-10 rounded-2xl gap-2">
-        <div className="flex items-center gap-2 text-stylo-gold">
-          <Crown size={20} />
-          <p className="font-semibold text-sm">{title} — PRO</p>
+    <section
+      className="bg-stylo-surface border border-white/10 rounded-2xl p-6 relative overflow-hidden cursor-pointer group"
+      onClick={() => onUpgrade(title)}
+    >
+      <div className="absolute inset-0 bg-stylo-dark/70 backdrop-blur-[2px] flex flex-col items-center justify-center z-10 rounded-2xl gap-2 group-hover:bg-stylo-dark/60 transition-colors">
+        <div className="w-9 h-9 rounded-xl bg-stylo-gold/15 border border-stylo-gold/30 flex items-center justify-center mb-1">
+          <Crown size={18} className="text-stylo-gold" />
         </div>
-        <a href="/dashboard/billing" className="text-stylo-gold/70 text-xs hover:underline">
-          Fazer upgrade
-        </a>
+        <p className="font-semibold text-sm text-stylo-gold">{title}</p>
+        <p className="text-stylo-gold/60 text-xs">Clique para desbloquear no PRO</p>
       </div>
       <h2 className="text-white font-semibold mb-4 opacity-20">{title}</h2>
       <div className="h-20 bg-white/5 rounded-lg opacity-20" />
@@ -89,10 +92,17 @@ export default function AppearancePage() {
   const { data: profile } = useProfile();
   const updateThemeMutation = useUpdateTheme();
   const updateThemePreview = usePreviewStore((s) => s.updateTheme);
+  const queryClient = useQueryClient();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(profile?.avatarUrl ?? null);
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  // Upgrade modal
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const [upgradeFeature, setUpgradeFeature] = useState<string | undefined>();
+  const openUpgrade = (feature: string) => { setUpgradeFeature(feature); setUpgradeOpen(true); };
 
   const t = profile?.theme;
 
@@ -127,19 +137,34 @@ export default function AppearancePage() {
     });
   };
 
-  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const uploadAvatar = async (file: File) => {
+    if (!file.type.startsWith("image/")) { toast.error("Ficheiro inválido. Use JPG, PNG ou WebP."); return; }
+    if (file.size > 5 * 1024 * 1024) { toast.error("Imagem muito grande. Máx 5 MB."); return; }
     setIsUploadingAvatar(true);
     try {
-      const res = await creatorApi.uploadImage(file, "avatars");
-      setAvatarUrl(res.data.url);
+      const uploadRes = await creatorApi.uploadImage(file, "avatars");
+      const url: string = uploadRes.data.url;
+      await creatorApi.updateAvatar(url);
+      setAvatarUrl(url);
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
       toast.success("Avatar atualizado!");
     } catch {
-      toast.error("Erro ao fazer upload.");
+      toast.error("Erro ao fazer upload do avatar.");
     } finally {
       setIsUploadingAvatar(false);
     }
+  };
+
+  const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) uploadAvatar(file);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) uploadAvatar(file);
   };
 
   const handleSave = async () => {
@@ -169,6 +194,7 @@ export default function AppearancePage() {
 
   return (
     <div className="p-4 sm:p-6 max-w-2xl space-y-6 sm:space-y-8">
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} featureName={upgradeFeature} />
       <div>
         <h1 className="text-2xl font-bold text-white">Aparência</h1>
         <p className="text-white/40 text-sm mt-0.5">Personalize o visual da sua página.</p>
@@ -207,13 +233,14 @@ export default function AppearancePage() {
       </section>
 
       {/* Avatar */}
-      <section className="bg-stylo-surface border border-white/10 rounded-2xl p-6">
-        <h2 className="text-white font-semibold mb-4">Foto de perfil</h2>
+      <section className="bg-stylo-surface border border-white/10 rounded-2xl p-6 space-y-4">
+        <h2 className="text-white font-semibold">Foto de perfil</h2>
         <div className="flex items-center gap-5">
+          {/* Avatar preview */}
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="relative w-20 h-20 rounded-full border-2 border-dashed border-white/20 hover:border-stylo-gold/50 transition-colors overflow-hidden group"
+            className="relative w-20 h-20 rounded-full border-2 border-dashed border-white/20 hover:border-stylo-gold/50 transition-colors overflow-hidden group shrink-0"
           >
             {avatarUrl ? (
               <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
@@ -226,15 +253,33 @@ export default function AppearancePage() {
                 : <Camera size={18} className="text-white" />}
             </div>
           </button>
-          <div>
-            <p className="text-white text-sm font-medium">Upload de avatar</p>
-            <p className="text-white/40 text-xs mt-0.5">JPG, PNG ou WebP. Máx 5MB.</p>
-            <button onClick={() => fileInputRef.current?.click()} className="mt-2 text-stylo-gold text-xs hover:underline">
-              Escolher arquivo
-            </button>
+
+          {/* Drag & drop zone */}
+          <div
+            onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
+            onDragLeave={() => setIsDragOver(false)}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
+            className={`flex-1 flex flex-col items-center justify-center gap-2 py-5 rounded-xl border-2 border-dashed cursor-pointer transition-all ${
+              isDragOver
+                ? "border-stylo-gold bg-stylo-gold/8 scale-[1.01]"
+                : "border-white/10 hover:border-white/25 hover:bg-white/3"
+            }`}
+          >
+            {isUploadingAvatar ? (
+              <Loader2 size={20} className="text-stylo-gold animate-spin" />
+            ) : (
+              <Upload size={20} className={isDragOver ? "text-stylo-gold" : "text-white/30"} />
+            )}
+            <div className="text-center">
+              <p className={`text-sm font-medium ${isDragOver ? "text-stylo-gold" : "text-white/50"}`}>
+                {isUploadingAvatar ? "Enviando..." : isDragOver ? "Solte aqui" : "Arraste ou clique"}
+              </p>
+              <p className="text-white/25 text-xs mt-0.5">JPG, PNG ou WebP · máx 5 MB</p>
+            </div>
           </div>
-          <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
         </div>
+        <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
       </section>
 
       {/* Tema base */}
@@ -304,11 +349,11 @@ export default function AppearancePage() {
                 <button
                   key={opt.value}
                   onClick={() => {
-                    if (isLocked) return;
+                    if (isLocked) { openUpgrade("Estilos de botão PRO"); return; }
                     setButtonStyle(opt.value);
                     updateThemePreview({ buttonStyle: opt.value });
                   }}
-                  disabled={isLocked}
+                  disabled={false}
                   className={`relative flex flex-col items-center gap-2 p-3 border rounded-xl transition-colors ${
                     isSelected
                       ? "border-stylo-gold bg-stylo-gold/10"
@@ -353,7 +398,7 @@ export default function AppearancePage() {
           <ColorPicker label="Cor de borda" value={borderColor} onChange={onColor(setBorderColor, "borderColor")} />
         </section>
       ) : (
-        <ProLock title="Cor de borda / destaque" />
+        <ProLock title="Cor de borda / destaque" onUpgrade={openUpgrade} />
       )}
 
       {/* PRO: Efeito de sombra */}
@@ -398,11 +443,11 @@ export default function AppearancePage() {
           </div>
         </section>
       ) : (
-        <ProLock title="Efeito nos botões" />
+        <ProLock title="Efeito nos botões" onUpgrade={openUpgrade} />
       )}
 
       {/* PRO: Fontes personalizadas (locked) */}
-      {!isPro && <ProLock title="Fontes personalizadas" />}
+      {!isPro && <ProLock title="Fontes personalizadas" onUpgrade={openUpgrade} />}
 
       {/* Save */}
       <div className="flex justify-end pb-4">
