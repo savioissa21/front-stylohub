@@ -33,9 +33,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
+type ContentType = "link" | "youtube" | "spotify" | "form";
+
+const CONTENT_TYPES: { id: ContentType; label: string; icon: React.ReactNode; color: string }[] = [
+  { id: "link",    label: "Link",     icon: <Link2 size={20} />,        color: "#3B82F6" },
+  { id: "youtube", label: "YouTube",  icon: <Youtube size={20} />,      color: "#EF4444" },
+  { id: "spotify", label: "Spotify",  icon: <Music2 size={20} />,       color: "#22C55E" },
+  { id: "form",    label: "Form",     icon: <ClipboardList size={20} />, color: "#D4AF37" },
+];
 
 export default function LinksPage() {
   const queryClient = useQueryClient();
@@ -44,6 +52,7 @@ export default function LinksPage() {
   const { addWidget: addToPreview, removeWidget, toggleWidget } = usePreviewStore();
 
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [activeType, setActiveType] = useState<ContentType>("link");
   const [isAdding, setIsAdding] = useState(false);
 
   // Add link form state
@@ -278,155 +287,152 @@ export default function LinksPage() {
       )}
 
       {/* Add dialog */}
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-stylo-surface border-white/10 text-white w-[calc(100vw-2rem)] max-w-md mx-auto">
-          <DialogHeader>
-            <DialogTitle className="text-white">Adicionar conteúdo</DialogTitle>
+      <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) setActiveType("link"); }}>
+        <DialogContent className="bg-[#111113] border border-white/10 text-white w-[calc(100vw-2rem)] max-w-md mx-auto p-0 overflow-hidden rounded-2xl">
+          <DialogHeader className="px-5 pt-5 pb-4 border-b border-white/8">
+            <DialogTitle className="text-white font-semibold text-base">Adicionar conteúdo</DialogTitle>
           </DialogHeader>
 
-          <Tabs defaultValue="link">
-            <TabsList className="bg-stylo-dark border border-white/10 w-full">
-              <TabsTrigger value="link" className="flex-1 data-[state=active]:bg-stylo-gold/20 data-[state=active]:text-stylo-gold">
-                <Link2 size={14} className="mr-1.5" />
-                Link
-              </TabsTrigger>
-              <TabsTrigger value="youtube" className="flex-1 data-[state=active]:bg-stylo-gold/20 data-[state=active]:text-stylo-gold">
-                <Youtube size={14} className="mr-1.5" />
-                YouTube
-              </TabsTrigger>
-              <TabsTrigger value="spotify" className="flex-1 data-[state=active]:bg-stylo-gold/20 data-[state=active]:text-stylo-gold">
-                <Music2 size={14} className="mr-1.5" />
-                Spotify
-              </TabsTrigger>
-              <TabsTrigger value="form" className="flex-1 data-[state=active]:bg-stylo-gold/20 data-[state=active]:text-stylo-gold">
-                <ClipboardList size={14} className="mr-1.5" />
-                Form
-              </TabsTrigger>
-            </TabsList>
+          {/* Type selector grid */}
+          <div className="grid grid-cols-4 gap-2 px-5 pt-4">
+            {CONTENT_TYPES.map((ct) => {
+              const isActive = activeType === ct.id;
+              return (
+                <button
+                  key={ct.id}
+                  onClick={() => setActiveType(ct.id)}
+                  className="flex flex-col items-center gap-1.5 py-3 rounded-xl border transition-all duration-150"
+                  style={{
+                    background: isActive ? `${ct.color}18` : "rgba(255,255,255,0.04)",
+                    borderColor: isActive ? `${ct.color}60` : "rgba(255,255,255,0.08)",
+                    color: isActive ? ct.color : "rgba(255,255,255,0.45)",
+                  }}
+                >
+                  <span style={{ color: isActive ? ct.color : "rgba(255,255,255,0.35)" }}>
+                    {ct.icon}
+                  </span>
+                  <span className="text-xs font-medium">{ct.label}</span>
+                </button>
+              );
+            })}
+          </div>
 
-            {/* Link tab */}
-            <TabsContent value="link" className="space-y-4 pt-4">
-              <div className="space-y-1.5">
-                <Label className="text-white/70 text-sm">Título</Label>
-                <Input
-                  value={linkTitle}
-                  onChange={(e) => setLinkTitle(e.target.value)}
-                  placeholder="Ex: Meu Instagram"
-                  className="bg-stylo-dark border-white/10 text-white placeholder:text-white/30 focus-visible:ring-stylo-gold"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-white/70 text-sm">URL</Label>
-                <Input
-                  value={linkUrl}
-                  onChange={(e) => setLinkUrl(e.target.value)}
-                  placeholder="https://..."
-                  type="url"
-                  className="bg-stylo-dark border-white/10 text-white placeholder:text-white/30 focus-visible:ring-stylo-gold"
-                />
-              </div>
-              <Button
-                onClick={handleAddLink}
-                disabled={isAdding}
-                className="w-full btn-gold-glow bg-stylo-gold hover:bg-stylo-gold-hover text-black font-semibold"
-              >
-                {isAdding ? "Adicionando..." : "Adicionar link"}
-              </Button>
-            </TabsContent>
+          {/* Form area */}
+          <div className="px-5 pb-5 pt-4 space-y-3">
+            {activeType === "link" && (
+              <>
+                <div className="space-y-1.5">
+                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Título</Label>
+                  <Input
+                    value={linkTitle}
+                    onChange={(e) => setLinkTitle(e.target.value)}
+                    placeholder="Ex: Meu Instagram"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#3B82F6] focus-visible:border-[#3B82F6]/50 h-10"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">URL</Label>
+                  <Input
+                    value={linkUrl}
+                    onChange={(e) => setLinkUrl(e.target.value)}
+                    placeholder="https://..."
+                    type="url"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#3B82F6] focus-visible:border-[#3B82F6]/50 h-10"
+                  />
+                </div>
+                <Button onClick={handleAddLink} disabled={isAdding} className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-white font-semibold h-10 mt-1">
+                  {isAdding ? "Adicionando..." : "Adicionar link"}
+                </Button>
+              </>
+            )}
 
-            {/* YouTube tab */}
-            <TabsContent value="youtube" className="space-y-4 pt-4">
-              <div className="space-y-1.5">
-                <Label className="text-white/70 text-sm">ID do vídeo</Label>
-                <Input
-                  value={videoId}
-                  onChange={(e) => setVideoId(e.target.value)}
-                  placeholder="Ex: dQw4w9WgXcQ"
-                  className="bg-stylo-dark border-white/10 text-white placeholder:text-white/30 focus-visible:ring-stylo-gold"
-                />
-                <p className="text-white/30 text-xs">
-                  Encontre o ID no final da URL do YouTube: youtube.com/watch?v=<strong className="text-white/50">ID</strong>
-                </p>
-              </div>
-              <Button
-                onClick={handleAddVideo}
-                disabled={isAdding}
-                className="w-full btn-gold-glow bg-stylo-gold hover:bg-stylo-gold-hover text-black font-semibold"
-              >
-                {isAdding ? "Adicionando..." : "Adicionar vídeo"}
-              </Button>
-            </TabsContent>
+            {activeType === "youtube" && (
+              <>
+                <div className="space-y-1.5">
+                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">ID do vídeo</Label>
+                  <Input
+                    value={videoId}
+                    onChange={(e) => setVideoId(e.target.value)}
+                    placeholder="Ex: dQw4w9WgXcQ"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#EF4444] focus-visible:border-[#EF4444]/50 h-10"
+                  />
+                  <p className="text-white/35 text-xs">
+                    Cole o ID do final da URL: youtube.com/watch?v=<span className="text-white/55 font-mono">ID</span>
+                  </p>
+                </div>
+                <Button onClick={handleAddVideo} disabled={isAdding} className="w-full bg-[#EF4444] hover:bg-[#DC2626] text-white font-semibold h-10 mt-1">
+                  {isAdding ? "Adicionando..." : "Adicionar vídeo"}
+                </Button>
+              </>
+            )}
 
-            {/* Spotify tab */}
-            <TabsContent value="spotify" className="space-y-4 pt-4">
-              <div className="space-y-1.5">
-                <Label className="text-white/70 text-sm">URI do Spotify</Label>
-                <Input
-                  value={spotifyUri}
-                  onChange={(e) => setSpotifyUri(e.target.value)}
-                  placeholder="spotify:track:..."
-                  className="bg-stylo-dark border-white/10 text-white placeholder:text-white/30 focus-visible:ring-stylo-gold"
-                />
-                <p className="text-white/30 text-xs">
-                  Clique em Compartilhar → Copiar URI no Spotify.
-                </p>
-              </div>
-              <Button
-                onClick={handleAddSpotify}
-                disabled={isAdding}
-                className="w-full btn-gold-glow bg-stylo-gold hover:bg-stylo-gold-hover text-black font-semibold"
-              >
-                {isAdding ? "Adicionando..." : "Adicionar Spotify"}
-              </Button>
-            </TabsContent>
-            {/* Lead Form tab */}
-            <TabsContent value="form" className="space-y-4 pt-4">
-              <div className="space-y-1.5">
-                <Label className="text-white/70 text-sm">Título do formulário</Label>
-                <Input
-                  value={formTitle}
-                  onChange={(e) => setFormTitle(e.target.value)}
-                  placeholder="Ex: Receba meu e-book grátis"
-                  className="bg-stylo-dark border-white/10 text-white placeholder:text-white/30 focus-visible:ring-stylo-gold"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-white/70 text-sm">Campos (separados por vírgula)</Label>
-                <Input
-                  value={formFields}
-                  onChange={(e) => setFormFields(e.target.value)}
-                  placeholder="email, nome, telefone"
-                  className="bg-stylo-dark border-white/10 text-white placeholder:text-white/30 focus-visible:ring-stylo-gold"
-                />
-                <p className="text-white/30 text-xs">O campo "email" é obrigatório para captura de leads.</p>
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-white/70 text-sm">Texto do botão</Label>
-                <Input
-                  value={formButtonLabel}
-                  onChange={(e) => setFormButtonLabel(e.target.value)}
-                  placeholder="Enviar (padrão)"
-                  className="bg-stylo-dark border-white/10 text-white placeholder:text-white/30 focus-visible:ring-stylo-gold"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-white/70 text-sm">Mensagem de sucesso</Label>
-                <Input
-                  value={formSuccessMessage}
-                  onChange={(e) => setFormSuccessMessage(e.target.value)}
-                  placeholder="Obrigado! Entraremos em contato."
-                  className="bg-stylo-dark border-white/10 text-white placeholder:text-white/30 focus-visible:ring-stylo-gold"
-                />
-              </div>
-              <Button
-                onClick={handleAddForm}
-                disabled={isAdding}
-                className="w-full btn-gold-glow bg-stylo-gold hover:bg-stylo-gold-hover text-black font-semibold"
-              >
-                {isAdding ? "Adicionando..." : "Adicionar formulário"}
-              </Button>
-            </TabsContent>
-          </Tabs>
+            {activeType === "spotify" && (
+              <>
+                <div className="space-y-1.5">
+                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">URI do Spotify</Label>
+                  <Input
+                    value={spotifyUri}
+                    onChange={(e) => setSpotifyUri(e.target.value)}
+                    placeholder="spotify:track:4iV5W9uYEdYUVa79Axb7Rh"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#22C55E] focus-visible:border-[#22C55E]/50 h-10"
+                  />
+                  <p className="text-white/35 text-xs">
+                    No Spotify: clique em ··· → Compartilhar → Copiar URI.
+                  </p>
+                </div>
+                <Button onClick={handleAddSpotify} disabled={isAdding} className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white font-semibold h-10 mt-1">
+                  {isAdding ? "Adicionando..." : "Adicionar Spotify"}
+                </Button>
+              </>
+            )}
+
+            {activeType === "form" && (
+              <>
+                <div className="space-y-1.5">
+                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Título</Label>
+                  <Input
+                    value={formTitle}
+                    onChange={(e) => setFormTitle(e.target.value)}
+                    placeholder="Ex: Receba meu e-book grátis"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Campos <span className="normal-case text-white/35">(separados por vírgula)</span></Label>
+                  <Input
+                    value={formFields}
+                    onChange={(e) => setFormFields(e.target.value)}
+                    placeholder="email, nome, telefone"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
+                  />
+                  <p className="text-white/35 text-xs">O campo "email" é obrigatório.</p>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="space-y-1.5">
+                    <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Botão</Label>
+                    <Input
+                      value={formButtonLabel}
+                      onChange={(e) => setFormButtonLabel(e.target.value)}
+                      placeholder="Enviar"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Sucesso</Label>
+                    <Input
+                      value={formSuccessMessage}
+                      onChange={(e) => setFormSuccessMessage(e.target.value)}
+                      placeholder="Obrigado!"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
+                    />
+                  </div>
+                </div>
+                <Button onClick={handleAddForm} disabled={isAdding} className="w-full btn-gold-glow bg-stylo-gold hover:bg-stylo-gold-hover text-black font-semibold h-10 mt-1">
+                  {isAdding ? "Adicionando..." : "Adicionar formulário"}
+                </Button>
+              </>
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>
