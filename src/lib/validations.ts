@@ -53,7 +53,7 @@ export const addVideoWidgetSchema = z.object({
 
 export const profileOnboardingSchema = z.object({
   displayName: z.string().min(1, "Nome obrigatório").max(80),
-  bio: z.string().max(200, "Máximo 200 caracteres").optional(),
+  bio: z.string().max(160, "Máximo 160 caracteres").optional(),
 });
 
 export type RegisterFormValues = z.infer<typeof registerSchema>;

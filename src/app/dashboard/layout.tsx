@@ -43,13 +43,18 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     );
   }
 
-  const username = user?.username ?? profile?.username ?? "";
+  const username = profile?.username ?? user?.username ?? "";
 
   return (
     <div className="min-h-screen bg-stylo-dark flex">
       {/* Desktop sidebar */}
       <div className="hidden md:flex h-screen sticky top-0 shrink-0">
-        <Sidebar plan={profile?.plan ?? "FREE"} username={username} />
+        <Sidebar
+          plan={profile?.plan ?? "FREE"}
+          username={username}
+          displayName={profile?.displayName}
+          avatarUrl={profile?.avatarUrl}
+        />
       </div>
 
       {/* Mobile top bar */}
@@ -61,10 +66,14 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           Stylohub
         </span>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-stylo-gold/20 border border-stylo-gold/30 flex items-center justify-center">
-            <span className="text-stylo-gold text-xs font-bold uppercase">
-              {username.charAt(0)}
-            </span>
+          <div className="w-8 h-8 rounded-full bg-stylo-gold/20 border border-stylo-gold/30 flex items-center justify-center overflow-hidden">
+            {profile?.avatarUrl ? (
+              <img src={profile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+            ) : (
+              <span className="text-stylo-gold text-xs font-bold uppercase">
+                {(profile?.displayName ?? username).charAt(0)}
+              </span>
+            )}
           </div>
           <button
             onClick={logout}

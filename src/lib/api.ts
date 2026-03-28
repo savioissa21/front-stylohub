@@ -69,7 +69,9 @@ export const creatorApi = {
   getLeads: () => api.get("/api/creator/profile/leads"),
   deleteLead: (leadId: string) => api.delete(`/api/creator/profile/leads/${leadId}`),
   updateAvatar: (url: string) => api.patch("/api/creator/profile/avatar", { url }),
-  updateSeo: (body: { bio?: string; seoTitle?: string; seoDescription?: string }) =>
+  updateProfileInfo: (body: { displayName: string; bio?: string }) =>
+    api.patch("/api/creator/profile/info", body),
+  updateSeo: (body: { seoTitle?: string; seoDescription?: string }) =>
     api.patch("/api/creator/profile/seo", body),
 };
 

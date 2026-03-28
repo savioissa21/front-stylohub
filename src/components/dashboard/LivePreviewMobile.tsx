@@ -138,13 +138,19 @@ export function LivePreviewMobile() {
                 )}
               </div>
 
-              {/* Username */}
+              {/* Name & bio */}
               <p className="text-xs font-semibold mb-0.5" style={{ color: theme.textColor }}>
-                @{profile?.username ?? "username"}
+                {profile?.displayName ?? `@${profile?.username ?? "username"}`}
               </p>
-              <p className="text-xs mb-4 opacity-50" style={{ color: theme.textColor }}>
-                Criador de conteúdo
-              </p>
+              {profile?.bio ? (
+                <p className="text-xs mb-4 opacity-50 text-center px-2 leading-tight" style={{ color: theme.textColor }}>
+                  {profile.bio}
+                </p>
+              ) : (
+                <p className="text-xs mb-4 opacity-30 text-center" style={{ color: theme.textColor }}>
+                  @{profile?.username ?? "username"}
+                </p>
+              )}
 
               {/* Widgets */}
               <div className="w-full space-y-2">

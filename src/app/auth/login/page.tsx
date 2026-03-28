@@ -41,7 +41,7 @@ export default function LoginPage() {
       const res = await authApi.login({ email: values.email, password: values.password });
       const { accessToken } = res.data;
       const payload = JSON.parse(atob(accessToken.split(".")[1]));
-      login(accessToken, { username: payload.sub ?? payload.username ?? "", email: values.email });
+      login(accessToken, { username: payload.username ?? "", email: values.email });
       toast.success("Bem-vindo de volta!");
       router.push("/dashboard/links");
     } catch (err: unknown) {

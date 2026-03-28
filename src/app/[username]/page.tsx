@@ -101,14 +101,22 @@ export default async function PublicProfilePage({
             )}
           </div>
 
-          {/* Username & bio */}
+          {/* Name & bio */}
           <div className="text-center mb-8">
-            <h1
-              className="font-bold text-lg mb-1"
+            {profile.displayName && (
+              <h1
+                className="font-bold text-lg mb-0.5"
+                style={{ color: profile.theme.textColor }}
+              >
+                {profile.displayName}
+              </h1>
+            )}
+            <p
+              className={`text-sm opacity-50 ${profile.displayName ? "mb-1" : "font-bold text-lg mb-1"}`}
               style={{ color: profile.theme.textColor }}
             >
               @{profile.username}
-            </h1>
+            </p>
             {profile.bio && (
               <p
                 className="text-sm leading-snug opacity-70 max-w-xs mx-auto"

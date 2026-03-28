@@ -19,6 +19,8 @@ import { useAuth } from "@/providers/AuthProvider";
 interface SidebarProps {
   plan: "FREE" | "PRO";
   username: string;
+  displayName?: string;
+  avatarUrl?: string;
 }
 
 interface NavItem {
@@ -43,7 +45,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Assinatura", icon: <Crown size={18} />, href: "/dashboard/billing" },
 ];
 
-export function Sidebar({ plan, username }: SidebarProps) {
+export function Sidebar({ plan, username, displayName, avatarUrl }: SidebarProps) {
   const pathname = usePathname();
   const { logout } = useAuth();
 
@@ -117,13 +119,22 @@ export function Sidebar({ plan, username }: SidebarProps) {
 
         {/* User row */}
         <div className="flex items-center gap-3 px-3 py-2">
-          <div className="w-8 h-8 rounded-full bg-stylo-gold/20 border border-stylo-gold/30 flex items-center justify-center shrink-0">
-            <span className="text-stylo-gold text-xs font-bold uppercase">
-              {username.charAt(0)}
-            </span>
+          <div className="w-8 h-8 rounded-full bg-stylo-gold/20 border border-stylo-gold/30 flex items-center justify-center shrink-0 overflow-hidden">
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+            ) : (
+              <span className="text-stylo-gold text-xs font-bold uppercase">
+                {(displayName ?? username).charAt(0)}
+              </span>
+            )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white text-sm font-medium truncate">@{username}</p>
+            {displayName && (
+              <p className="text-white text-sm font-medium truncate">{displayName}</p>
+            )}
+            <p className={`truncate ${displayName ? "text-white/40 text-xs" : "text-white text-sm font-medium"}`}>
+              @{username}
+            </p>
           </div>
           <button
             onClick={logout}

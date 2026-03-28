@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { Camera, Loader2, User } from "lucide-react";
 import { toast } from "sonner";
 
@@ -18,6 +19,7 @@ type ProfileOnboardingValues = z.infer<typeof profileOnboardingSchema>;
 
 export default function OnboardingProfilePage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
@@ -54,13 +56,17 @@ export default function OnboardingProfilePage() {
     }
   };
 
-  const onSubmit = async (_values: ProfileOnboardingValues) => {
-    // In a real app, you'd send displayName/bio to the profile endpoint
-    // For now, we just move to the next step
+  const onSubmit = async (values: ProfileOnboardingValues) => {
     setIsSaving(true);
     try {
-      await new Promise((r) => setTimeout(r, 400));
+      await Promise.all([
+        avatarUrl ? creatorApi.updateAvatar(avatarUrl) : Promise.resolve(),
+        creatorApi.updateProfileInfo({ displayName: values.displayName, bio: values.bio }),
+      ]);
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
       router.push("/onboarding/theme");
+    } catch {
+      toast.error("Erro ao salvar perfil. Tente novamente.");
     } finally {
       setIsSaving(false);
     }

@@ -34,6 +34,7 @@ export default function SettingsPage() {
 
   // SEO state
   const [bio, setBio] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [seoTitle, setSeoTitle] = useState("");
   const [seoDescription, setSeoDescription] = useState("");
   const [isSavingSeo, setIsSavingSeo] = useState(false);
@@ -41,16 +42,30 @@ export default function SettingsPage() {
   useEffect(() => {
     if (profile?.avatarUrl) setAvatarUrl(profile.avatarUrl);
     if (profile) {
+      setDisplayName(profile.displayName ?? "");
       setBio(profile.bio ?? "");
       setSeoTitle(profile.seoTitle ?? "");
       setSeoDescription(profile.seoDescription ?? "");
     }
-  }, [profile?.avatarUrl, profile?.bio, profile?.seoTitle, profile?.seoDescription]);
+  }, [profile?.avatarUrl, profile?.displayName, profile?.bio, profile?.seoTitle, profile?.seoDescription]);
+
+  const handleSaveProfileInfo = async () => {
+    setIsSavingSeo(true);
+    try {
+      await creatorApi.updateProfileInfo({ displayName, bio });
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      toast.success("Perfil atualizado!");
+    } catch {
+      toast.error("Erro ao salvar. Tente novamente.");
+    } finally {
+      setIsSavingSeo(false);
+    }
+  };
 
   const handleSaveSeo = async () => {
     setIsSavingSeo(true);
     try {
-      await creatorApi.updateSeo({ bio, seoTitle, seoDescription });
+      await creatorApi.updateSeo({ seoTitle, seoDescription });
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       toast.success("SEO atualizado!");
     } catch {
@@ -201,13 +216,30 @@ export default function SettingsPage() {
         </div>
       </section>
 
-      {/* SEO & Open Graph */}
+      {/* Perfil público */}
       <section className="bg-stylo-surface border border-white/10 rounded-2xl p-6 space-y-5">
         <div>
-          <h2 className="text-white font-semibold">SEO & Open Graph</h2>
+          <h2 className="text-white font-semibold">Perfil público</h2>
           <p className="text-white/40 text-xs mt-0.5">
-            Controla como o teu perfil aparece no Google, WhatsApp e redes sociais.
+            Informações visíveis na sua página pública.
           </p>
+        </div>
+
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between">
+            <Label className="text-white/70 text-sm">Nome de exibição</Label>
+            <span className={`text-xs font-mono ${displayName.length > 75 ? "text-yellow-400" : "text-white/30"}`}>
+              {displayName.length}/80
+            </span>
+          </div>
+          <Input
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+            maxLength={80}
+            placeholder="Seu nome ou apelido"
+            className="bg-stylo-dark border-white/10 text-white placeholder:text-white/30 focus-visible:ring-stylo-gold"
+          />
+          <p className="text-white/30 text-xs">Aparece na sua página pública como título principal.</p>
         </div>
 
         <div className="space-y-1.5">
@@ -225,7 +257,29 @@ export default function SettingsPage() {
             placeholder="Ex: Designer & criador de conteúdo. Links e projetos aqui ↓"
             className="w-full bg-stylo-dark border border-white/10 rounded-md px-3 py-2 text-white text-sm placeholder:text-white/30 resize-none focus:outline-none focus:border-stylo-gold/50 transition-colors"
           />
-          <p className="text-white/30 text-xs">Aparece na tua página pública, abaixo do username.</p>
+          <p className="text-white/30 text-xs">Aparece abaixo do nome na página pública.</p>
+        </div>
+
+        <Button
+          onClick={handleSaveProfileInfo}
+          disabled={isSavingSeo}
+          className="bg-stylo-gold hover:bg-stylo-gold-hover text-black font-semibold"
+        >
+          {isSavingSeo ? (
+            <><Loader2 size={14} className="mr-2 animate-spin" />Salvando...</>
+          ) : (
+            <><Save size={14} className="mr-2" />Salvar perfil</>
+          )}
+        </Button>
+      </section>
+
+      {/* SEO & Open Graph */}
+      <section className="bg-stylo-surface border border-white/10 rounded-2xl p-6 space-y-5">
+        <div>
+          <h2 className="text-white font-semibold">SEO & Open Graph</h2>
+          <p className="text-white/40 text-xs mt-0.5">
+            Controla como o teu perfil aparece no Google, WhatsApp e redes sociais.
+          </p>
         </div>
 
         <div className="space-y-1.5">

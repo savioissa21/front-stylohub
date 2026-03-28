@@ -20,6 +20,7 @@ export interface Theme {
 export interface Profile {
   id: string;
   username: string;
+  displayName?: string;
   avatarUrl?: string;
   bio?: string;
   seoTitle?: string;
