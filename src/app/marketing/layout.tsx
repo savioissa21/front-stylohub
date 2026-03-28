@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { MarketingNav } from "@/components/marketing/MarketingNav";
 
 export default function MarketingLayout({ children }: { children: ReactNode }) {
   return (
@@ -17,41 +18,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
             </span>
           </Link>
 
-          {/* Nav links */}
-          <nav className="hidden md:flex items-center gap-8">
-            <Link
-              href="/marketing/pricing"
-              className="text-sm text-white/60 hover:text-white transition-colors"
-            >
-              Preços
-            </Link>
-            <Link
-              href="/auth/login"
-              className="text-sm text-white/60 hover:text-white transition-colors"
-            >
-              Entrar
-            </Link>
-            <Link href="/auth/register">
-              <button className="btn-gold-glow bg-stylo-gold hover:bg-stylo-gold-hover text-black text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
-                Começar Grátis
-              </button>
-            </Link>
-          </nav>
-
-          {/* Mobile CTA */}
-          <div className="flex md:hidden items-center gap-3">
-            <Link
-              href="/auth/login"
-              className="text-sm text-white/60 hover:text-white transition-colors"
-            >
-              Entrar
-            </Link>
-            <Link href="/auth/register">
-              <button className="btn-gold-glow bg-stylo-gold hover:bg-stylo-gold-hover text-black text-xs font-semibold px-3 py-2 rounded-lg transition-colors">
-                Começar Grátis
-              </button>
-            </Link>
-          </div>
+          <MarketingNav />
         </div>
       </header>
 
