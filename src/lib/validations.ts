@@ -7,7 +7,13 @@ export const registerSchema = z.object({
     .max(50, "Máximo 50 caracteres")
     .regex(/^[a-zA-Z0-9_]+$/, "Apenas letras, números e underscore"),
   email: z.string().email("E-mail inválido"),
-  password: z.string().min(8, "Mínimo 8 caracteres"),
+  password: z
+    .string()
+    .min(8, "Mínimo 8 caracteres")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+      "Deve conter ao menos uma maiúscula, uma minúscula e um número"
+    ),
 });
 
 export const loginSchema = z.object({
@@ -21,8 +27,14 @@ export const forgotPasswordSchema = z.object({
 
 export const resetPasswordSchema = z
   .object({
-    newPassword: z.string().min(8, "Mínimo 8 caracteres"),
-    confirmPassword: z.string().min(8, "Mínimo 8 caracteres"),
+    newPassword: z
+      .string()
+      .min(8, "Mínimo 8 caracteres")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+        "Deve conter ao menos uma maiúscula, uma minúscula e um número"
+      ),
+    confirmPassword: z.string().min(1, "Confirme a senha"),
   })
   .refine((d) => d.newPassword === d.confirmPassword, {
     message: "As senhas não coincidem",
@@ -42,7 +54,10 @@ export const updateThemeSchema = z.object({
 
 export const addLinkWidgetSchema = z.object({
   title: z.string().min(1, "Título obrigatório").max(100),
-  url: z.string().url("URL inválida"),
+  url: z
+    .string()
+    .url("URL inválida")
+    .refine((u) => /^https?:\/\//i.test(u), "URL deve começar com http:// ou https://"),
 });
 
 export const addVideoWidgetSchema = z.object({
