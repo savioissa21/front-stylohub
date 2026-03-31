@@ -109,18 +109,23 @@ export function WidgetEditorCard({
 
         {/* Editable fields */}
         <div className="flex-1 min-w-0 space-y-1">
-          <input
-            type="text"
-            value={title}
-            onChange={handleTitleChange}
-            placeholder={
-              widget.type === "DONATION_LINK" ? "Doação"
-              : widget.type === "PIX" ? "PIX"
-              : widget.type === "AFFILIATE_LINK" ? "Afiliado"
-              : "Título do link"
-            }
-            className="w-full bg-transparent text-white text-sm font-medium placeholder:text-white/25 focus:outline-none border-b border-transparent focus:border-white/20 pb-0.5 transition-colors truncate"
-          />
+          {widget.type === "DONATION_LINK" || widget.type === "PIX" || widget.type === "AFFILIATE_LINK" ? (
+            <span className="w-full text-white text-sm font-medium truncate block pb-0.5">
+              {widget.type === "DONATION_LINK"
+                ? widget.config.title || "Doação"
+                : widget.type === "PIX"
+                ? widget.config.title || "PIX"
+                : widget.config.title || "Afiliado"}
+            </span>
+          ) : (
+            <input
+              type="text"
+              value={title}
+              onChange={handleTitleChange}
+              placeholder="Título do link"
+              className="w-full bg-transparent text-white text-sm font-medium placeholder:text-white/25 focus:outline-none border-b border-transparent focus:border-white/20 pb-0.5 transition-colors truncate"
+            />
+          )}
           {(widget.type === "LINK" || widget.type === "YOUTUBE") && (
             <input
               type="text"
