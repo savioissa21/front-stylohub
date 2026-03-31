@@ -574,7 +574,7 @@ export default function LinksPage() {
           setSoundCloudUrl(""); setSoundCloudDetected(null);
           setTwitterUrl(""); setTweetIdDetected(null);
           setDonationUrl(""); setDonationTitle(""); setDonationPlatform("KOFI");
-          setPixKey(""); setPixTitle(""); setPixDescription("");
+          setPixKey(""); setPixTitle(""); setPixDescription(""); setPixKeyType("EMAIL");
           setAffiliateUrl(""); setAffiliateTitle("");
         }
       }}>

@@ -113,7 +113,12 @@ export function WidgetEditorCard({
             type="text"
             value={title}
             onChange={handleTitleChange}
-            placeholder="Título do link"
+            placeholder={
+              widget.type === "DONATION_LINK" ? "Doação"
+              : widget.type === "PIX" ? "PIX"
+              : widget.type === "AFFILIATE_LINK" ? "Afiliado"
+              : "Título do link"
+            }
             className="w-full bg-transparent text-white text-sm font-medium placeholder:text-white/25 focus:outline-none border-b border-transparent focus:border-white/20 pb-0.5 transition-colors truncate"
           />
           {(widget.type === "LINK" || widget.type === "YOUTUBE") && (
@@ -124,6 +129,21 @@ export function WidgetEditorCard({
               placeholder="https://..."
               className="w-full bg-transparent text-white/40 text-xs placeholder:text-white/20 focus:outline-none border-b border-transparent focus:border-white/10 pb-0.5 transition-colors truncate"
             />
+          )}
+          {widget.type === "DONATION_LINK" && (
+            <p className="w-full text-white/40 text-xs truncate pb-0.5">
+              {widget.config.url}
+            </p>
+          )}
+          {widget.type === "PIX" && (
+            <p className="w-full text-white/40 text-xs truncate pb-0.5">
+              {widget.config.pixKeyType} · {widget.config.pixKey}
+            </p>
+          )}
+          {widget.type === "AFFILIATE_LINK" && (
+            <p className="w-full text-white/40 text-xs truncate pb-0.5">
+              /r/{widget.config.code}
+            </p>
           )}
         </div>
 
