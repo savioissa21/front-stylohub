@@ -8,7 +8,10 @@ export type WidgetType =
   | "TIKTOK"
   | "TWITCH"
   | "SOUNDCLOUD"
-  | "TWITTER";
+  | "TWITTER"
+  | "DONATION_LINK"
+  | "PIX"
+  | "AFFILIATE_LINK";
 
 export interface Widget {
   id: string;
@@ -48,6 +51,14 @@ export interface WidgetConfig {
   trackUrl?: string;
   // TWITTER
   tweetId?: string;
+  // DONATION_LINK
+  platform?: "KOFI" | "BUYMEACOFFEE" | "PAYPAL" | "OUTRO";
+  // PIX
+  pixKey?: string;
+  pixKeyType?: "CPF" | "CNPJ" | "EMAIL" | "TELEFONE" | "ALEATORIA";
+  description?: string;
+  // AFFILIATE_LINK
+  code?: string;
 }
 
 export interface AddWidgetRequest {
@@ -71,6 +82,9 @@ export interface AddWidgetRequest {
   twitchChannel?: string;
   twitchClipSlug?: string;
   twitterTweetId?: string;
+  donationPlatform?: "KOFI" | "BUYMEACOFFEE" | "PAYPAL" | "OUTRO";
+  pixKey?: string;
+  pixKeyType?: "CPF" | "CNPJ" | "EMAIL" | "TELEFONE" | "ALEATORIA";
 }
 
 export interface UpdateWidgetRequest extends Omit<AddWidgetRequest, "type" | "order"> {}
