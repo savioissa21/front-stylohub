@@ -112,7 +112,6 @@ export default function LinksPage() {
   const [pixKey, setPixKey] = useState("");
   const [pixKeyType, setPixKeyType] = useState<"CPF" | "CNPJ" | "EMAIL" | "TELEFONE" | "ALEATORIA">("EMAIL");
   const [pixTitle, setPixTitle] = useState("");
-  const [pixDescription, setPixDescription] = useState("");
 
   // Affiliate state
   const [affiliateUrl, setAffiliateUrl] = useState("");
@@ -436,7 +435,6 @@ export default function LinksPage() {
       setDialogOpen(false);
       setPixKey("");
       setPixTitle("");
-      setPixDescription("");
       toast.success("PIX adicionado!");
     } catch {
       toast.error("Erro ao adicionar PIX.");
@@ -465,8 +463,14 @@ export default function LinksPage() {
       setAffiliateTitle("");
       toast.success("Afiliado adicionado!");
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "";
-      toast.error(msg.includes("PRO") ? "Recurso exclusivo do plano PRO 🔒" : "Erro ao adicionar afiliado.");
+      const axiosMsg: string =
+        (err as { response?: { data?: { message?: string } } })
+          ?.response?.data?.message ?? "";
+      toast.error(
+        axiosMsg.includes("PRO")
+          ? "Recurso exclusivo do plano PRO 🔒"
+          : "Erro ao adicionar afiliado."
+      );
     } finally {
       setIsAdding(false);
     }
@@ -574,7 +578,7 @@ export default function LinksPage() {
           setSoundCloudUrl(""); setSoundCloudDetected(null);
           setTwitterUrl(""); setTweetIdDetected(null);
           setDonationUrl(""); setDonationTitle(""); setDonationPlatform("KOFI");
-          setPixKey(""); setPixTitle(""); setPixDescription(""); setPixKeyType("EMAIL");
+          setPixKey(""); setPixTitle(""); setPixKeyType("EMAIL");
           setAffiliateUrl(""); setAffiliateTitle("");
         }
       }}>
