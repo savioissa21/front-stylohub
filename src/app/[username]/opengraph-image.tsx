@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { ImageResponse } from "next/og";
 import { fetchProfile } from "@/lib/fetchProfile";
 
@@ -15,18 +14,24 @@ export default async function Image({
   const profile = await fetchProfile(username);
 
   // Load Plus Jakarta Sans from Google Fonts (CSS variables unavailable in edge runtime)
-  const fontData = await fetch(
-    "https://fonts.gstatic.com/s/plusjakartasans/v8/LDIoaomQNQcsA88c7O9yZ4KMCoOg4IA6-91aHEjcWuA_KU7NSg.woff2"
-  ).then((res) => res.arrayBuffer());
+  let fontData: ArrayBuffer | null = null;
+  try {
+    const fontRes = await fetch(
+      "https://fonts.gstatic.com/s/plusjakartasans/v8/LDIoaomQNQcsA88c7O9yZ4KMCoOg4IA6-91aHEjcWuA_KU7NSg.woff2"
+    );
+    if (fontRes.ok) fontData = await fontRes.arrayBuffer();
+  } catch { /* degrade to system font */ }
 
-  const displayName = profile?.displayName || profile?.username || username;
+  const rawDisplayName = profile?.displayName || profile?.username || username;
+  const displayName = rawDisplayName.length > 40 ? rawDisplayName.slice(0, 37) + "…" : rawDisplayName;
   const bio = profile?.bio
     ? profile.bio.length > 100
       ? profile.bio.slice(0, 97) + "…"
       : profile.bio
     : null;
   const avatarUrl = profile?.avatarUrl ?? null;
-  const bgColor = profile?.theme?.primaryColor ?? "#111827";
+  const rawBgColor = profile?.theme?.primaryColor ?? "#111827";
+  const bgColor = /^#[0-9a-fA-F]{6}$/.test(rawBgColor) ? rawBgColor : "#111827";
 
   // Determine if background is light or dark to pick text colors
   const isLight = (() => {
@@ -47,8 +52,11 @@ export default async function Image({
       const avatarRes = await fetch(avatarUrl);
       if (avatarRes.ok) {
         const buf = await avatarRes.arrayBuffer();
-        const mime = avatarRes.headers.get("content-type") ?? "image/jpeg";
-        avatarSrc = `data:${mime};base64,${Buffer.from(buf).toString("base64")}`;
+        const mime = (avatarRes.headers.get("content-type") ?? "image/jpeg").split(";")[0].trim();
+        const bytes = new Uint8Array(buf);
+        let binary = "";
+        for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
+        avatarSrc = `data:${mime};base64,${btoa(binary)}`;
       }
     } catch {
       // fall through to initials fallback
@@ -153,14 +161,9 @@ export default async function Image({
     ),
     {
       ...size,
-      fonts: [
-        {
-          name: "PlusJakartaSans",
-          data: fontData,
-          style: "normal",
-          weight: 700,
-        },
-      ],
+      fonts: fontData
+        ? [{ name: "PlusJakartaSans", data: fontData, style: "normal", weight: 700 }]
+        : [],
     }
   );
 }
