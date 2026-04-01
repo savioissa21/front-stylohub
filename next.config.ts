@@ -16,7 +16,7 @@ const ContentSecurityPolicy = `
   script-src 'self' 'unsafe-inline' 'unsafe-eval';
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com;
-  img-src 'self' data: blob: https://res.cloudinary.com https://lh3.googleusercontent.com https://avatars.githubusercontent.com https://pbs.twimg.com https://abs.twimg.com;
+  img-src 'self' data: blob: https://res.cloudinary.com https://lh3.googleusercontent.com https://avatars.githubusercontent.com https://pbs.twimg.com https://abs.twimg.com https://ui-avatars.com;
   connect-src 'self' ${apiOrigin};
   frame-src https://www.youtube.com https://open.spotify.com https://www.tiktok.com https://player.twitch.tv https://clips.twitch.tv https://w.soundcloud.com;
   frame-ancestors 'none';
@@ -43,6 +43,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "avatars.githubusercontent.com" },
       { protocol: "https", hostname: "ui-avatars.com" },
       { protocol: "https", hostname: "pbs.twimg.com" },
+      { protocol: "https", hostname: "abs.twimg.com" },
     ],
   },
   async headers() {
