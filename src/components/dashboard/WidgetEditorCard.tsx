@@ -52,8 +52,9 @@ export function WidgetEditorCard({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : 1,
+    opacity: isDragging ? 0.8 : 1,
     zIndex: isDragging ? 50 : undefined,
+    scale: isDragging ? 1.02 : 1,
   };
 
   const [title, setTitle] = useState(widget.config.title ?? "");
@@ -87,8 +88,12 @@ export function WidgetEditorCard({
     <div
       ref={setNodeRef}
       style={style}
-      className={`bg-stylo-surface border rounded-xl overflow-hidden transition-colors ${
-        widget.isActive ? "border-white/10" : "border-white/5 opacity-60"
+      className={`bg-card border rounded-xl overflow-hidden transition-all duration-300 ${
+        isDragging 
+          ? "border-stylo-gold/50 shadow-2xl shadow-black/20 ring-1 ring-stylo-gold/20" 
+          : widget.isActive 
+            ? "border-border" 
+            : "border-border/50 opacity-60"
       }`}
     >
       <div className="flex items-center gap-3 px-4 py-3">
@@ -96,21 +101,21 @@ export function WidgetEditorCard({
         <button
           {...attributes}
           {...listeners}
-          className="text-white/20 hover:text-white/50 cursor-grab active:cursor-grabbing transition-colors touch-none"
+          className="text-muted-foreground/30 hover:text-muted-foreground transition-colors cursor-grab active:cursor-grabbing touch-none p-1 -ml-1"
           aria-label="Arrastar para reordenar"
         >
           <GripVertical size={18} />
         </button>
 
         {/* Widget icon */}
-        <div className="w-8 h-8 rounded-lg bg-stylo-dark flex items-center justify-center shrink-0">
+        <div className="w-8 h-8 rounded-lg bg-background border border-border flex items-center justify-center shrink-0 shadow-sm">
           <WidgetIcon type={widget.type} />
         </div>
 
         {/* Editable fields */}
-        <div className="flex-1 min-w-0 space-y-1">
+        <div className="flex-1 min-w-0 space-y-0.5">
           {widget.type === "DONATION_LINK" || widget.type === "PIX" || widget.type === "AFFILIATE_LINK" ? (
-            <span className="w-full text-white text-sm font-medium truncate block pb-0.5">
+            <span className="w-full text-foreground text-sm font-bold truncate block pb-0.5">
               {widget.type === "DONATION_LINK"
                 ? widget.config.title || "Doação"
                 : widget.type === "PIX"
@@ -123,7 +128,7 @@ export function WidgetEditorCard({
               value={title}
               onChange={handleTitleChange}
               placeholder="Título do link"
-              className="w-full bg-transparent text-white text-sm font-medium placeholder:text-white/25 focus:outline-none border-b border-transparent focus:border-white/20 pb-0.5 transition-colors truncate"
+              className="w-full bg-transparent text-foreground text-sm font-bold placeholder:text-muted-foreground/30 focus:outline-none border-b border-transparent focus:border-stylo-gold/30 pb-0.5 transition-all truncate"
             />
           )}
           {(widget.type === "LINK" || widget.type === "YOUTUBE") && (
@@ -132,21 +137,21 @@ export function WidgetEditorCard({
               value={url}
               onChange={handleUrlChange}
               placeholder="https://..."
-              className="w-full bg-transparent text-white/40 text-xs placeholder:text-white/20 focus:outline-none border-b border-transparent focus:border-white/10 pb-0.5 transition-colors truncate"
+              className="w-full bg-transparent text-muted-foreground/60 text-[11px] font-medium placeholder:text-muted-foreground/20 focus:outline-none border-b border-transparent focus:border-stylo-gold/20 pb-0.5 transition-all truncate"
             />
           )}
           {widget.type === "DONATION_LINK" && (
-            <p className="w-full text-white/40 text-xs truncate pb-0.5">
+            <p className="w-full text-muted-foreground/60 text-[11px] font-medium truncate pb-0.5">
               {widget.config.url}
             </p>
           )}
           {widget.type === "PIX" && (
-            <p className="w-full text-white/40 text-xs truncate pb-0.5">
+            <p className="w-full text-muted-foreground/60 text-[11px] font-medium truncate pb-0.5 uppercase tracking-wide">
               {widget.config.pixKeyType} · {widget.config.pixKey}
             </p>
           )}
           {widget.type === "AFFILIATE_LINK" && (
-            <p className="w-full text-white/40 text-xs truncate pb-0.5">
+            <p className="w-full text-muted-foreground/60 text-[11px] font-medium truncate pb-0.5">
               /r/{widget.config.code}
             </p>
           )}
@@ -161,7 +166,7 @@ export function WidgetEditorCard({
           />
           <button
             onClick={() => onDelete(widget.id)}
-            className="text-white/20 hover:text-red-400 transition-colors p-1 -mr-1"
+            className="text-muted-foreground/30 hover:text-destructive transition-colors p-1 -mr-1"
             title="Excluir"
           >
             <Trash2 size={16} />

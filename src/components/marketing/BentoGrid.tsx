@@ -57,18 +57,18 @@ const FU_EASE = "easeOut" as const;
 
 export function BentoGrid() {
   return (
-    <section className="bg-stylo-dark py-24">
+    <section className="bg-background py-24 transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Section header */}
         <div className="text-center mb-14">
           <h2
-            className="text-3xl md:text-4xl font-bold text-white mb-4"
+            className="text-3xl md:text-4xl font-bold text-foreground mb-4"
             style={{ fontFamily: "var(--font-cinzel)" }}
           >
             Tudo que você precisa,{" "}
             <span className="text-gold-gradient">num só lugar</span>
           </h2>
-          <p className="text-white/50 max-w-xl mx-auto">
+          <p className="text-muted-foreground max-w-xl mx-auto font-medium">
             Do link básico ao funil completo de captação — o Stylohub cresce com o seu negócio.
           </p>
         </div>
@@ -82,24 +82,24 @@ export function BentoGrid() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: i * 0.08, ease: FU_EASE }}
               viewport={{ once: true, margin: "-50px" }}
-              className={`relative bg-stylo-surface border border-white/8 rounded-2xl p-6 hover:border-stylo-gold/20 transition-colors group ${
+              className={`relative bg-card border border-border rounded-2xl p-6 hover:border-stylo-gold/20 transition-all group shadow-sm ${
                 feature.span === "2" ? "lg:col-span-2" : ""
               }`}
             >
               {/* PRO badge */}
               {feature.isPro && (
-                <span className="absolute top-4 right-4 text-xs font-semibold bg-stylo-gold/15 text-stylo-gold border border-stylo-gold/20 px-2 py-0.5 rounded-full">
+                <span className="absolute top-4 right-4 text-[10px] font-bold bg-stylo-gold/15 text-stylo-gold border border-stylo-gold/20 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                   PRO
                 </span>
               )}
 
               {/* Icon */}
-              <div className="w-11 h-11 rounded-xl bg-stylo-gold/10 border border-stylo-gold/15 flex items-center justify-center text-stylo-gold mb-4 group-hover:bg-stylo-gold/15 transition-colors">
+              <div className="w-11 h-11 rounded-xl bg-stylo-gold/10 border border-stylo-gold/15 flex items-center justify-center text-stylo-gold mb-4 group-hover:bg-stylo-gold/15 transition-colors shadow-sm">
                 {feature.icon}
               </div>
 
-              <h3 className="text-white font-semibold text-base mb-2">{feature.title}</h3>
-              <p className="text-white/45 text-sm leading-relaxed">{feature.description}</p>
+              <h3 className="text-foreground font-bold text-base mb-2">{feature.title}</h3>
+              <p className="text-muted-foreground/70 text-sm leading-relaxed font-medium">{feature.description}</p>
             </motion.div>
           ))}
         </div>

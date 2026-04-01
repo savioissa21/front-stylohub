@@ -27,16 +27,16 @@ export function PricingCard({
 
   return (
     <div
-      className={`relative flex flex-col rounded-2xl p-8 ${
+      className={`relative flex flex-col rounded-2xl p-8 transition-all duration-300 shadow-sm ${
         isPro
-          ? "bg-stylo-surface border-2 border-stylo-gold shadow-[0_0_40px_rgba(212,175,55,0.12)]"
-          : "bg-stylo-surface border border-white/10"
+          ? "bg-card border-2 border-stylo-gold shadow-[0_0_40px_rgba(212,175,55,0.12)]"
+          : "bg-card border border-border"
       }`}
     >
       {/* Popular badge */}
       {isPro && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="bg-stylo-gold text-black text-xs font-bold px-4 py-1 rounded-full whitespace-nowrap">
+          <span className="bg-stylo-gold text-black text-[10px] font-bold px-4 py-1 rounded-full whitespace-nowrap uppercase tracking-widest">
             Mais Popular
           </span>
         </div>
@@ -45,8 +45,8 @@ export function PricingCard({
       {/* Plan name */}
       <div className="mb-2">
         <span
-          className={`text-xs font-semibold tracking-widest uppercase ${
-            isPro ? "text-stylo-gold" : "text-white/40"
+          className={`text-[10px] font-bold tracking-widest uppercase ${
+            isPro ? "text-stylo-gold" : "text-muted-foreground/50"
           }`}
         >
           {plan}
@@ -57,17 +57,17 @@ export function PricingCard({
       <div className="mb-6">
         {displayPrice === 0 ? (
           <div className="flex items-baseline gap-1">
-            <span className="text-4xl font-bold text-white">Grátis</span>
+            <span className="text-4xl font-bold text-foreground">Grátis</span>
           </div>
         ) : (
           <div className="flex items-baseline gap-1">
-            <span className="text-white/50 text-sm">R$</span>
-            <span className="text-4xl font-bold text-white">{displayPrice.toFixed(2).replace(".", ",")}</span>
-            <span className="text-white/40 text-sm">/mês</span>
+            <span className="text-muted-foreground/60 text-sm font-bold">R$</span>
+            <span className="text-4xl font-bold text-foreground">{displayPrice.toFixed(2).replace(".", ",")}</span>
+            <span className="text-muted-foreground/50 text-sm font-medium">/mês</span>
           </div>
         )}
         {isPro && isYearly && (
-          <p className="text-white/40 text-xs mt-1">
+          <p className="text-muted-foreground/40 text-[10px] font-bold mt-1 uppercase tracking-wide">
             Cobrado anualmente · R$ {(yearlyPrice * 12).toFixed(2).replace(".", ",")}
           </p>
         )}
@@ -76,17 +76,17 @@ export function PricingCard({
       {/* CTA */}
       <Button
         onClick={onCta}
-        className={`w-full h-11 font-semibold mb-8 ${
+        className={`w-full h-11 font-bold rounded-xl transition-all active:scale-[0.98] ${
           isPro
-            ? "btn-gold-glow bg-stylo-gold hover:bg-stylo-gold-hover text-black"
-            : "bg-white/10 hover:bg-white/15 text-white border border-white/10"
+            ? "btn-gold-glow bg-stylo-gold hover:bg-stylo-gold-hover text-black shadow-lg"
+            : "bg-foreground/5 hover:bg-foreground/10 text-foreground border border-border"
         }`}
       >
         {ctaLabel}
       </Button>
 
       {/* Divider */}
-      <div className="border-t border-white/8 mb-6" />
+      <div className="border-t border-border mb-6" />
 
       {/* Features */}
       <ul className="space-y-3 flex-1">
@@ -94,9 +94,9 @@ export function PricingCard({
           <li key={feature} className="flex items-start gap-3">
             <Check
               size={15}
-              className={`mt-0.5 shrink-0 ${isPro ? "text-stylo-gold" : "text-white/40"}`}
+              className={`mt-0.5 shrink-0 ${isPro ? "text-stylo-gold" : "text-muted-foreground/50"}`}
             />
-            <span className="text-white/70 text-sm">{feature}</span>
+            <span className="text-muted-foreground text-sm font-medium">{feature}</span>
           </li>
         ))}
       </ul>

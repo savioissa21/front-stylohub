@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import type { Metadata } from "next";
+import * as motion from "framer-motion/client";
 
 import { fetchProfile } from "@/lib/fetchProfile";
 import type { Widget } from "@/types/widget";
+// ... (rest of imports)
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "stylohub.app";
 
@@ -85,7 +87,12 @@ export default async function PublicProfilePage({
       <main className="min-h-screen flex flex-col items-center pt-12 pb-10 px-4">
         <div className="w-full max-w-sm">
           {/* Avatar */}
-          <div className="flex justify-center mb-5">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="flex justify-center mb-5"
+          >
             {safeProfile.avatarUrl ? (
               <Image
                 src={safeProfile.avatarUrl}
@@ -108,10 +115,15 @@ export default async function PublicProfilePage({
                 {safeProfile.username.charAt(0).toUpperCase()}
               </div>
             )}
-          </div>
+          </motion.div>
 
           {/* Name & bio */}
-          <div className="text-center mb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-center mb-8"
+          >
             {safeProfile.displayName && (
               <h1
                 className="font-bold text-lg mb-0.5"
@@ -134,34 +146,32 @@ export default async function PublicProfilePage({
                 {safeProfile.bio}
               </p>
             )}
-          </div>
+          </motion.div>
 
           {/* Widgets */}
           <div className="space-y-3">
-            {sortedWidgets.map((widget: Widget) => {
+            {sortedWidgets.map((widget: Widget, index: number) => {
+              let widgetComponent = null;
+
               if (widget.type === "LINK") {
-                return (
+                widgetComponent = (
                   <LinkWidget
-                    key={widget.id}
                     widget={widget}
                     username={safeProfile.username}
                   />
                 );
-              }
-              if (widget.type === "YOUTUBE" && widget.config.videoId) {
-                return (
+              } else if (widget.type === "YOUTUBE" && widget.config.videoId) {
+                widgetComponent = (
                   <YoutubeWidget
-                    key={widget.id}
                     videoId={widget.config.videoId}
                     autoPlay={widget.config.autoPlay}
                     showControls={widget.config.showControls}
                   />
                 );
-              }
-              if (widget.type === "SPOTIFY" && widget.config.spotifyUri) {
+              } else if (widget.type === "SPOTIFY" && widget.config.spotifyUri) {
                 const embedUrl = `https://open.spotify.com/embed/${widget.config.spotifyUri.replace("spotify:", "").replace(":", "/")}`;
-                return (
-                  <div key={widget.id} className="w-full rounded-xl overflow-hidden">
+                widgetComponent = (
+                  <div className="w-full rounded-xl overflow-hidden">
                     <iframe
                       src={embedUrl}
                       width="100%"
@@ -172,54 +182,41 @@ export default async function PublicProfilePage({
                     />
                   </div>
                 );
-              }
-              if (widget.type === "TIKTOK" && widget.config.videoId) {
-                return <TikTokWidget key={widget.id} videoId={widget.config.videoId} />;
-              }
-              if (widget.type === "TWITCH") {
-                return (
+              } else if (widget.type === "TIKTOK" && widget.config.videoId) {
+                widgetComponent = <TikTokWidget videoId={widget.config.videoId} />;
+              } else if (widget.type === "TWITCH") {
+                widgetComponent = (
                   <TwitchWidget
-                    key={widget.id}
                     channel={widget.config.channel}
                     clipSlug={widget.config.clipSlug}
                     isClip={widget.config.isClip ?? false}
                   />
                 );
-              }
-              if (widget.type === "SOUNDCLOUD" && widget.config.trackUrl) {
-                return (
+              } else if (widget.type === "SOUNDCLOUD" && widget.config.trackUrl) {
+                widgetComponent = (
                   <SoundCloudWidget
-                    key={widget.id}
                     trackUrl={widget.config.trackUrl}
                     compact={widget.config.compact}
                   />
                 );
-              }
-              if (widget.type === "TWITTER" && widget.config.tweetId) {
-                return <TwitterWidget key={widget.id} tweetId={widget.config.tweetId} />;
-              }
-              if (widget.type === "DONATION_LINK") {
-                return <DonationLinkWidget key={widget.id} config={widget.config} />;
-              }
-              if (widget.type === "PIX") {
-                return <PixWidget key={widget.id} config={widget.config} />;
-              }
-              if (widget.type === "AFFILIATE_LINK") {
-                return <AffiliateLinkWidget key={widget.id} config={widget.config} />;
-              }
-              if (widget.type === "LEAD_FORM") {
-                return (
+              } else if (widget.type === "TWITTER" && widget.config.tweetId) {
+                widgetComponent = <TwitterWidget tweetId={widget.config.tweetId} />;
+              } else if (widget.type === "DONATION_LINK") {
+                widgetComponent = <DonationLinkWidget config={widget.config} />;
+              } else if (widget.type === "PIX") {
+                widgetComponent = <PixWidget config={widget.config} />;
+              } else if (widget.type === "AFFILIATE_LINK") {
+                widgetComponent = <AffiliateLinkWidget config={widget.config} />;
+              } else if (widget.type === "LEAD_FORM") {
+                widgetComponent = (
                   <LeadFormWidget
-                    key={widget.id}
                     widget={widget}
                     username={safeProfile.username}
                   />
                 );
-              }
-              if (widget.type === "TEXT" && widget.config.text) {
-                return (
+              } else if (widget.type === "TEXT" && widget.config.text) {
+                widgetComponent = (
                   <p
-                    key={widget.id}
                     className="text-center text-sm opacity-70 py-2"
                     style={{ color: safeProfile.theme.textColor }}
                   >
@@ -227,7 +224,25 @@ export default async function PublicProfilePage({
                   </p>
                 );
               }
-              return null;
+
+              if (!widgetComponent) return null;
+
+              return (
+                <motion.div
+                  key={widget.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.2 + index * 0.1,
+                    ease: [0.21, 0.47, 0.32, 0.98],
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {widgetComponent}
+                </motion.div>
+              );
             })}
           </div>
 

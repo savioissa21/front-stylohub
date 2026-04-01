@@ -15,6 +15,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface SidebarProps {
   plan: "FREE" | "PRO";
@@ -50,9 +51,9 @@ export function Sidebar({ plan, username, displayName, avatarUrl }: SidebarProps
   const { logout } = useAuth();
 
   return (
-    <aside className="flex flex-col h-full bg-stylo-surface border-r border-white/8 w-64">
-      {/* Logo */}
-      <div className="px-6 h-16 flex items-center border-b border-white/8">
+    <aside className="flex flex-col h-full bg-card border-r border-border w-64 transition-all duration-300">
+      {/* Logo + Toggle */}
+      <div className="px-6 h-16 flex items-center justify-between border-b border-border">
         <Link href="/dashboard/links">
           <span
             className="text-xl font-bold text-gold-gradient"
@@ -61,6 +62,7 @@ export function Sidebar({ plan, username, displayName, avatarUrl }: SidebarProps
             Stylohub
           </span>
         </Link>
+        <ThemeToggle />
       </div>
 
       {/* Navigation */}
@@ -76,19 +78,19 @@ export function Sidebar({ plan, username, displayName, avatarUrl }: SidebarProps
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors group ${
                 isActive
                   ? "bg-stylo-gold/10 text-stylo-gold"
-                  : "text-white/50 hover:text-white hover:bg-white/5"
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent"
               }`}
             >
               <span
                 className={`transition-colors ${
-                  isActive ? "text-stylo-gold" : "text-white/40 group-hover:text-white/70"
+                  isActive ? "text-stylo-gold" : "text-muted-foreground group-hover:text-foreground"
                 }`}
               >
                 {item.icon}
               </span>
               <span className="flex-1">{item.label}</span>
               {isLocked && (
-                <Lock size={13} className="text-white/25 shrink-0" />
+                <Lock size={13} className="text-muted-foreground/30 shrink-0" />
               )}
               {isActive && !isLocked && (
                 <ChevronRight size={13} className="text-stylo-gold/60 shrink-0" />
@@ -99,8 +101,8 @@ export function Sidebar({ plan, username, displayName, avatarUrl }: SidebarProps
       </nav>
 
       {/* User info + logout */}
-      <div className="px-3 py-4 border-t border-white/8">
-        {/* Plan badge */}
+      <div className="px-3 py-4 border-t border-border">
+        {/* ... plan badge code ... */}
         {plan === "FREE" && (
           <Link
             href="/dashboard/billing"
@@ -130,15 +132,15 @@ export function Sidebar({ plan, username, displayName, avatarUrl }: SidebarProps
           </div>
           <div className="flex-1 min-w-0">
             {displayName && (
-              <p className="text-white text-sm font-medium truncate">{displayName}</p>
+              <p className="text-foreground text-sm font-medium truncate">{displayName}</p>
             )}
-            <p className={`truncate ${displayName ? "text-white/40 text-xs" : "text-white text-sm font-medium"}`}>
+            <p className={`truncate ${displayName ? "text-muted-foreground text-xs" : "text-foreground text-sm font-medium"}`}>
               @{username}
             </p>
           </div>
           <button
             onClick={logout}
-            className="text-white/30 hover:text-red-400 transition-colors"
+            className="text-muted-foreground hover:text-red-400 transition-colors"
             title="Sair"
           >
             <LogOut size={16} />

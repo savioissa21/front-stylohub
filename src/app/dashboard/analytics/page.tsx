@@ -1,6 +1,6 @@
 "use client";
 
-import { Lock, Crown, Eye, MousePointerClick, TrendingUp } from "lucide-react";
+import { Lock, Crown, Eye, MousePointerClick, TrendingUp, ArrowUpRight } from "lucide-react";
 import {
   BarChart,
   Bar,
@@ -14,6 +14,7 @@ import {
 import { useProfile } from "@/hooks/queries/useProfile";
 import { useAnalytics } from "@/hooks/queries/useAnalytics";
 import { Button } from "@/components/ui/button";
+import { AnalyticsChart } from "@/components/dashboard/AnalyticsChart";
 import Link from "next/link";
 
 interface StatCardProps {
@@ -21,19 +22,30 @@ interface StatCardProps {
   value: string | number;
   icon: React.ReactNode;
   description?: string;
+  trend?: string;
 }
 
-function StatCard({ label, value, icon, description }: StatCardProps) {
+function StatCard({ label, value, icon, description, trend }: StatCardProps) {
   return (
-    <div className="bg-stylo-surface border border-white/10 rounded-2xl p-5">
+    <div className="bg-card border border-border rounded-2xl p-5 shadow-sm hover:border-stylo-gold/30 transition-all duration-300">
       <div className="flex items-center justify-between mb-3">
-        <span className="text-white/50 text-sm">{label}</span>
-        <div className="w-8 h-8 rounded-lg bg-stylo-gold/10 flex items-center justify-center text-stylo-gold">
+        <span className="text-muted-foreground/60 text-[10px] font-bold uppercase tracking-widest">{label}</span>
+        <div className="w-8 h-8 rounded-lg bg-stylo-gold/10 flex items-center justify-center text-stylo-gold shadow-sm">
           {icon}
         </div>
       </div>
-      <p className="text-3xl font-bold text-white">{value}</p>
-      {description && <p className="text-white/30 text-xs mt-1">{description}</p>}
+      <div className="flex items-end justify-between">
+        <div>
+          <p className="text-3xl font-bold text-foreground tracking-tight">{value}</p>
+          {description && <p className="text-muted-foreground/40 text-[10px] mt-1 uppercase font-bold tracking-wide">{description}</p>}
+        </div>
+        {trend && (
+          <div className="flex items-center gap-1 text-green-500 dark:text-green-400 text-[11px] font-bold bg-green-500/10 px-2.5 py-1 rounded-full mb-1 border border-green-500/10">
+            <ArrowUpRight size={12} />
+            {trend}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -47,16 +59,16 @@ export default function AnalyticsPage() {
     return (
       <div className="p-6 max-w-2xl">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-white">Analytics</h1>
-          <p className="text-white/40 text-sm mt-0.5">
+          <h1 className="text-2xl font-bold text-foreground">Analytics</h1>
+          <p className="text-muted-foreground/60 text-sm mt-0.5 font-medium">
             Acompanhe o desempenho da sua página.
           </p>
         </div>
 
         {/* Locked overlay card */}
-        <div className="relative bg-stylo-surface border border-stylo-gold/20 rounded-2xl p-10 text-center overflow-hidden">
+        <div className="relative bg-card border border-stylo-gold/20 rounded-2xl p-10 text-center overflow-hidden shadow-xl">
           {/* Blurred mock bars */}
-          <div className="absolute inset-0 flex items-end gap-2 px-8 pb-8 opacity-20 blur-sm pointer-events-none">
+          <div className="absolute inset-0 flex items-end gap-2 px-8 pb-8 opacity-[0.03] dark:opacity-20 blur-sm pointer-events-none">
             {[60, 80, 45, 90, 55, 70, 85].map((h, i) => (
               <div
                 key={i}
@@ -67,16 +79,16 @@ export default function AnalyticsPage() {
           </div>
 
           <div className="relative z-10">
-            <div className="w-14 h-14 rounded-full bg-stylo-gold/20 border border-stylo-gold/30 flex items-center justify-center mx-auto mb-4">
+            <div className="w-14 h-14 rounded-full bg-stylo-gold/15 border border-stylo-gold/30 flex items-center justify-center mx-auto mb-4 shadow-sm">
               <Lock size={24} className="text-stylo-gold" />
             </div>
-            <h2 className="text-white text-xl font-bold mb-2">Analytics disponível no PRO</h2>
-            <p className="text-white/50 text-sm max-w-sm mx-auto mb-6">
+            <h2 className="text-foreground text-xl font-bold mb-2 tracking-tight">Analytics disponível no PRO</h2>
+            <p className="text-muted-foreground/70 text-sm max-w-sm mx-auto mb-6 font-medium">
               Veja quantas pessoas visitaram sua página, em quais links elas clicaram e sua taxa
               de conversão — em tempo real.
             </p>
             <Link href="/dashboard/billing">
-              <Button className="btn-gold-glow bg-stylo-gold hover:bg-stylo-gold-hover text-black font-semibold px-8">
+              <Button className="btn-gold-glow bg-stylo-gold hover:bg-stylo-gold-hover text-black font-bold px-8 rounded-xl h-11 transition-all active:scale-[0.98]">
                 <Crown size={15} className="mr-2" />
                 Fazer upgrade para PRO
               </Button>
@@ -99,6 +111,17 @@ export default function AnalyticsPage() {
     ? `${(analytics.clickThroughRate * 100).toFixed(1)}%`
     : "0%";
 
+  // Mock daily data for the area chart
+  const dailyData = [
+    { name: "Seg", value: 120 },
+    { name: "Ter", value: 150 },
+    { name: "Qua", value: 450 },
+    { name: "Qui", value: 380 },
+    { name: "Sex", value: 520 },
+    { name: "Sáb", value: 710 },
+    { name: "Dom", value: 680 },
+  ];
+
   // Build chart data from clicksPerWidget + profile widgets
   const chartData = analytics
     ? Object.entries(analytics.clicksPerWidget).map(([widgetId, clicks]) => {
@@ -111,64 +134,74 @@ export default function AnalyticsPage() {
     : [];
 
   return (
-    <div className="p-4 sm:p-6 max-w-3xl space-y-5 sm:space-y-6">
+    <div className="p-4 sm:p-6 max-w-3xl space-y-5 sm:space-y-6 transition-all duration-300">
       <div>
-        <h1 className="text-2xl font-bold text-white">Analytics</h1>
-        <p className="text-white/40 text-sm mt-0.5">Desempenho da sua página.</p>
+        <h1 className="text-2xl font-bold text-foreground tracking-tight">Analytics</h1>
+        <p className="text-muted-foreground/60 text-sm mt-0.5 font-medium">Desempenho da sua página.</p>
       </div>
 
       {/* Stats cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard
-          label="Visualizações totais"
+          label="Visualizações"
           value={analytics?.totalViews?.toLocaleString("pt-BR") ?? 0}
           icon={<Eye size={16} />}
           description="Visitas à sua página"
+          trend="+12%"
         />
         <StatCard
-          label="Cliques totais"
+          label="Cliques"
           value={analytics?.totalClicks?.toLocaleString("pt-BR") ?? 0}
           icon={<MousePointerClick size={16} />}
           description="Em todos os links"
+          trend="+8%"
         />
         <StatCard
-          label="Taxa de clique (CTR)"
+          label="CTR Médio"
           value={ctrFormatted}
           icon={<TrendingUp size={16} />}
-          description="Cliques / visualizações"
+          description="Taxa de conversão"
+          trend="+5%"
         />
       </div>
 
-      {/* Bar chart */}
-      <div className="bg-stylo-surface border border-white/10 rounded-2xl p-6">
-        <h2 className="text-white font-semibold mb-6">Cliques por link</h2>
+      {/* Evolution Chart */}
+      <AnalyticsChart data={dailyData} title="Evolução de Visualizações" />
+
+      {/* Bar chart - Cliques por link */}
+      <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+        <h2 className="text-foreground font-bold mb-6 tracking-tight">Cliques por link</h2>
         {chartData.length === 0 ? (
-          <div className="flex items-center justify-center h-40 text-white/30 text-sm">
+          <div className="flex items-center justify-center h-40 text-muted-foreground/30 text-sm">
             Nenhum dado disponível ainda.
           </div>
         ) : (
           <ResponsiveContainer width="100%" height={240}>
             <BarChart data={chartData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+              <CartesianGrid strokeDasharray="3 3" stroke="currentColor" className="text-border/40" vertical={false} />
               <XAxis
                 dataKey="name"
-                tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 12 }}
+                tick={{ fill: "currentColor", fontSize: 11, fontWeight: 600 }}
+                className="text-muted-foreground/50"
                 axisLine={false}
                 tickLine={false}
+                dy={10}
               />
               <YAxis
-                tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 12 }}
+                tick={{ fill: "currentColor", fontSize: 11, fontWeight: 600 }}
+                className="text-muted-foreground/50"
                 axisLine={false}
                 tickLine={false}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#18181B",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: "8px",
-                  color: "#fff",
+                  backgroundColor: "var(--card)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "12px",
+                  boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
                 }}
-                cursor={{ fill: "rgba(212,175,55,0.06)" }}
+                labelStyle={{ fontWeight: 700, color: "var(--foreground)", marginBottom: "4px" }}
+                cursor={{ fill: "var(--stylo-gold)", opacity: 0.05 }}
               />
               <Bar dataKey="cliques" fill="#D4AF37" radius={[6, 6, 0, 0]} />
             </BarChart>

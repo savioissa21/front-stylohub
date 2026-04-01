@@ -3,18 +3,20 @@
 import Link from "next/link";
 import { LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
+import { ThemeToggle } from "@/components/dashboard/ThemeToggle";
 
 export function MarketingNav() {
   const { user } = useAuth();
 
   if (user) {
     return (
-      <>
+      <div className="flex items-center gap-3 md:gap-8">
+        <ThemeToggle />
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
           <Link
             href="/marketing/pricing"
-            className="text-sm text-white/60 hover:text-white transition-colors"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium"
           >
             Preços
           </Link>
@@ -35,23 +37,24 @@ export function MarketingNav() {
             </button>
           </Link>
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div className="flex items-center gap-3 md:gap-8">
+      <ThemeToggle />
       {/* Desktop */}
       <nav className="hidden md:flex items-center gap-8">
         <Link
           href="/marketing/pricing"
-          className="text-sm text-white/60 hover:text-white transition-colors"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium"
         >
           Preços
         </Link>
         <Link
           href="/auth/login"
-          className="text-sm text-white/60 hover:text-white transition-colors"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium"
         >
           Entrar
         </Link>
@@ -66,7 +69,7 @@ export function MarketingNav() {
       <div className="flex md:hidden items-center gap-3">
         <Link
           href="/auth/login"
-          className="text-sm text-white/60 hover:text-white transition-colors"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium"
         >
           Entrar
         </Link>
@@ -76,6 +79,6 @@ export function MarketingNav() {
           </button>
         </Link>
       </div>
-    </>
+    </div>
   );
 }

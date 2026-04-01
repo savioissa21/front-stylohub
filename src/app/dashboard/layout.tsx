@@ -37,7 +37,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   if (authLoading || (!user && !authLoading)) {
     return (
-      <div className="min-h-screen bg-stylo-dark flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center transition-colors">
         <div className="w-8 h-8 border-2 border-stylo-gold border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -46,7 +46,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const username = profile?.username ?? user?.username ?? "";
 
   return (
-    <div className="min-h-screen bg-stylo-dark flex">
+    <div className="min-h-screen bg-background flex transition-colors duration-300">
       {/* Desktop sidebar */}
       <div className="hidden md:flex h-screen sticky top-0 shrink-0">
         <Sidebar
@@ -58,7 +58,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* Mobile top bar */}
-      <header className="md:hidden fixed top-0 left-0 right-0 z-40 h-14 bg-stylo-surface/95 backdrop-blur-xl border-b border-white/8 flex items-center justify-between px-4">
+      <header className="md:hidden fixed top-0 left-0 right-0 z-40 h-14 bg-card/95 backdrop-blur-xl border-b border-border flex items-center justify-between px-4">
         <span
           className="text-lg font-bold text-gold-gradient"
           style={{ fontFamily: "var(--font-cinzel)" }}
@@ -77,7 +77,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </div>
           <button
             onClick={logout}
-            className="text-white/30 hover:text-red-400 transition-colors p-1"
+            className="text-muted-foreground/60 hover:text-destructive transition-colors p-1"
           >
             <LogOut size={18} />
           </button>
@@ -97,13 +97,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         </main>
 
         {/* Live preview — xl+ only */}
-        <div className="hidden xl:flex flex-col items-center justify-start pt-12 px-8 border-l border-white/5 sticky top-0 h-screen overflow-y-auto shrink-0">
+        <div className="hidden xl:flex flex-col items-center justify-start pt-12 px-8 border-l border-border sticky top-0 h-screen overflow-y-auto shrink-0 transition-colors">
           <LivePreviewMobile />
         </div>
       </div>
 
       {/* Mobile bottom navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-stylo-surface/95 backdrop-blur-xl border-t border-white/8">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-card/95 backdrop-blur-xl border-t border-border transition-colors">
         <div className="flex items-center justify-around h-16 px-1">
           {MOBILE_NAV.map(({ label, icon: Icon, href }) => {
             const isActive = pathname === href || pathname.startsWith(href + "/");
@@ -112,7 +112,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 key={href}
                 href={href}
                 className={`flex flex-col items-center gap-0.5 px-2 py-2 rounded-xl transition-colors ${
-                  isActive ? "text-stylo-gold" : "text-white/35"
+                  isActive ? "text-stylo-gold" : "text-muted-foreground/40"
                 }`}
               >
                 <Icon size={21} strokeWidth={isActive ? 2.2 : 1.8} />
