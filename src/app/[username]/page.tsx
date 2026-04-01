@@ -3,7 +3,6 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 import { fetchProfile } from "@/lib/fetchProfile";
-import { publicApi } from "@/lib/api";
 import type { Widget } from "@/types/widget";
 
 import { ThemeRenderer } from "@/components/public-profile/ThemeRenderer";
