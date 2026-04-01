@@ -42,4 +42,11 @@ describe("fetchProfile", () => {
       expect.objectContaining({ next: { revalidate: 60 } })
     );
   });
+
+  it("returns null when fetch throws a network error", async () => {
+    mockFetch.mockRejectedValueOnce(new Error("Network failure"));
+    const { fetchProfile } = await import("../fetchProfile");
+    const result = await fetchProfile("arthurdev");
+    expect(result).toBeNull();
+  });
 });
