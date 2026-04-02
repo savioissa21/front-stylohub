@@ -22,6 +22,13 @@ export interface Widget {
 }
 
 export interface WidgetConfig {
+  thumbnail?: string;
+  iconName?: string;
+  animation?: "none" | "pulse" | "shake" | "bounce";
+  schedule?: {
+    startDate?: string;
+    endDate?: string;
+  };
   // LINK
   title?: string;
   url?: string;
@@ -64,6 +71,13 @@ export interface WidgetConfig {
 export interface AddWidgetRequest {
   type: WidgetType;
   order: number;
+  thumbnail?: string;
+  iconName?: string;
+  animation?: "none" | "pulse" | "shake" | "bounce";
+  schedule?: {
+    startDate?: string;
+    endDate?: string;
+  };
   title?: string;
   url?: string;
   videoId?: string;

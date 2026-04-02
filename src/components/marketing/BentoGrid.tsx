@@ -80,26 +80,45 @@ export function BentoGrid() {
               key={feature.title}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -5, scale: 1.01 }}
               transition={{ duration: 0.5, delay: i * 0.08, ease: FU_EASE }}
               viewport={{ once: true, margin: "-50px" }}
-              className={`relative bg-card border border-border rounded-2xl p-6 hover:border-stylo-gold/20 transition-all group shadow-sm ${
+              className={`relative bg-card border border-border rounded-3xl p-8 hover:border-stylo-gold/30 hover:shadow-[0_20px_40px_-12px_rgba(212,175,55,0.15)] transition-all duration-300 group overflow-hidden ${
                 feature.span === "2" ? "lg:col-span-2" : ""
               }`}
             >
+              {/* Animated background gradient on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-stylo-gold/0 via-transparent to-stylo-gold/0 group-hover:from-stylo-gold/[0.03] group-hover:to-transparent transition-all duration-500" />
+              
+              {/* Glass Shine Effect */}
+              <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/[0.05] dark:via-white/[0.02] to-transparent" />
+
               {/* PRO badge */}
               {feature.isPro && (
-                <span className="absolute top-4 right-4 text-[10px] font-bold bg-stylo-gold/15 text-stylo-gold border border-stylo-gold/20 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                <span className="absolute top-6 right-6 text-[10px] font-bold bg-stylo-gold/15 text-stylo-gold border border-stylo-gold/20 px-3 py-1 rounded-full uppercase tracking-widest z-10 shadow-sm">
                   PRO
                 </span>
               )}
 
-              {/* Icon */}
-              <div className="w-11 h-11 rounded-xl bg-stylo-gold/10 border border-stylo-gold/15 flex items-center justify-center text-stylo-gold mb-4 group-hover:bg-stylo-gold/15 transition-colors shadow-sm">
-                {feature.icon}
+              <div className="relative z-10">
+                {/* Icon with float animation on hover */}
+                <motion.div 
+                  whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
+                  className="w-14 h-14 rounded-2xl bg-stylo-gold/10 border border-stylo-gold/15 flex items-center justify-center text-stylo-gold mb-6 group-hover:bg-stylo-gold/20 group-hover:border-stylo-gold/30 transition-all duration-300 shadow-sm"
+                >
+                  {feature.icon}
+                </motion.div>
+
+                <h3 className="text-foreground font-bold text-xl mb-3 group-hover:text-gold-gradient transition-colors duration-300">
+                  {feature.title}
+                </h3>
+                <p className="text-muted-foreground/70 text-sm leading-relaxed font-medium max-w-[280px]">
+                  {feature.description}
+                </p>
               </div>
 
-              <h3 className="text-foreground font-bold text-base mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground/70 text-sm leading-relaxed font-medium">{feature.description}</p>
+              {/* Bottom decorative line */}
+              <div className="absolute bottom-0 left-8 right-8 h-[2px] bg-gradient-to-r from-transparent via-stylo-gold/0 to-transparent group-hover:via-stylo-gold/40 transition-all duration-700" />
             </motion.div>
           ))}
         </div>
