@@ -18,13 +18,13 @@ export function ColorPicker({ value, onChange, label }: ColorPickerProps) {
 
   return (
     <div className="space-y-1.5">
-      <Label className="text-white/70 text-sm">{label}</Label>
+      <Label className="text-foreground/70 text-sm">{label}</Label>
       <div className="flex items-center gap-3">
         {/* Color swatch button */}
         <button
           type="button"
           onClick={handleSwatchClick}
-          className="w-10 h-10 rounded-lg border-2 border-white/15 hover:border-white/30 transition-colors shadow-sm relative overflow-hidden"
+          className="w-10 h-10 rounded-lg border-2 border-border hover:border-foreground/30 transition-colors shadow-sm relative overflow-hidden"
           style={{ backgroundColor: value }}
           title={`Selecionar cor — atual: ${value}`}
         >
@@ -40,7 +40,7 @@ export function ColorPicker({ value, onChange, label }: ColorPickerProps) {
 
         {/* Hex value display */}
         <div className="flex items-center gap-1.5">
-          <span className="text-white/30 text-sm font-mono">#</span>
+          <span className="text-muted-foreground/40 text-sm font-mono">#</span>
           <input
             type="text"
             value={value.replace("#", "").toUpperCase()}
@@ -50,7 +50,7 @@ export function ColorPicker({ value, onChange, label }: ColorPickerProps) {
                 onChange(`#${raw}`);
               }
             }}
-            className="w-20 bg-stylo-dark border border-white/10 rounded-md px-2 py-1.5 text-white text-sm font-mono uppercase focus:outline-none focus:ring-1 focus:ring-stylo-gold focus:border-stylo-gold"
+            className="w-20 bg-card border border-border rounded-md px-2 py-1.5 text-foreground text-sm font-mono uppercase focus:outline-none focus:ring-1 focus:ring-stylo-gold focus:border-stylo-gold"
             maxLength={6}
             placeholder="D4AF37"
           />

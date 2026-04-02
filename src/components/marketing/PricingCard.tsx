@@ -46,7 +46,7 @@ export function PricingCard({
       <div className="mb-2">
         <span
           className={`text-[10px] font-bold tracking-widest uppercase ${
-            isPro ? "text-stylo-gold" : "text-muted-foreground/50"
+            isPro ? "text-stylo-gold" : "text-foreground/60"
           }`}
         >
           {plan}
@@ -63,7 +63,7 @@ export function PricingCard({
           <div className="flex items-baseline gap-1">
             <span className="text-muted-foreground/60 text-sm font-bold">R$</span>
             <span className="text-4xl font-bold text-foreground">{displayPrice.toFixed(2).replace(".", ",")}</span>
-            <span className="text-muted-foreground/50 text-sm font-medium">/mês</span>
+            <span className="text-muted-foreground/60 text-sm font-medium">/mês</span>
           </div>
         )}
         {isPro && isYearly && (
@@ -94,7 +94,7 @@ export function PricingCard({
           <li key={feature} className="flex items-start gap-3">
             <Check
               size={15}
-              className={`mt-0.5 shrink-0 ${isPro ? "text-stylo-gold" : "text-muted-foreground/50"}`}
+              className={`mt-0.5 shrink-0 ${isPro ? "text-stylo-gold" : "text-muted-foreground/60"}`}
             />
             <span className="text-muted-foreground text-sm font-medium">{feature}</span>
           </li>

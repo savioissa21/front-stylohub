@@ -511,8 +511,8 @@ export default function LinksPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white">Links</h1>
-          <p className="text-white/40 text-sm mt-0.5">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">Links</h1>
+          <p className="text-muted-foreground text-sm mt-0.5">
             Arraste para reordenar. Clique para editar.
           </p>
         </div>
@@ -527,10 +527,10 @@ export default function LinksPage() {
 
       {/* Widget list */}
       {sortedWidgets.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 text-center border border-dashed border-white/10 rounded-2xl">
-          <Link2 size={40} className="text-white/20 mb-3" strokeWidth={1.5} />
-          <p className="text-white/40 font-medium">Nenhum link ainda</p>
-          <p className="text-white/25 text-sm mt-1">Adicione seu primeiro link acima.</p>
+        <div className="flex flex-col items-center justify-center py-16 text-center border border-dashed border-border rounded-2xl">
+          <Link2 size={40} className="text-muted-foreground/30 mb-3" strokeWidth={1.5} />
+          <p className="text-muted-foreground font-medium">Nenhum link ainda</p>
+          <p className="text-muted-foreground/40 text-sm mt-1">Adicione seu primeiro link acima.</p>
         </div>
       ) : (
         <DndContext
@@ -582,9 +582,9 @@ export default function LinksPage() {
           setAffiliateUrl(""); setAffiliateTitle("");
         }
       }}>
-        <DialogContent className="bg-[#111113] border border-white/10 text-white w-[calc(100vw-2rem)] max-w-md mx-auto p-0 overflow-hidden rounded-2xl">
-          <DialogHeader className="px-5 pt-5 pb-4 border-b border-white/8">
-            <DialogTitle className="text-white font-semibold text-base">Adicionar conteúdo</DialogTitle>
+        <DialogContent className="bg-card border border-border text-foreground w-[calc(100vw-2rem)] max-w-md mx-auto p-0 overflow-hidden rounded-2xl">
+          <DialogHeader className="px-5 pt-5 pb-4 border-b border-border/50">
+            <DialogTitle className="text-foreground font-semibold text-base">Adicionar conteúdo</DialogTitle>
           </DialogHeader>
 
           {/* Type selector grid */}
@@ -616,22 +616,22 @@ export default function LinksPage() {
             {activeType === "link" && (
               <>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Título</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título</Label>
                   <Input
                     value={linkTitle}
                     onChange={(e) => setLinkTitle(e.target.value)}
                     placeholder="Ex: Meu Instagram"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#3B82F6] focus-visible:border-[#3B82F6]/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#3B82F6] focus-visible:border-[#3B82F6]/50 h-10"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">URL</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">URL</Label>
                   <Input
                     value={linkUrl}
                     onChange={(e) => setLinkUrl(e.target.value)}
                     placeholder="https://..."
                     type="url"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#3B82F6] focus-visible:border-[#3B82F6]/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#3B82F6] focus-visible:border-[#3B82F6]/50 h-10"
                   />
                 </div>
                 <Button onClick={handleAddLink} disabled={isAdding} className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-white font-semibold h-10 mt-1">
@@ -643,15 +643,15 @@ export default function LinksPage() {
             {activeType === "youtube" && (
               <>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">ID do vídeo</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">ID do vídeo</Label>
                   <Input
                     value={videoId}
                     onChange={(e) => setVideoId(e.target.value)}
                     placeholder="Ex: dQw4w9WgXcQ"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#EF4444] focus-visible:border-[#EF4444]/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#EF4444] focus-visible:border-[#EF4444]/50 h-10"
                   />
-                  <p className="text-white/35 text-xs">
-                    Cole o ID do final da URL: youtube.com/watch?v=<span className="text-white/55 font-mono">ID</span>
+                  <p className="text-muted-foreground/60 text-xs">
+                    Cole o ID do final da URL: youtube.com/watch?v=<span className="text-foreground/55 font-mono">ID</span>
                   </p>
                 </div>
                 <Button onClick={handleAddVideo} disabled={isAdding} className="w-full bg-[#EF4444] hover:bg-[#DC2626] text-white font-semibold h-10 mt-1">
@@ -663,14 +663,14 @@ export default function LinksPage() {
             {activeType === "spotify" && (
               <>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">URI do Spotify</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">URI do Spotify</Label>
                   <Input
                     value={spotifyUri}
                     onChange={(e) => setSpotifyUri(e.target.value)}
                     placeholder="spotify:track:4iV5W9uYEdYUVa79Axb7Rh"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#22C55E] focus-visible:border-[#22C55E]/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#22C55E] focus-visible:border-[#22C55E]/50 h-10"
                   />
-                  <p className="text-white/35 text-xs">
+                  <p className="text-muted-foreground/60 text-xs">
                     No Spotify: clique em ··· → Compartilhar → Copiar URI.
                   </p>
                 </div>
@@ -683,39 +683,39 @@ export default function LinksPage() {
             {activeType === "whatsapp" && (
               <>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Número (com DDI e DDD)</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Número (com DDI e DDD)</Label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/35 text-sm font-mono">+</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 text-sm font-mono">+</span>
                     <Input
                       value={waPhone}
                       onChange={(e) => setWaPhone(e.target.value)}
                       placeholder="55 11 99999-9999"
                       type="tel"
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#25D366] focus-visible:border-[#25D366]/50 h-10 pl-6"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#25D366] focus-visible:border-[#25D366]/50 h-10 pl-6"
                     />
                   </div>
-                  <p className="text-white/35 text-xs">Ex: 5511999999999 — código do país + DDD + número</p>
+                  <p className="text-muted-foreground/60 text-xs">Ex: 5511999999999 — código do país + DDD + número</p>
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">
-                    Mensagem automática <span className="normal-case text-white/35">(opcional)</span>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">
+                    Mensagem automática <span className="normal-case text-muted-foreground/60">(opcional)</span>
                   </Label>
                   <Input
                     value={waMessage}
                     onChange={(e) => setWaMessage(e.target.value)}
                     placeholder="Olá! Vim pelo seu link..."
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#25D366] focus-visible:border-[#25D366]/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#25D366] focus-visible:border-[#25D366]/50 h-10"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">
-                    Título do botão <span className="normal-case text-white/35">(padrão: WhatsApp)</span>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">
+                    Título do botão <span className="normal-case text-muted-foreground/60">(padrão: WhatsApp)</span>
                   </Label>
                   <Input
                     value={waTitle}
                     onChange={(e) => setWaTitle(e.target.value)}
                     placeholder="WhatsApp"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#25D366] focus-visible:border-[#25D366]/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#25D366] focus-visible:border-[#25D366]/50 h-10"
                   />
                 </div>
                 <Button onClick={handleAddWhatsApp} disabled={isAdding} className="w-full font-semibold h-10 mt-1 text-white" style={{ background: "#25D366" }}>
@@ -727,41 +727,41 @@ export default function LinksPage() {
             {activeType === "form" && (
               <>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Título</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título</Label>
                   <Input
                     value={formTitle}
                     onChange={(e) => setFormTitle(e.target.value)}
                     placeholder="Ex: Receba meu e-book grátis"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Campos <span className="normal-case text-white/35">(separados por vírgula)</span></Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Campos <span className="normal-case text-muted-foreground/60">(separados por vírgula)</span></Label>
                   <Input
                     value={formFields}
                     onChange={(e) => setFormFields(e.target.value)}
                     placeholder="email, nome, telefone"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
                   />
-                  <p className="text-white/35 text-xs">O campo "email" é obrigatório.</p>
+                  <p className="text-muted-foreground/60 text-xs">O campo "email" é obrigatório.</p>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div className="space-y-1.5">
-                    <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Botão</Label>
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Botão</Label>
                     <Input
                       value={formButtonLabel}
                       onChange={(e) => setFormButtonLabel(e.target.value)}
                       placeholder="Enviar"
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Sucesso</Label>
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Sucesso</Label>
                     <Input
                       value={formSuccessMessage}
                       onChange={(e) => setFormSuccessMessage(e.target.value)}
                       placeholder="Obrigado!"
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
                     />
                   </div>
                 </div>
@@ -774,7 +774,7 @@ export default function LinksPage() {
             {activeType === "tiktok" && (
               <>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Link do vídeo</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Link do vídeo</Label>
                   <Input
                     value={tikTokUrl}
                     onChange={(e) => {
@@ -782,7 +782,7 @@ export default function LinksPage() {
                       setTikTokIdDetected(extractTikTokVideoId(e.target.value));
                     }}
                     placeholder="https://www.tiktok.com/@user/video/..."
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#010101] focus-visible:border-[#010101]/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#010101] focus-visible:border-[#010101]/50 h-10"
                   />
                   {tikTokUrl && (
                     <p className={`text-xs ${tikTokIdDetected ? "text-green-400" : "text-red-400"}`}>
@@ -799,7 +799,7 @@ export default function LinksPage() {
             {activeType === "twitch" && (
               <>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Link do canal ou clip</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Link do canal ou clip</Label>
                   <Input
                     value={twitchUrl}
                     onChange={(e) => {
@@ -807,7 +807,7 @@ export default function LinksPage() {
                       setTwitchInfoDetected(extractTwitchInfo(e.target.value));
                     }}
                     placeholder="https://www.twitch.tv/channelname"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 h-10"
                     style={{ "--tw-ring-color": "#9146FF" } as React.CSSProperties}
                   />
                   {twitchUrl && (
@@ -829,7 +829,7 @@ export default function LinksPage() {
             {activeType === "soundcloud" && (
               <>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Link da faixa ou playlist</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Link da faixa ou playlist</Label>
                   <Input
                     value={soundCloudUrl}
                     onChange={(e) => {
@@ -837,7 +837,7 @@ export default function LinksPage() {
                       setSoundCloudDetected(extractSoundCloudUrl(e.target.value));
                     }}
                     placeholder="https://soundcloud.com/artista/faixa"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 h-10"
                   />
                   {soundCloudUrl && (
                     <p className={`text-xs ${soundCloudDetected ? "text-green-400" : "text-red-400"}`}>
@@ -854,7 +854,7 @@ export default function LinksPage() {
             {activeType === "twitter" && (
               <>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Link do tweet</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Link do tweet</Label>
                   <Input
                     value={twitterUrl}
                     onChange={(e) => {
@@ -862,7 +862,7 @@ export default function LinksPage() {
                       setTweetIdDetected(extractTweetId(e.target.value));
                     }}
                     placeholder="https://x.com/user/status/..."
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 h-10"
                   />
                   {twitterUrl && (
                     <p className={`text-xs ${tweetIdDetected ? "text-green-400" : "text-red-400"}`}>
@@ -879,11 +879,11 @@ export default function LinksPage() {
             {activeType === "donation" && (
               <>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Plataforma</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Plataforma</Label>
                   <select
                     value={donationPlatform}
                     onChange={(e) => setDonationPlatform(e.target.value as typeof donationPlatform)}
-                    className="w-full h-10 rounded-md bg-white/5 border border-white/10 text-white text-sm px-3 focus:outline-none focus:ring-1 focus:ring-[#FF5E5B]"
+                    className="w-full h-10 rounded-md bg-muted/50 border border-border text-foreground text-sm px-3 focus:outline-none focus:ring-1 focus:ring-[#FF5E5B]"
                   >
                     <option value="KOFI">Ko-fi</option>
                     <option value="BUYMEACOFFEE">Buy Me a Coffee</option>
@@ -892,22 +892,22 @@ export default function LinksPage() {
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">URL</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">URL</Label>
                   <Input
                     value={donationUrl}
                     onChange={(e) => setDonationUrl(e.target.value)}
                     placeholder="https://ko-fi.com/seuperfil"
                     type="url"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#FF5E5B] focus-visible:border-[#FF5E5B]/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#FF5E5B] focus-visible:border-[#FF5E5B]/50 h-10"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Título (opcional)</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título (opcional)</Label>
                   <Input
                     value={donationTitle}
                     onChange={(e) => setDonationTitle(e.target.value)}
                     placeholder="Me apoie ☕"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#FF5E5B] focus-visible:border-[#FF5E5B]/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#FF5E5B] focus-visible:border-[#FF5E5B]/50 h-10"
                   />
                 </div>
                 <Button onClick={handleAddDonation} disabled={isAdding} className="w-full bg-[#FF5E5B] hover:bg-[#e54d4a] text-white font-semibold h-10 mt-1">
@@ -919,11 +919,11 @@ export default function LinksPage() {
             {activeType === "pix" && (
               <>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Tipo de chave</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Tipo de chave</Label>
                   <select
                     value={pixKeyType}
                     onChange={(e) => setPixKeyType(e.target.value as typeof pixKeyType)}
-                    className="w-full h-10 rounded-md bg-white/5 border border-white/10 text-white text-sm px-3 focus:outline-none focus:ring-1 focus:ring-[#32BCAD]"
+                    className="w-full h-10 rounded-md bg-muted/50 border border-border text-foreground text-sm px-3 focus:outline-none focus:ring-1 focus:ring-[#32BCAD]"
                   >
                     <option value="CPF">CPF</option>
                     <option value="CNPJ">CNPJ</option>
@@ -933,21 +933,21 @@ export default function LinksPage() {
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Chave PIX</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Chave PIX</Label>
                   <Input
                     value={pixKey}
                     onChange={(e) => setPixKey(e.target.value)}
                     placeholder="sua@chave.pix"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#32BCAD] focus-visible:border-[#32BCAD]/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#32BCAD] focus-visible:border-[#32BCAD]/50 h-10"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Título (opcional)</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título (opcional)</Label>
                   <Input
                     value={pixTitle}
                     onChange={(e) => setPixTitle(e.target.value)}
                     placeholder="Me pague um café ☕"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#32BCAD] focus-visible:border-[#32BCAD]/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#32BCAD] focus-visible:border-[#32BCAD]/50 h-10"
                   />
                 </div>
                 <Button onClick={handleAddPix} disabled={isAdding} className="w-full font-semibold h-10 mt-1 text-white" style={{ backgroundColor: "#32BCAD" }}>
@@ -959,24 +959,24 @@ export default function LinksPage() {
             {activeType === "affiliate" && (
               <>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">Título</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título</Label>
                   <Input
                     value={affiliateTitle}
                     onChange={(e) => setAffiliateTitle(e.target.value)}
                     placeholder="Meu produto afiliado"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#8B5CF6] focus-visible:border-[#8B5CF6]/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#8B5CF6] focus-visible:border-[#8B5CF6]/50 h-10"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-white/60 text-xs font-medium uppercase tracking-wide">URL destino</Label>
+                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">URL destino</Label>
                   <Input
                     value={affiliateUrl}
                     onChange={(e) => setAffiliateUrl(e.target.value)}
                     placeholder="https://hotmart.com/produto/xyz"
                     type="url"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-[#8B5CF6] focus-visible:border-[#8B5CF6]/50 h-10"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#8B5CF6] focus-visible:border-[#8B5CF6]/50 h-10"
                   />
-                  <p className="text-white/35 text-xs">
+                  <p className="text-muted-foreground/60 text-xs">
                     A URL real nunca é exposta — visitantes são redirecionados via código curto.
                   </p>
                 </div>

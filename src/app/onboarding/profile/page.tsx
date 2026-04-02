@@ -73,13 +73,13 @@ export default function OnboardingProfilePage() {
   };
 
   return (
-    <div className="bg-stylo-surface border border-white/10 rounded-2xl p-8">
+    <div className="bg-card border border-border rounded-2xl p-8">
       <div className="mb-6">
         <span className="text-xs font-semibold text-stylo-gold tracking-widest uppercase">
           Passo 1 de 3
         </span>
-        <h1 className="text-2xl font-bold text-white mt-1">Configure seu perfil</h1>
-        <p className="text-white/50 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-foreground mt-1">Configure seu perfil</h1>
+        <p className="text-muted-foreground text-sm mt-1">
           Adicione uma foto e conte um pouco sobre você.
         </p>
       </div>
@@ -90,12 +90,12 @@ export default function OnboardingProfilePage() {
           <button
             type="button"
             onClick={handleAvatarClick}
-            className="relative w-24 h-24 rounded-full border-2 border-dashed border-white/20 hover:border-stylo-gold/50 transition-colors flex items-center justify-center overflow-hidden group"
+            className="relative w-24 h-24 rounded-full border-2 border-dashed border-border hover:border-stylo-gold/50 transition-colors flex items-center justify-center overflow-hidden group"
           >
             {avatarUrl ? (
               <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
             ) : (
-              <User size={32} className="text-white/30 group-hover:text-white/50 transition-colors" />
+              <User size={32} className="text-muted-foreground/40 group-hover:text-muted-foreground transition-colors" />
             )}
             {/* Overlay on hover */}
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -106,7 +106,7 @@ export default function OnboardingProfilePage() {
               )}
             </div>
           </button>
-          <p className="text-white/30 text-xs">Clique para fazer upload</p>
+          <p className="text-muted-foreground/40 text-xs">Clique para fazer upload</p>
           <input
             ref={fileInputRef}
             type="file"
@@ -118,14 +118,14 @@ export default function OnboardingProfilePage() {
 
         {/* Display name */}
         <div className="space-y-1.5">
-          <Label htmlFor="displayName" className="text-white/70 text-sm">
+          <Label htmlFor="displayName" className="text-foreground/70 text-sm">
             Nome de exibição
           </Label>
           <Input
             id="displayName"
             type="text"
             placeholder="Seu nome completo ou apelido"
-            className="bg-stylo-dark border-white/10 text-white placeholder:text-white/30 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold"
+            className="bg-card border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold"
             {...register("displayName")}
           />
           {errors.displayName && (
@@ -135,15 +135,15 @@ export default function OnboardingProfilePage() {
 
         {/* Bio */}
         <div className="space-y-1.5">
-          <Label htmlFor="bio" className="text-white/70 text-sm">
+          <Label htmlFor="bio" className="text-foreground/70 text-sm">
             Bio{" "}
-            <span className="text-white/30 font-normal">(opcional)</span>
+            <span className="text-muted-foreground/40 font-normal">(opcional)</span>
           </Label>
           <textarea
             id="bio"
             rows={3}
             placeholder="Uma frase sobre você ou o que você faz..."
-            className="w-full bg-stylo-dark border border-white/10 rounded-md px-3 py-2 text-white text-sm placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-stylo-gold focus:border-stylo-gold resize-none"
+            className="w-full bg-card border border-border rounded-md px-3 py-2 text-foreground text-sm placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-stylo-gold focus:border-stylo-gold resize-none"
             {...register("bio")}
           />
           {errors.bio && (

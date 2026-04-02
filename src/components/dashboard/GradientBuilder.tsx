@@ -80,7 +80,7 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
     <div className="space-y-5">
       {/* Live preview strip */}
       <div
-        className="w-full h-14 rounded-xl border border-white/10 transition-all duration-300"
+        className="w-full h-14 rounded-xl border border-border transition-all duration-300"
         style={{ background: previewCss }}
       />
 
@@ -95,7 +95,7 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
 
         {/* Compass direction selector */}
         <div className="flex flex-col items-center gap-1.5">
-          <span className="text-white/50 text-xs text-center">Direção</span>
+          <span className="text-muted-foreground text-xs text-center">Direção</span>
           <div className="grid grid-cols-3 gap-1">
             {COMPASS.map((cell, i) =>
               cell === null ? (
@@ -104,7 +104,7 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
                   key={i}
                   className="w-8 h-8 rounded-md flex items-center justify-center"
                 >
-                  <div className="w-2 h-2 rounded-full bg-white/20" />
+                  <div className="w-2 h-2 rounded-full bg-muted-foreground/20" />
                 </div>
               ) : (
                 <button
@@ -115,7 +115,7 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
                   className={`w-8 h-8 rounded-md flex items-center justify-center text-sm transition-colors ${
                     state.angle === cell.angle
                       ? "bg-stylo-gold text-black font-bold"
-                      : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white"
+                      : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
                   }`}
                 >
                   {cell.arrow}
@@ -135,7 +135,7 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
 
       {/* Preset gradients */}
       <div className="space-y-2">
-        <span className="text-white/50 text-xs">Gradientes prontos</span>
+        <span className="text-muted-foreground text-xs">Gradientes prontos</span>
         <div className="grid grid-cols-4 gap-2">
           {PRESETS.map((p) => {
             const css = buildGradient(p);
@@ -150,7 +150,7 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
                 title={p.name}
                 onClick={() => update({ color1: p.color1, color2: p.color2, angle: p.angle })}
                 className={`group relative h-10 rounded-lg border-2 transition-all ${
-                  isActive ? "border-stylo-gold scale-105" : "border-transparent hover:border-white/30"
+                  isActive ? "border-stylo-gold scale-105" : "border-transparent hover:border-foreground/30"
                 }`}
                 style={{ background: css }}
               >

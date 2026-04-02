@@ -38,12 +38,12 @@ export function UpgradeModal({ open, onClose, featureName }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="bg-[#0D0D10] border border-stylo-gold/30 text-white w-[calc(100vw-2rem)] max-w-sm mx-auto p-0 overflow-hidden rounded-2xl">
+      <DialogContent className="bg-card border border-stylo-gold/30 text-foreground w-[calc(100vw-2rem)] max-w-sm mx-auto p-0 overflow-hidden rounded-2xl">
         {/* Header gradient */}
         <div className="relative bg-gradient-to-br from-stylo-gold/20 via-stylo-gold/5 to-transparent px-6 pt-6 pb-5">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-white/40 hover:text-white/70 transition-colors"
+            className="absolute top-4 right-4 text-muted-foreground/60 hover:text-foreground/70 transition-colors"
           >
             <X size={18} />
           </button>
@@ -54,13 +54,13 @@ export function UpgradeModal({ open, onClose, featureName }: Props) {
             </div>
             <div>
               <p className="text-xs text-stylo-gold/70 font-medium uppercase tracking-wider">Funcionalidade PRO</p>
-              <h2 className="text-white font-bold text-lg leading-tight">
+              <h2 className="text-foreground font-bold text-lg leading-tight">
                 {featureName ?? "Upgrade para PRO"}
               </h2>
             </div>
           </div>
 
-          <p className="text-white/50 text-sm">
+          <p className="text-muted-foreground text-sm">
             Desbloqueia o teu potencial criativo e cresce mais rápido.
           </p>
         </div>
@@ -70,7 +70,7 @@ export function UpgradeModal({ open, onClose, featureName }: Props) {
           {PRO_PERKS.map((perk, i) => (
             <div key={i} className="flex items-center gap-3">
               <div className="text-stylo-gold/70 shrink-0">{perk.icon}</div>
-              <span className="text-white/70 text-sm">{perk.text}</span>
+              <span className="text-foreground/70 text-sm">{perk.text}</span>
             </div>
           ))}
         </div>
@@ -86,7 +86,7 @@ export function UpgradeModal({ open, onClose, featureName }: Props) {
           </button>
           <button
             onClick={onClose}
-            className="w-full text-white/30 text-xs hover:text-white/50 transition-colors py-1"
+            className="w-full text-muted-foreground/40 text-xs hover:text-muted-foreground transition-colors py-1"
           >
             Continuar no plano grátis
           </button>

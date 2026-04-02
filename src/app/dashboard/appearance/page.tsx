@@ -68,18 +68,18 @@ const SHADOW_OPTIONS: { value: ShadowStyle; label: string; desc: string }[] = [
 function ProLock({ title, onUpgrade }: { title: string; onUpgrade: (f: string) => void }) {
   return (
     <section
-      className="bg-stylo-surface border border-white/10 rounded-2xl p-6 relative overflow-hidden cursor-pointer group"
+      className="bg-card border border-border rounded-2xl p-6 relative overflow-hidden cursor-pointer group"
       onClick={() => onUpgrade(title)}
     >
-      <div className="absolute inset-0 bg-stylo-dark/70 backdrop-blur-[2px] flex flex-col items-center justify-center z-10 rounded-2xl gap-2 group-hover:bg-stylo-dark/60 transition-colors">
+      <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px] flex flex-col items-center justify-center z-10 rounded-2xl gap-2 group-hover:bg-background/60 transition-colors">
         <div className="w-9 h-9 rounded-xl bg-stylo-gold/15 border border-stylo-gold/30 flex items-center justify-center mb-1">
           <Crown size={18} className="text-stylo-gold" />
         </div>
         <p className="font-semibold text-sm text-stylo-gold">{title}</p>
         <p className="text-stylo-gold/60 text-xs">Clique para desbloquear no PRO</p>
       </div>
-      <h2 className="text-white font-semibold mb-4 opacity-20">{title}</h2>
-      <div className="h-20 bg-white/5 rounded-lg opacity-20" />
+      <h2 className="text-foreground font-semibold mb-4 opacity-20">{title}</h2>
+      <div className="h-20 bg-muted/50 rounded-lg opacity-20" />
     </section>
   );
 }
@@ -157,15 +157,15 @@ export default function AppearancePage() {
     <div className="p-4 sm:p-6 max-w-2xl space-y-6 sm:space-y-8">
       <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} featureName={upgradeFeature} />
       <div>
-        <h1 className="text-2xl font-bold text-white">Aparência</h1>
-        <p className="text-white/40 text-sm mt-0.5">Personalize o visual da sua página.</p>
+        <h1 className="text-2xl font-bold text-foreground">Aparência</h1>
+        <p className="text-muted-foreground text-sm mt-0.5">Personalize o visual da sua página.</p>
       </div>
 
       {/* Quick Palettes */}
-      <section className="bg-stylo-surface border border-white/10 rounded-2xl p-6 space-y-4">
+      <section className="bg-card border border-border rounded-2xl p-6 space-y-4">
         <div>
-          <h2 className="text-white font-semibold">Paletas rápidas</h2>
-          <p className="text-white/40 text-xs mt-0.5">Clique para aplicar um tema completo de uma vez.</p>
+          <h2 className="text-foreground font-semibold">Paletas rápidas</h2>
+          <p className="text-muted-foreground text-xs mt-0.5">Clique para aplicar um tema completo de uma vez.</p>
         </div>
         <div className="grid grid-cols-4 gap-2">
           {QUICK_PALETTES.map((p) => (
@@ -178,14 +178,14 @@ export default function AppearancePage() {
             >
               {/* Swatch */}
               <div
-                className="relative w-full h-12 rounded-xl border-2 border-white/10 group-hover:border-stylo-gold/50 transition-all group-hover:scale-105"
+                className="relative w-full h-12 rounded-xl border-2 border-border group-hover:border-stylo-gold/50 transition-all group-hover:scale-105"
                 style={{ background: p.preview }}
               >
                 {/* Mini button preview dot */}
                 <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-6 h-2 rounded-full opacity-90"
                   style={{ backgroundColor: p.primary }} />
               </div>
-              <span className="text-white/40 text-[10px] text-center group-hover:text-white/70 transition-colors leading-tight">
+              <span className="text-muted-foreground/60 text-[10px] text-center group-hover:text-foreground/70 transition-colors leading-tight">
                 {p.name}
               </span>
             </button>
@@ -194,12 +194,12 @@ export default function AppearancePage() {
       </section>
 
       {/* Tema base */}
-      <section className="bg-stylo-surface border border-white/10 rounded-2xl p-6 space-y-6">
-        <h2 className="text-white font-semibold">Tema</h2>
+      <section className="bg-card border border-border rounded-2xl p-6 space-y-6">
+        <h2 className="text-foreground font-semibold">Tema</h2>
 
         {/* Background type */}
         <div className="space-y-2">
-          <Label className="text-white/70 text-sm">Tipo de fundo</Label>
+          <Label className="text-foreground/70 text-sm">Tipo de fundo</Label>
           <div className="flex gap-2 flex-wrap">
             {BG_TYPE_OPTIONS.map((opt) => (
               <button
@@ -208,7 +208,7 @@ export default function AppearancePage() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
                   bgType === opt.value
                     ? "border-stylo-gold bg-stylo-gold/10 text-stylo-gold"
-                    : "border-white/10 text-white/50 hover:text-white hover:border-white/25"
+                    : "border-border text-muted-foreground hover:text-foreground hover:border-border"
                 }`}
               >
                 {opt.label}
@@ -232,13 +232,13 @@ export default function AppearancePage() {
         )}
         {bgType === "IMAGE" && (
           <div className="space-y-1.5">
-            <Label className="text-white/70 text-sm">URL da imagem de fundo</Label>
+            <Label className="text-foreground/70 text-sm">URL da imagem de fundo</Label>
             <input
               type="url"
               value={bgValue}
               onChange={(e) => { setBgValue(e.target.value); updateThemePreview({ bgValue: e.target.value }); }}
               placeholder="https://..."
-              className="w-full bg-stylo-dark border border-white/10 rounded-md px-3 py-2 text-white text-sm placeholder:text-white/25 focus:outline-none focus:ring-1 focus:ring-stylo-gold"
+              className="w-full bg-background border border-border rounded-md px-3 py-2 text-foreground text-sm placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-stylo-gold"
             />
           </div>
         )}
@@ -251,7 +251,7 @@ export default function AppearancePage() {
 
         {/* Button style */}
         <div className="space-y-2">
-          <Label className="text-white/70 text-sm">Estilo dos botões</Label>
+          <Label className="text-foreground/70 text-sm">Estilo dos botões</Label>
           <div className="flex flex-wrap gap-3">
             {BUTTON_STYLE_OPTIONS.map((opt) => {
               const isSelected = buttonStyle === opt.value;
@@ -269,8 +269,8 @@ export default function AppearancePage() {
                     isSelected
                       ? "border-stylo-gold bg-stylo-gold/10"
                       : isLocked
-                      ? "border-white/5 opacity-50 cursor-not-allowed"
-                      : "border-white/10 hover:border-white/25"
+                      ? "border-border/50 opacity-50 cursor-not-allowed"
+                      : "border-border hover:border-border"
                   }`}
                 >
                   {isLocked && <Lock size={10} className="absolute top-1.5 right-1.5 text-stylo-gold opacity-70" />}
@@ -286,7 +286,7 @@ export default function AppearancePage() {
                         : undefined
                     }
                   />
-                  <span className={`text-xs ${isSelected ? "text-stylo-gold" : "text-white/50"}`}>
+                  <span className={`text-xs ${isSelected ? "text-stylo-gold" : "text-muted-foreground"}`}>
                     {opt.label}
                   </span>
                 </button>
@@ -298,12 +298,12 @@ export default function AppearancePage() {
 
       {/* PRO: Cor de borda / destaque */}
       {isPro ? (
-        <section className="bg-stylo-surface border border-white/10 rounded-2xl p-6 space-y-5">
+        <section className="bg-card border border-border rounded-2xl p-6 space-y-5">
           <div className="flex items-center gap-2">
             <Crown size={16} className="text-stylo-gold" />
-            <h2 className="text-white font-semibold">Cor de borda / destaque</h2>
+            <h2 className="text-foreground font-semibold">Cor de borda / destaque</h2>
           </div>
-          <p className="text-white/40 text-xs -mt-2">
+          <p className="text-muted-foreground text-xs -mt-2">
             Usada no estilo Contorno, sombra Dura e borda do avatar.
           </p>
           <ColorPicker label="Cor de borda" value={borderColor} onChange={onColor(setBorderColor, "borderColor")} />
@@ -314,10 +314,10 @@ export default function AppearancePage() {
 
       {/* PRO: Efeito de sombra */}
       {isPro ? (
-        <section className="bg-stylo-surface border border-white/10 rounded-2xl p-6 space-y-5">
+        <section className="bg-card border border-border rounded-2xl p-6 space-y-5">
           <div className="flex items-center gap-2">
             <Crown size={16} className="text-stylo-gold" />
-            <h2 className="text-white font-semibold">Efeito nos botões</h2>
+            <h2 className="text-foreground font-semibold">Efeito nos botões</h2>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {SHADOW_OPTIONS.map((opt) => {
@@ -335,7 +335,7 @@ export default function AppearancePage() {
                   className={`flex flex-col items-center gap-3 p-4 border rounded-xl transition-colors ${
                     isSelected
                       ? "border-stylo-gold bg-stylo-gold/10"
-                      : "border-white/10 hover:border-white/25"
+                      : "border-border hover:border-border"
                   }`}
                 >
                   <div
@@ -343,10 +343,10 @@ export default function AppearancePage() {
                     style={{ backgroundColor: primaryColor, boxShadow: previewShadow }}
                   />
                   <div className="text-center">
-                    <p className={`text-xs font-medium ${isSelected ? "text-stylo-gold" : "text-white/70"}`}>
+                    <p className={`text-xs font-medium ${isSelected ? "text-stylo-gold" : "text-foreground/70"}`}>
                       {opt.label}
                     </p>
-                    <p className="text-white/30 text-[10px] mt-0.5">{opt.desc}</p>
+                    <p className="text-muted-foreground/40 text-[10px] mt-0.5">{opt.desc}</p>
                   </div>
                 </button>
               );

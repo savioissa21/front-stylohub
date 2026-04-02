@@ -40,34 +40,34 @@ export default function BillingPage() {
   return (
     <div className="p-4 sm:p-6 max-w-2xl space-y-5 sm:space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Assinatura</h1>
-        <p className="text-white/40 text-sm mt-0.5">Gerencie seu plano Stylohub.</p>
+        <h1 className="text-2xl font-bold text-foreground">Assinatura</h1>
+        <p className="text-muted-foreground/60 text-sm mt-0.5">Gerencie seu plano Stylohub.</p>
       </div>
 
       {/* Current plan card */}
       <div
-        className={`bg-stylo-surface rounded-2xl p-6 border ${
+        className={`bg-card rounded-2xl p-6 border ${
           isPro
             ? "border-stylo-gold shadow-[0_0_30px_rgba(212,175,55,0.10)]"
-            : "border-white/10"
+            : "border-border"
         }`}
       >
         <div className="flex items-center gap-3 mb-4">
           <div
             className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-              isPro ? "bg-stylo-gold/20" : "bg-white/8"
+              isPro ? "bg-stylo-gold/20" : "bg-muted/50"
             }`}
           >
-            <Crown size={20} className={isPro ? "text-stylo-gold" : "text-white/40"} />
+            <Crown size={20} className={isPro ? "text-stylo-gold" : "text-muted-foreground/60"} />
           </div>
           <div>
-            <p className="text-white font-semibold">
+            <p className="text-foreground font-semibold">
               Plano{" "}
-              <span className={isPro ? "text-stylo-gold" : "text-white/60"}>
+              <span className={isPro ? "text-stylo-gold" : "text-foreground/60"}>
                 {isPro ? "PRO" : "Gratuito"}
               </span>
             </p>
-            <p className="text-white/40 text-sm">
+            <p className="text-muted-foreground/60 text-sm">
               {isPro ? "Acesso completo a todos os recursos" : "Recursos básicos incluídos"}
             </p>
           </div>
@@ -81,7 +81,7 @@ export default function BillingPage() {
 
       {/* PRO upgrade card (shown when FREE) */}
       {!isPro && (
-        <div className="bg-stylo-surface border-2 border-stylo-gold/40 rounded-2xl p-8 relative overflow-hidden">
+        <div className="bg-card border-2 border-stylo-gold/40 rounded-2xl p-8 relative overflow-hidden">
           {/* Glow */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-stylo-gold opacity-5 blur-3xl rounded-full" />
 
@@ -95,18 +95,18 @@ export default function BillingPage() {
                 Upgrade para PRO
               </span>
             </div>
-            <p className="text-white/50 text-sm mb-6">
+            <p className="text-muted-foreground text-sm mb-6">
               Desbloqueie analytics, leads, embeds e muito mais.
             </p>
 
             {/* Pricing */}
             <div className="mb-6">
               <div className="flex items-baseline gap-1">
-                <span className="text-white/40 text-sm">R$</span>
-                <span className="text-4xl font-bold text-white">29,90</span>
-                <span className="text-white/40">/mês</span>
+                <span className="text-muted-foreground/60 text-sm">R$</span>
+                <span className="text-4xl font-bold text-foreground">29,90</span>
+                <span className="text-muted-foreground/60">/mês</span>
               </div>
-              <p className="text-white/30 text-xs mt-1">
+              <p className="text-muted-foreground/20 text-xs mt-1">
                 ou R$ 23,90/mês no plano anual (economize 20%)
               </p>
             </div>
@@ -116,7 +116,7 @@ export default function BillingPage() {
               {PRO_FEATURES.map((f) => (
                 <li key={f} className="flex items-center gap-2.5">
                   <Check size={14} className="text-stylo-gold shrink-0" />
-                  <span className="text-white/70 text-sm">{f}</span>
+                  <span className="text-foreground/70 text-sm">{f}</span>
                 </li>
               ))}
             </ul>
@@ -139,19 +139,19 @@ export default function BillingPage() {
 
       {/* PRO active state */}
       {isPro && (
-        <div className="bg-stylo-surface border border-white/10 rounded-2xl p-6">
-          <h2 className="text-white font-semibold mb-4">Recursos ativos</h2>
+        <div className="bg-card border border-border rounded-2xl p-6">
+          <h2 className="text-foreground font-semibold mb-4">Recursos ativos</h2>
           <ul className="space-y-2">
             {PRO_FEATURES.map((f) => (
               <li key={f} className="flex items-center gap-2.5">
                 <Check size={14} className="text-stylo-gold shrink-0" />
-                <span className="text-white/70 text-sm">{f}</span>
+                <span className="text-foreground/70 text-sm">{f}</span>
               </li>
             ))}
           </ul>
 
-          <div className="mt-6 pt-5 border-t border-white/8">
-            <p className="text-white/30 text-sm">
+          <div className="mt-6 pt-5 border-t border-border/50">
+            <p className="text-muted-foreground/20 text-sm">
               Para cancelar sua assinatura, entre em contato:{" "}
               <a href="mailto:suporte@stylohub.io" className="text-stylo-gold hover:underline">
                 suporte@stylohub.io

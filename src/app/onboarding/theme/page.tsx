@@ -104,13 +104,13 @@ export default function OnboardingThemePage() {
   };
 
   return (
-    <div className="bg-stylo-surface border border-white/10 rounded-2xl p-8">
+    <div className="bg-card border border-border rounded-2xl p-8">
       <div className="mb-6">
         <span className="text-xs font-semibold text-stylo-gold tracking-widest uppercase">
           Passo 2 de 3
         </span>
-        <h1 className="text-2xl font-bold text-white mt-1">Escolha seu tema</h1>
-        <p className="text-white/50 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-foreground mt-1">Escolha seu tema</h1>
+        <p className="text-muted-foreground text-sm mt-1">
           Você poderá personalizar completamente depois.
         </p>
       </div>
@@ -125,7 +125,7 @@ export default function OnboardingThemePage() {
               className={`relative p-4 rounded-xl border-2 text-left transition-all ${
                 isSelected
                   ? "border-stylo-gold shadow-[0_0_20px_rgba(212,175,55,0.15)]"
-                  : "border-white/10 hover:border-white/25"
+                  : "border-border hover:border-muted-foreground/20"
               }`}
             >
               {/* Theme preview swatch */}
@@ -146,8 +146,8 @@ export default function OnboardingThemePage() {
                 ))}
               </div>
 
-              <p className="text-white font-semibold text-sm">{preset.name}</p>
-              <p className="text-white/40 text-xs">{preset.description}</p>
+              <p className="text-foreground font-semibold text-sm">{preset.name}</p>
+              <p className="text-muted-foreground/60 text-xs">{preset.description}</p>
 
               {/* Checkmark */}
               {isSelected && (

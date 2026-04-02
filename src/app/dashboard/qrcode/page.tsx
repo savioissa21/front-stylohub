@@ -42,15 +42,15 @@ export default function QrCodePage() {
   return (
     <div className="p-4 sm:p-6 max-w-2xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">QR Code</h1>
-        <p className="text-white/40 text-sm mt-0.5">
+        <h1 className="text-2xl font-bold text-foreground">QR Code</h1>
+        <p className="text-muted-foreground text-sm mt-0.5">
           Compartilha o teu link via QR Code — em cartões, stories ou eventos.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         {/* Preview card */}
-        <div className="bg-stylo-surface border border-white/10 rounded-2xl p-6 flex flex-col items-center gap-5">
+        <div className="bg-card border border-border rounded-2xl p-6 flex flex-col items-center gap-5">
           {/* QR Code display (SVG for crisp rendering) */}
           <div
             className="rounded-2xl overflow-hidden p-4 shadow-xl"
@@ -73,12 +73,12 @@ export default function QrCodePage() {
 
           {/* URL display */}
           <div className="flex items-center gap-2 w-full">
-            <div className="flex-1 min-w-0 bg-stylo-dark border border-white/10 rounded-lg px-3 py-2">
-              <p className="text-white/60 text-xs truncate font-mono">{profileUrl}</p>
+            <div className="flex-1 min-w-0 bg-background border border-border rounded-lg px-3 py-2">
+              <p className="text-foreground/60 text-xs truncate font-mono">{profileUrl}</p>
             </div>
             <button
               onClick={handleCopyLink}
-              className="shrink-0 w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:border-white/25 transition-colors"
+              className="shrink-0 w-9 h-9 rounded-lg bg-muted/50 border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors"
               title="Copiar link"
             >
               {copied ? <Check size={15} className="text-green-400" /> : <Copy size={15} />}
@@ -114,17 +114,17 @@ export default function QrCodePage() {
         {/* Settings */}
         <div className="space-y-5">
           {/* Colors */}
-          <div className="bg-stylo-surface border border-white/10 rounded-2xl p-5 space-y-4">
-            <h2 className="text-white font-semibold text-sm">Cores</h2>
+          <div className="bg-card border border-border rounded-2xl p-5 space-y-4">
+            <h2 className="text-foreground font-semibold text-sm">Cores</h2>
             <ColorPicker label="Cor do QR Code" value={fgColor} onChange={setFgColor} />
             <ColorPicker label="Cor do fundo" value={bgColor} onChange={setBgColor} />
           </div>
 
           {/* Size */}
-          <div className="bg-stylo-surface border border-white/10 rounded-2xl p-5 space-y-3">
+          <div className="bg-card border border-border rounded-2xl p-5 space-y-3">
             <div className="flex items-center justify-between">
-              <h2 className="text-white font-semibold text-sm">Tamanho</h2>
-              <span className="text-white/40 text-xs font-mono">{size}px</span>
+              <h2 className="text-foreground font-semibold text-sm">Tamanho</h2>
+              <span className="text-muted-foreground text-xs font-mono">{size}px</span>
             </div>
             <input
               type="range"
@@ -135,7 +135,7 @@ export default function QrCodePage() {
               onChange={(e) => setSize(Number(e.target.value))}
               className="w-full accent-stylo-gold cursor-pointer"
             />
-            <div className="flex justify-between text-white/25 text-xs">
+            <div className="flex justify-between text-muted-foreground/40 text-xs">
               <span>Pequeno</span>
               <span>Grande</span>
             </div>
@@ -144,7 +144,7 @@ export default function QrCodePage() {
           {/* Tips */}
           <div className="bg-stylo-gold/5 border border-stylo-gold/15 rounded-2xl p-4 space-y-2">
             <p className="text-stylo-gold text-xs font-semibold">Dicas de uso</p>
-            <ul className="text-white/40 text-xs space-y-1.5">
+            <ul className="text-muted-foreground text-xs space-y-1.5">
               <li>• Usa fundo branco para máxima compatibilidade</li>
               <li>• O nível de correção H aguenta até 30% de dano</li>
               <li>• Imprime em pelo menos 3×3 cm para leitura fácil</li>
