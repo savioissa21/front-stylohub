@@ -64,16 +64,16 @@ function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090B] flex">
+    <div className="min-h-screen bg-background flex">
 
       {/* ── Left panel (branding) ─────────────────────────── */}
-      <div className="hidden lg:flex lg:w-[52%] relative flex-col justify-between p-12 overflow-hidden">
+      <div className="hidden lg:flex lg:w-[52%] relative flex-col justify-between p-12 overflow-hidden border-r border-border/50">
         {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0D0D0F] via-[#111113] to-[#0A0A0C]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/20 to-background dark:from-[#0D0D0F] dark:via-[#111113] dark:to-[#0A0A0C]" />
         <div className="absolute inset-0"
           style={{ backgroundImage: "radial-gradient(circle at 30% 50%, #D4AF3712 0%, transparent 60%), radial-gradient(circle at 80% 20%, #D4AF3708 0%, transparent 50%)" }}
         />
-        <div className="absolute inset-0 opacity-[0.03]"
+        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.03]"
           style={{ backgroundImage: "linear-gradient(#D4AF37 1px, transparent 1px), linear-gradient(90deg, #D4AF37 1px, transparent 1px)", backgroundSize: "48px 48px" }}
         />
 
@@ -86,12 +86,12 @@ function RegisterForm() {
         <div className="relative z-10 space-y-8">
           <div>
             <p className="text-stylo-gold text-xs font-semibold uppercase tracking-widest mb-3">Grátis para sempre</p>
-            <h2 className="text-4xl font-bold text-white leading-tight">
+            <h2 className="text-4xl font-bold text-foreground leading-tight">
               Cria a tua página
               <br />
               <span className="text-gold-gradient">em 2 minutos.</span>
             </h2>
-            <p className="mt-4 text-white/50 text-base leading-relaxed max-w-xs">
+            <p className="mt-4 text-muted-foreground text-base leading-relaxed max-w-xs">
               Sem cartão de crédito. Sem complicações. Começa grátis e faz upgrade quando quiseres.
             </p>
           </div>
@@ -102,26 +102,26 @@ function RegisterForm() {
                 <div className="w-5 h-5 rounded-full bg-stylo-gold/20 border border-stylo-gold/30 flex items-center justify-center shrink-0 mt-0.5">
                   <Check size={10} className="text-stylo-gold" />
                 </div>
-                <span className="text-white/60 text-sm leading-snug">{perk}</span>
+                <span className="text-muted-foreground text-sm leading-snug">{perk}</span>
               </div>
             ))}
           </div>
 
           {/* URL preview */}
-          <div className="bg-white/5 border border-white/8 rounded-2xl p-5 max-w-[280px]">
-            <p className="text-white/30 text-xs mb-2 uppercase tracking-widest">O teu link vai ser</p>
-            <div className="flex items-center gap-2 bg-white/5 rounded-xl px-3 py-2.5 border border-white/8">
-              <span className="text-white/40 text-sm">stylohub.io/</span>
+          <div className="bg-card border border-border rounded-2xl p-5 max-w-[280px] shadow-sm">
+            <p className="text-muted-foreground/60 text-xs mb-2 uppercase tracking-widest">O teu link vai ser</p>
+            <div className="flex items-center gap-2 bg-muted/50 rounded-xl px-3 py-2.5 border border-border">
+              <span className="text-muted-foreground/70 text-sm">stylohub.io/</span>
               <span className="text-stylo-gold font-semibold text-sm">
                 {usernameValue || "seunome"}
               </span>
             </div>
-            <p className="text-white/25 text-xs mt-2">Atualiza em tempo real enquanto escreves</p>
+            <p className="text-muted-foreground/40 text-xs mt-2">Atualiza em tempo real enquanto escreves</p>
           </div>
         </div>
 
         <div className="relative z-10">
-          <p className="text-white/20 text-xs">© 2025 Stylohub. Todos os direitos reservados.</p>
+          <p className="text-muted-foreground/40 text-xs">© 2025 Stylohub. Todos os direitos reservados.</p>
         </div>
       </div>
 
@@ -140,8 +140,8 @@ function RegisterForm() {
           </div>
 
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-white">Criar conta grátis</h1>
-            <p className="text-white/45 text-sm mt-1.5">
+            <h1 className="text-2xl font-bold text-foreground">Criar conta grátis</h1>
+            <p className="text-muted-foreground text-sm mt-1.5">
               Já tem conta?{" "}
               <Link href="/auth/login" className="text-stylo-gold hover:text-stylo-gold/80 font-medium transition-colors">
                 Entrar
@@ -152,7 +152,7 @@ function RegisterForm() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Username */}
             <div className="space-y-1.5">
-              <Label htmlFor="username" className="text-white/60 text-xs font-medium uppercase tracking-wide">
+              <Label htmlFor="username" className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
                 Nome de usuário
               </Label>
               <div className="relative">
@@ -164,14 +164,14 @@ function RegisterForm() {
                   type="text"
                   autoComplete="username"
                   placeholder="seunome"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/60 h-11 rounded-xl pl-9"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/60 h-11 rounded-xl pl-9"
                   {...register("username")}
                 />
               </div>
               {errors.username ? (
-                <p className="text-red-400 text-xs">{errors.username.message}</p>
+                <p className="text-red-500 text-xs">{errors.username.message}</p>
               ) : (
-                <p className="text-white/30 text-xs">
+                <p className="text-muted-foreground/50 text-xs">
                   stylohub.io/
                   <span className="text-stylo-gold/60 font-medium">{usernameValue || "seunome"}</span>
                 </p>
@@ -180,7 +180,7 @@ function RegisterForm() {
 
             {/* Email */}
             <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-white/60 text-xs font-medium uppercase tracking-wide">
+              <Label htmlFor="email" className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
                 E-mail
               </Label>
               <Input
@@ -188,17 +188,17 @@ function RegisterForm() {
                 type="email"
                 autoComplete="email"
                 placeholder="seu@email.com"
-                className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/60 h-11 rounded-xl"
+                className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/60 h-11 rounded-xl"
                 {...register("email")}
               />
               {errors.email && (
-                <p className="text-red-400 text-xs">{errors.email.message}</p>
+                <p className="text-red-500 text-xs">{errors.email.message}</p>
               )}
             </div>
 
             {/* Password */}
             <div className="space-y-1.5">
-              <Label htmlFor="password" className="text-white/60 text-xs font-medium uppercase tracking-wide">
+              <Label htmlFor="password" className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
                 Senha
               </Label>
               <div className="relative">
@@ -207,20 +207,20 @@ function RegisterForm() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
                   placeholder="Mínimo 8 caracteres"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/60 h-11 rounded-xl pr-11"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/60 h-11 rounded-xl pr-11"
                   {...register("password")}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-foreground transition-colors"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
               {errors.password && (
-                <p className="text-red-400 text-xs">{errors.password.message}</p>
+                <p className="text-red-500 text-xs">{errors.password.message}</p>
               )}
             </div>
 
@@ -237,9 +237,9 @@ function RegisterForm() {
             </Button>
           </form>
 
-          <p className="text-center text-white/25 text-xs mt-8">
+          <p className="text-center text-muted-foreground/50 text-xs mt-8">
             Ao criar uma conta, você concorda com nossos{" "}
-            <Link href="/marketing/terms" className="hover:text-white/50 underline transition-colors">
+            <Link href="/marketing/terms" className="hover:text-muted-foreground underline transition-colors">
               Termos de Uso
             </Link>
           </p>

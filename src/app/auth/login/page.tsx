@@ -53,17 +53,17 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090B] flex">
+    <div className="min-h-screen bg-background flex">
 
       {/* ── Left panel (branding) ─────────────────────────── */}
-      <div className="hidden lg:flex lg:w-[52%] relative flex-col justify-between p-12 overflow-hidden">
+      <div className="hidden lg:flex lg:w-[52%] relative flex-col justify-between p-12 overflow-hidden border-r border-border/50">
         {/* Background layers */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0D0D0F] via-[#111113] to-[#0A0A0C]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/20 to-background dark:from-[#0D0D0F] dark:via-[#111113] dark:to-[#0A0A0C]" />
         <div className="absolute inset-0"
           style={{ backgroundImage: "radial-gradient(circle at 30% 50%, #D4AF3712 0%, transparent 60%), radial-gradient(circle at 80% 20%, #D4AF3708 0%, transparent 50%)" }}
         />
         {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-[0.03]"
+        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.03]"
           style={{ backgroundImage: "linear-gradient(#D4AF37 1px, transparent 1px), linear-gradient(90deg, #D4AF37 1px, transparent 1px)", backgroundSize: "48px 48px" }}
         />
 
@@ -76,12 +76,12 @@ export default function LoginPage() {
 
         <div className="relative z-10 space-y-8">
           <div>
-            <h2 className="text-4xl font-bold text-white leading-tight">
+            <h2 className="text-4xl font-bold text-foreground leading-tight">
               O seu link.
               <br />
               <span className="text-gold-gradient">A sua identidade.</span>
             </h2>
-            <p className="mt-4 text-white/50 text-base leading-relaxed max-w-xs">
+            <p className="mt-4 text-muted-foreground text-base leading-relaxed max-w-xs">
               Crie uma página única com todos os seus links e partilhe com o mundo.
             </p>
           </div>
@@ -92,39 +92,39 @@ export default function LoginPage() {
                 <div className="w-8 h-8 rounded-lg bg-stylo-gold/10 border border-stylo-gold/20 flex items-center justify-center shrink-0">
                   <Icon size={14} className="text-stylo-gold" />
                 </div>
-                <span className="text-white/60 text-sm">{text}</span>
+                <span className="text-muted-foreground text-sm">{text}</span>
               </div>
             ))}
           </div>
 
           {/* Mock profile card */}
-          <div className="bg-white/5 border border-white/8 rounded-2xl p-4 max-w-[260px] backdrop-blur-sm">
+          <div className="bg-card border border-border rounded-2xl p-4 max-w-[260px] backdrop-blur-sm shadow-sm">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-9 h-9 rounded-full bg-stylo-gold/20 border border-stylo-gold/30 flex items-center justify-center">
                 <span className="text-stylo-gold text-xs font-bold">A</span>
               </div>
               <div>
-                <p className="text-white text-xs font-semibold">@arthurcriador</p>
-                <p className="text-white/35 text-[10px]">stylohub.io/arthurcriador</p>
+                <p className="text-foreground text-xs font-semibold">@arthurcriador</p>
+                <p className="text-muted-foreground/60 text-[10px]">stylohub.io/arthurcriador</p>
               </div>
             </div>
             <div className="space-y-1.5">
               {["Instagram", "YouTube", "Newsletter"].map((label, i) => (
                 <div key={label} className="h-7 rounded-lg flex items-center px-3"
-                  style={{ background: i === 0 ? "#D4AF3720" : "#ffffff08", border: `1px solid ${i === 0 ? "#D4AF3740" : "#ffffff10"}` }}>
-                  <span className="text-[10px] font-medium" style={{ color: i === 0 ? "#D4AF37" : "#ffffff60" }}>{label}</span>
+                  style={{ background: i === 0 ? "#D4AF3720" : "var(--muted)", border: `1px solid ${i === 0 ? "#D4AF3740" : "var(--border)"}` }}>
+                  <span className="text-[10px] font-medium" style={{ color: i === 0 ? "#D4AF37" : "var(--muted-foreground)" }}>{label}</span>
                 </div>
               ))}
             </div>
             <div className="mt-3 flex items-center gap-1.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-[10px] text-white/35">247 cliques hoje</span>
+              <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-[10px] text-muted-foreground/50">247 cliques hoje</span>
             </div>
           </div>
         </div>
 
         <div className="relative z-10">
-          <p className="text-white/20 text-xs">© 2025 Stylohub. Todos os direitos reservados.</p>
+          <p className="text-muted-foreground/40 text-xs">© 2025 Stylohub. Todos os direitos reservados.</p>
         </div>
       </div>
 
@@ -144,8 +144,8 @@ export default function LoginPage() {
           </div>
 
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-white">Bem-vindo de volta</h1>
-            <p className="text-white/45 text-sm mt-1.5">
+            <h1 className="text-2xl font-bold text-foreground">Bem-vindo de volta</h1>
+            <p className="text-muted-foreground text-sm mt-1.5">
               Não tem conta?{" "}
               <Link href="/auth/register" className="text-stylo-gold hover:text-stylo-gold/80 font-medium transition-colors">
                 Criar gratuitamente
@@ -156,7 +156,7 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Email */}
             <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-white/60 text-xs font-medium uppercase tracking-wide">
+              <Label htmlFor="email" className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
                 E-mail
               </Label>
               <Input
@@ -164,18 +164,18 @@ export default function LoginPage() {
                 type="email"
                 autoComplete="email"
                 placeholder="seu@email.com"
-                className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/60 h-11 rounded-xl"
+                className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/60 h-11 rounded-xl"
                 {...register("email")}
               />
               {errors.email && (
-                <p className="text-red-400 text-xs">{errors.email.message}</p>
+                <p className="text-red-500 text-xs">{errors.email.message}</p>
               )}
             </div>
 
             {/* Password */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-white/60 text-xs font-medium uppercase tracking-wide">
+                <Label htmlFor="password" className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
                   Senha
                 </Label>
                 <Link href="/auth/forgot-password" className="text-xs text-stylo-gold/80 hover:text-stylo-gold transition-colors">
@@ -188,20 +188,20 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   placeholder="••••••••"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/60 h-11 rounded-xl pr-11"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/60 h-11 rounded-xl pr-11"
                   {...register("password")}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-foreground transition-colors"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
               {errors.password && (
-                <p className="text-red-400 text-xs">{errors.password.message}</p>
+                <p className="text-red-500 text-xs">{errors.password.message}</p>
               )}
             </div>
 
@@ -218,9 +218,9 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <p className="text-center text-white/25 text-xs mt-8">
+          <p className="text-center text-muted-foreground/50 text-xs mt-8">
             Ao entrar, você concorda com nossos{" "}
-            <Link href="/marketing/terms" className="hover:text-white/50 underline transition-colors">
+            <Link href="/marketing/terms" className="hover:text-muted-foreground underline transition-colors">
               Termos de Uso
             </Link>
           </p>

@@ -50,11 +50,11 @@ function VerifyForm() {
 
   if (!token) {
     return (
-      <div className="min-h-screen bg-stylo-dark flex items-center justify-center px-4">
-        <div className="bg-stylo-surface border border-red-500/30 rounded-2xl p-8 max-w-md w-full text-center">
-          <AlertCircle className="mx-auto text-red-400 mb-4" size={48} strokeWidth={1.5} />
-          <h1 className="text-xl font-semibold text-white mb-2">Link inválido</h1>
-          <p className="text-white/50 text-sm mb-6">
+      <div className="min-h-screen bg-background flex items-center justify-center px-4">
+        <div className="bg-card border border-destructive/30 rounded-2xl p-8 max-w-md w-full text-center">
+          <AlertCircle className="mx-auto text-destructive mb-4" size={48} strokeWidth={1.5} />
+          <h1 className="text-xl font-semibold text-foreground mb-2">Link inválido</h1>
+          <p className="text-muted-foreground text-sm mb-6">
             Este link de redefinição é inválido ou expirou.
           </p>
           <Link href="/auth/forgot-password">
@@ -68,7 +68,7 @@ function VerifyForm() {
   }
 
   return (
-    <div className="min-h-screen bg-stylo-dark flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 rounded-full bg-stylo-gold opacity-5 blur-[120px]" />
       </div>
@@ -83,24 +83,24 @@ function VerifyForm() {
           </span>
         </div>
 
-        <div className="bg-stylo-surface border border-white/10 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-card border border-border rounded-2xl p-8 shadow-2xl">
           <Link
             href="/auth/login"
-            className="inline-flex items-center gap-1.5 text-white/40 hover:text-white/70 text-sm mb-6 transition-colors"
+            className="inline-flex items-center gap-1.5 text-muted-foreground/40 hover:text-muted-foreground/70 text-sm mb-6 transition-colors"
           >
             <ArrowLeft size={14} />
             Voltar ao login
           </Link>
 
-          <h1 className="text-xl font-semibold text-white mb-1">Criar nova senha</h1>
-          <p className="text-white/50 text-sm mb-6">
+          <h1 className="text-xl font-semibold text-foreground mb-1">Criar nova senha</h1>
+          <p className="text-muted-foreground text-sm mb-6">
             Sua nova senha deve ter no mínimo 8 caracteres.
           </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {/* New Password */}
             <div className="space-y-1.5">
-              <Label htmlFor="newPassword" className="text-white/70 text-sm">
+              <Label htmlFor="newPassword" className="text-muted-foreground text-sm">
                 Nova senha
               </Label>
               <div className="relative">
@@ -109,26 +109,26 @@ function VerifyForm() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
                   placeholder="••••••••"
-                  className="bg-stylo-dark border-white/10 text-white placeholder:text-white/30 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold pr-10"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold pr-10"
                   {...register("newPassword")}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/40 hover:text-muted-foreground/70 transition-colors"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
               {errors.newPassword && (
-                <p className="text-red-400 text-xs mt-1">{errors.newPassword.message}</p>
+                <p className="text-red-500 text-xs mt-1">{errors.newPassword.message}</p>
               )}
             </div>
 
             {/* Confirm Password */}
             <div className="space-y-1.5">
-              <Label htmlFor="confirmPassword" className="text-white/70 text-sm">
+              <Label htmlFor="confirmPassword" className="text-muted-foreground text-sm">
                 Confirmar senha
               </Label>
               <div className="relative">
@@ -137,20 +137,20 @@ function VerifyForm() {
                   type={showConfirm ? "text" : "password"}
                   autoComplete="new-password"
                   placeholder="••••••••"
-                  className="bg-stylo-dark border-white/10 text-white placeholder:text-white/30 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold pr-10"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold pr-10"
                   {...register("confirmPassword")}
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirm((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/40 hover:text-muted-foreground/70 transition-colors"
                   tabIndex={-1}
                 >
                   {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="text-red-400 text-xs mt-1">{errors.confirmPassword.message}</p>
+                <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
               )}
             </div>
 

@@ -115,10 +115,10 @@ export function HeroSection() {
               <div className="absolute inset-0 rounded-3xl bg-stylo-gold opacity-15 blur-3xl scale-90" />
 
               {/* Phone frame */}
-              <div className="relative w-64 bg-zinc-950 rounded-[2.5rem] border-[3px] border-zinc-800 shadow-2xl overflow-hidden">
+              <div className="relative w-64 bg-white dark:bg-zinc-950 rounded-[2.5rem] border-[3px] border-zinc-950 dark:border-zinc-800 shadow-2xl overflow-hidden transition-colors duration-300">
                 {/* Notch */}
                 <div className="flex justify-center pt-3 pb-1">
-                  <div className="w-20 h-5 bg-black rounded-full" />
+                  <div className="w-20 h-5 bg-zinc-950 rounded-full" />
                 </div>
 
                 {/* Profile area */}
@@ -127,8 +127,8 @@ export function HeroSection() {
                   <div className="w-14 h-14 rounded-full bg-stylo-gold/20 border-2 border-stylo-gold/40 flex items-center justify-center mb-2">
                     <span className="text-stylo-gold text-lg font-bold">S</span>
                   </div>
-                  <p className="text-white font-bold text-sm">@stylohub</p>
-                  <p className="text-white/50 text-[10px] uppercase tracking-wider font-bold mt-0.5 mb-5">
+                  <p className="text-zinc-900 dark:text-white font-bold text-sm">@stylohub</p>
+                  <p className="text-zinc-500 dark:text-white/50 text-[10px] uppercase tracking-wider font-bold mt-0.5 mb-5">
                     Criador de conteúdo ✨
                   </p>
 
@@ -137,9 +137,9 @@ export function HeroSection() {
                     {MOCK_LINKS.map((link) => (
                       <div
                         key={link.label}
-                        className="w-full bg-stylo-gold/10 border border-stylo-gold/20 rounded-xl py-2.5 text-center shadow-sm"
+                        className="w-full bg-zinc-50 dark:bg-stylo-gold/10 border border-zinc-200 dark:border-stylo-gold/20 rounded-xl py-2.5 text-center shadow-sm transition-all duration-200 hover:scale-[1.03] hover:bg-zinc-100 dark:hover:bg-stylo-gold/20 cursor-pointer active:scale-[0.97]"
                       >
-                        <span className="text-white text-[11px] font-bold">{link.label}</span>
+                        <span className="text-zinc-800 dark:text-white text-[11px] font-bold">{link.label}</span>
                       </div>
                     ))}
                   </div>
@@ -147,7 +147,7 @@ export function HeroSection() {
 
                 {/* Bottom bar */}
                 <div className="flex justify-center pb-3 pt-2">
-                  <div className="w-24 h-1 bg-white/20 rounded-full" />
+                  <div className="w-24 h-1 bg-zinc-200 dark:bg-white/20 rounded-full" />
                 </div>
               </div>
             </div>
