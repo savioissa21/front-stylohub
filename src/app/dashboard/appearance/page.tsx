@@ -97,8 +97,13 @@ export default function AppearancePage() {
 
   const t = profile?.theme;
 
-  const [bgType,       setBgType]       = useState<BgType>(t?.bgType ?? "SOLID_COLOR");
-  const [bgValue,      setBgValue]      = useState(t?.bgValue ?? "#09090B");
+  const [bgType, setBgType] = useState<BgType>(t?.bgType ?? "SOLID_COLOR");
+  
+  // Separate states for each background type to keep them independent in the UI
+  const [solidColor, setSolidColor] = useState(t?.bgType === "SOLID_COLOR" ? t?.bgValue : "#09090B");
+  const [gradientValue, setGradientValue] = useState(t?.bgType === "GRADIENT" ? t?.bgValue : "linear-gradient(135deg, #09090B, #D4AF37)");
+  const [imageUrl, setImageUrl] = useState(t?.bgType === "IMAGE" ? t?.bgValue : "");
+
   const [primaryColor, setPrimaryColor] = useState(t?.primaryColor ?? "#D4AF37");
   const [textColor,    setTextColor]    = useState(t?.textColor ?? "#FFFFFF");
   const [buttonStyle,  setButtonStyle]  = useState<ButtonStyle>(t?.buttonStyle ?? "ROUNDED");
@@ -108,16 +113,29 @@ export default function AppearancePage() {
 
   const isPro = profile?.plan === "PRO";
 
+  // Determine which value to use based on current bgType
+  const currentBgValue = 
+    bgType === "SOLID_COLOR" ? solidColor : 
+    bgType === "GRADIENT" ? gradientValue : 
+    imageUrl;
+
   // Apply a full quick-palette in one click
   const applyPalette = (p: ThemePalette) => {
     const isGradient = p.bg.startsWith("linear-gradient");
     const newBgType: BgType = isGradient ? "GRADIENT" : "SOLID_COLOR";
+    
     setBgType(newBgType);
-    setBgValue(p.bg);
+    if (isGradient) {
+      setGradientValue(p.bg);
+    } else {
+      setSolidColor(p.bg);
+    }
+
     setPrimaryColor(p.primary);
     setTextColor(p.text);
     setButtonStyle(p.buttonStyle);
     setBorderColor(p.primary);
+    
     updateThemePreview({
       bgType: newBgType,
       bgValue: p.bg,
@@ -131,7 +149,7 @@ export default function AppearancePage() {
   const handleSave = async () => {
     const themeData: UpdateThemeRequest = {
       bgType,
-      bgValue,
+      bgValue: currentBgValue,
       primaryColor,
       textColor,
       buttonStyle,
@@ -204,7 +222,14 @@ export default function AppearancePage() {
             {BG_TYPE_OPTIONS.map((opt) => (
               <button
                 key={opt.value}
-                onClick={() => { setBgType(opt.value); updateThemePreview({ bgType: opt.value }); }}
+                onClick={() => { 
+                  setBgType(opt.value); 
+                  const nextVal = 
+                    opt.value === "SOLID_COLOR" ? solidColor : 
+                    opt.value === "GRADIENT" ? gradientValue : 
+                    imageUrl;
+                  updateThemePreview({ bgType: opt.value, bgValue: nextVal }); 
+                }}
                 className={`px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
                   bgType === opt.value
                     ? "border-stylo-gold bg-stylo-gold/10 text-stylo-gold"
@@ -220,14 +245,20 @@ export default function AppearancePage() {
         {bgType === "SOLID_COLOR" && (
           <ColorPicker
             label="Cor do fundo"
-            value={bgValue}
-            onChange={(hex) => { setBgValue(hex); updateThemePreview({ bgValue: hex }); }}
+            value={solidColor}
+            onChange={(hex) => { 
+              setSolidColor(hex); 
+              updateThemePreview({ bgValue: hex }); 
+            }}
           />
         )}
         {bgType === "GRADIENT" && (
           <GradientBuilder
-            value={bgValue}
-            onChange={(css) => { setBgValue(css); updateThemePreview({ bgValue: css }); }}
+            value={gradientValue}
+            onChange={(css) => { 
+              setGradientValue(css); 
+              updateThemePreview({ bgValue: css }); 
+            }}
           />
         )}
         {bgType === "IMAGE" && (
@@ -235,9 +266,12 @@ export default function AppearancePage() {
             <Label className="text-foreground/70 text-sm">URL da imagem de fundo</Label>
             <input
               type="url"
-              value={bgValue}
-              onChange={(e) => { setBgValue(e.target.value); updateThemePreview({ bgValue: e.target.value }); }}
-              placeholder="https://..."
+              value={imageUrl}
+              onChange={(e) => { 
+                setImageUrl(e.target.value); 
+                updateThemePreview({ bgValue: e.target.value }); 
+              }}
+              placeholder="Cole a URL da sua imagem (Ex: https://...)"
               className="w-full bg-background border border-border rounded-md px-3 py-2 text-foreground text-sm placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-stylo-gold"
             />
           </div>

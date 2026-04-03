@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, cloneElement, type ReactElement } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   DndContext,
@@ -31,6 +31,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -59,6 +60,141 @@ const CONTENT_TYPES: { id: ContentType; label: string; icon: React.ReactNode; co
   { id: "pix",        label: "PIX",      icon: <Zap size={18} />,         color: "#32BCAD" },
   { id: "affiliate",  label: "Afiliado", icon: <ExternalLink size={18} />, color: "#8B5CF6" },
 ];
+
+// ─── Preview Component ───────────────────────────────────────────────────────
+
+function AddLinkPreview({ 
+  type, 
+  title, 
+  url, 
+  color, 
+  icon 
+}: { 
+  type: ContentType; 
+  title: string; 
+  url: string; 
+  color: string; 
+  icon: React.ReactNode 
+}) {
+  const displayTitle = title || (
+    type === "link" ? "Seu link aqui" : 
+    type === "whatsapp" ? "WhatsApp" :
+    type === "youtube" ? "Vídeo do YouTube" :
+    `Meu ${type.charAt(0).toUpperCase() + type.slice(1)}`
+  );
+  
+  return (
+    <div className="flex flex-col items-center pt-10 pb-12 bg-[#09090B] border-t border-white/5 relative overflow-hidden group">
+      {/* Premium Background Glows */}
+      <div className="absolute -top-24 -left-24 w-64 h-64 bg-stylo-gold/10 blur-[100px] rounded-full pointer-events-none" />
+      <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-stylo-gold/5 blur-[100px] rounded-full pointer-events-none" />
+      
+      <div className="relative z-10 flex flex-col items-center w-full px-6">
+        <div className="mb-8 flex flex-col items-center gap-1.5">
+          <span className="text-[10px] text-stylo-gold font-bold uppercase tracking-[0.4em] drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]">Visualização Premium</span>
+          <div className="h-[2px] w-10 bg-gradient-to-r from-transparent via-stylo-gold/40 to-transparent rounded-full" />
+        </div>
+
+        {/* The Phone - iPhone 15 Pro style mockup */}
+        <div className="relative group/phone transition-all duration-700 hover:translate-y-[-4px] scale-[0.85] origin-top">
+          {/* Outer Glow based on brand color */}
+          <div 
+            className="absolute inset-0 rounded-[3.5rem] blur-[45px] opacity-20 transition-all duration-1000 group-hover/phone:opacity-40" 
+            style={{ backgroundColor: color }} 
+          />
+          
+          {/* Metal Frame (Titanium look) */}
+          <div className="relative w-[260px] h-[340px] rounded-[3.5rem] p-[10px] bg-gradient-to-b from-[#333] via-[#1a1a1a] to-[#000] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.9)] ring-1 ring-white/20">
+            
+            {/* Screen Glass */}
+            <div className="relative w-full h-full rounded-[2.8rem] bg-[#050505] overflow-hidden flex flex-col border border-white/5 shadow-inner">
+              
+              {/* Internal Glass Reflection shimmer */}
+              <div className="absolute top-0 left-[-100%] w-[300%] h-[100%] bg-gradient-to-tr from-transparent via-white/[0.04] to-transparent rotate-[35deg] pointer-events-none z-30 animate-[shimmer_8s_infinite]" />
+              
+              {/* Dynamic Island */}
+              <div className="absolute top-0 left-0 right-0 h-8 flex justify-center items-start pt-2.5 z-40">
+                <div className="w-20 h-5 bg-black rounded-full border border-white/10 flex items-center justify-between px-3 shadow-lg">
+                  <div className="w-1 h-1 rounded-full bg-zinc-800" />
+                  <div className="flex gap-1 items-center">
+                    <div className="w-0.5 h-0.5 rounded-full bg-green-500/60 shadow-[0_0_4px_rgba(34,197,94,0.6)]" />
+                    <div className="w-2 h-2 rounded-full bg-indigo-500/40 blur-[1px] relative">
+                       <div className="absolute inset-0.5 bg-indigo-400/60 rounded-full" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Screen Content */}
+              <div className="flex-1 pt-12 px-5 flex flex-col items-center">
+                {/* Profile Skeleton - High End */}
+                <div className="relative mb-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white/15 to-transparent p-[1px] shadow-2xl">
+                     <div className="w-full h-full rounded-full bg-zinc-900 flex items-center justify-center overflow-hidden">
+                        <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.15),transparent)] animate-pulse" />
+                     </div>
+                  </div>
+                  <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-black rounded-full border border-white/10 flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-stylo-gold/40 shadow-[0_0_8px_rgba(212,175,55,0.4)]" />
+                  </div>
+                </div>
+                
+                <div className="h-2.5 w-24 bg-gradient-to-r from-white/10 via-white/20 to-white/10 rounded-full mb-2" />
+                <div className="h-1.5 w-32 bg-white/5 rounded-full mb-8" />
+                
+                {/* PREVIEW WIDGET - Ultra Premium Card */}
+                <div className="w-full relative group/widget">
+                   <div 
+                      className="w-full flex items-center gap-3 p-3.5 rounded-[1rem] border backdrop-blur-xl transition-all duration-500 cursor-default relative z-10"
+                      style={{
+                        backgroundColor: `${color}12`,
+                        borderColor: `${color}25`,
+                        boxShadow: `0 8px 30px -10px ${color}50`,
+                      }}
+                   >
+                      <div 
+                        className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border border-white/10 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.5)] transition-all duration-500 group-hover/widget:scale-110"
+                        style={{ background: `linear-gradient(135deg, ${color}, ${color}dd)`, color: 'white' }}
+                      >
+                        {cloneElement(icon as ReactElement, { size: 16, strokeWidth: 2.5 })}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-bold text-[12px] tracking-tight text-white truncate">
+                          {displayTitle}
+                        </div>
+                        {url && (
+                          <div className="text-[9px] text-white/40 truncate font-semibold mt-0.5">
+                            {url.replace(/^https?:\/\/(www\.)?/, '')}
+                          </div>
+                        )}
+                      </div>
+                      <ExternalLink size={8} className="text-white/20" />
+                   </div>
+                </div>
+
+                {/* Other Links Skeletons - Very subtle */}
+                <div className="w-full mt-3 space-y-2 opacity-[0.02]">
+                  <div className="w-full h-12 rounded-xl bg-white" />
+                  <div className="w-full h-12 rounded-xl bg-white" />
+                </div>
+              </div>
+
+              {/* Home Bar */}
+              <div className="h-6 flex justify-center items-center pb-2 z-40">
+                <div className="w-20 h-1 bg-white/10 rounded-full shadow-inner" />
+              </div>
+            </div>
+          </div>
+          
+          {/* High-end Reflection shadow */}
+          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[85%] h-4 bg-black/60 blur-xl rounded-full" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function LinksPage() {
   const queryClient = useQueryClient();
@@ -582,409 +718,449 @@ export default function LinksPage() {
           setAffiliateUrl(""); setAffiliateTitle("");
         }
       }}>
-        <DialogContent className="bg-card border border-border text-foreground w-[calc(100vw-2rem)] max-w-md mx-auto p-0 overflow-hidden rounded-2xl">
-          <DialogHeader className="px-5 pt-5 pb-4 border-b border-border/50">
+        <DialogContent className="bg-card border border-border text-foreground w-[calc(100vw-2rem)] max-w-md mx-auto p-0 overflow-hidden rounded-2xl flex flex-col max-h-[90vh]">
+          <DialogHeader className="px-5 pt-5 pb-4 border-b border-border/50 shrink-0">
             <DialogTitle className="text-foreground font-semibold text-base">Adicionar conteúdo</DialogTitle>
+            <DialogDescription className="text-muted-foreground/60 text-xs">
+              Escolha o tipo de conteúdo e veja a prévia abaixo.
+            </DialogDescription>
           </DialogHeader>
 
-          {/* Type selector grid */}
-          <div className="grid grid-cols-5 gap-1.5 px-5 pt-4">
-            {CONTENT_TYPES.map((ct) => {
-              const isActive = activeType === ct.id;
+          {/* Scrollable Container */}
+          <div className="flex-1 overflow-y-auto custom-scrollbar">
+            {/* Type selector grid */}
+            <div className="grid grid-cols-5 gap-1.5 px-5 pt-4">
+              {CONTENT_TYPES.map((ct) => {
+                const isActive = activeType === ct.id;
+                return (
+                  <button
+                    key={ct.id}
+                    onClick={() => setActiveType(ct.id)}
+                    className="flex flex-col items-center gap-1.5 py-3 rounded-xl border transition-all duration-150"
+                    style={{
+                      background: isActive ? `${ct.color}18` : "rgba(255,255,255,0.04)",
+                      borderColor: isActive ? `${ct.color}60` : "rgba(255,255,255,0.08)",
+                      color: isActive ? ct.color : "rgba(255,255,255,0.45)",
+                    }}
+                  >
+                    <span style={{ color: isActive ? ct.color : "rgba(255,255,255,0.35)" }}>
+                      {ct.icon}
+                    </span>
+                    <span className="text-[10px] font-medium">{ct.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Form area */}
+            <div className="px-5 pb-8 pt-4 space-y-3">
+              {activeType === "link" && (
+                <>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título</Label>
+                    <Input
+                      value={linkTitle}
+                      onChange={(e) => setLinkTitle(e.target.value)}
+                      placeholder="Ex: Meu Instagram"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#3B82F6] focus-visible:border-[#3B82F6]/50 h-10"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">URL</Label>
+                    <Input
+                      value={linkUrl}
+                      onChange={(e) => setLinkUrl(e.target.value)}
+                      placeholder="https://..."
+                      type="url"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#3B82F6] focus-visible:border-[#3B82F6]/50 h-10"
+                    />
+                  </div>
+                  <Button onClick={handleAddLink} disabled={isAdding} className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-white font-semibold h-10 mt-1">
+                    {isAdding ? "Adicionando..." : "Adicionar link"}
+                  </Button>
+                </>
+              )}
+
+              {activeType === "youtube" && (
+                <>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">ID do vídeo</Label>
+                    <Input
+                      value={videoId}
+                      onChange={(e) => setVideoId(e.target.value)}
+                      placeholder="Ex: dQw4w9WgXcQ"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#EF4444] focus-visible:border-[#EF4444]/50 h-10"
+                    />
+                    <p className="text-muted-foreground/60 text-xs">
+                      Cole o ID do final da URL: youtube.com/watch?v=<span className="text-foreground/55 font-mono">ID</span>
+                    </p>
+                  </div>
+                  <Button onClick={handleAddVideo} disabled={isAdding} className="w-full bg-[#EF4444] hover:bg-[#DC2626] text-white font-semibold h-10 mt-1">
+                    {isAdding ? "Adicionando..." : "Adicionar vídeo"}
+                  </Button>
+                </>
+              )}
+
+              {activeType === "spotify" && (
+                <>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">URI do Spotify</Label>
+                    <Input
+                      value={spotifyUri}
+                      onChange={(e) => setSpotifyUri(e.target.value)}
+                      placeholder="spotify:track:4iV5W9uYEdYUVa79Axb7Rh"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#22C55E] focus-visible:border-[#22C55E]/50 h-10"
+                    />
+                    <p className="text-muted-foreground/60 text-xs">
+                      No Spotify: clique em ··· → Compartilhar → Copiar URI.
+                    </p>
+                  </div>
+                  <Button onClick={handleAddSpotify} disabled={isAdding} className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white font-semibold h-10 mt-1">
+                    {isAdding ? "Adicionando..." : "Adicionar Spotify"}
+                  </Button>
+                </>
+              )}
+
+              {activeType === "whatsapp" && (
+                <>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Número (com DDI e DDD)</Label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 text-sm font-mono">+</span>
+                      <Input
+                        value={waPhone}
+                        onChange={(e) => setWaPhone(e.target.value)}
+                        placeholder="55 11 99999-9999"
+                        type="tel"
+                        className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#25D366] focus-visible:border-[#25D366]/50 h-10 pl-6"
+                      />
+                    </div>
+                    <p className="text-muted-foreground/60 text-xs">Ex: 5511999999999 — código do país + DDD + número</p>
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">
+                      Mensagem automática <span className="normal-case text-muted-foreground/60">(opcional)</span>
+                    </Label>
+                    <Input
+                      value={waMessage}
+                      onChange={(e) => setWaMessage(e.target.value)}
+                      placeholder="Olá! Vim pelo seu link..."
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#25D366] focus-visible:border-[#25D366]/50 h-10"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">
+                      Título do botão <span className="normal-case text-muted-foreground/60">(padrão: WhatsApp)</span>
+                    </Label>
+                    <Input
+                      value={waTitle}
+                      onChange={(e) => setWaTitle(e.target.value)}
+                      placeholder="WhatsApp"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#25D366] focus-visible:border-[#25D366]/50 h-10"
+                    />
+                  </div>
+                  <Button onClick={handleAddWhatsApp} disabled={isAdding} className="w-full font-semibold h-10 mt-1 text-white" style={{ background: "#25D366" }}>
+                    {isAdding ? "Adicionando..." : "Adicionar WhatsApp"}
+                  </Button>
+                </>
+              )}
+
+              {activeType === "form" && (
+                <>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título</Label>
+                    <Input
+                      value={formTitle}
+                      onChange={(e) => setFormTitle(e.target.value)}
+                      placeholder="Ex: Receba meu e-book grátis"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Campos <span className="normal-case text-muted-foreground/60">(separados por vírgula)</span></Label>
+                    <Input
+                      value={formFields}
+                      onChange={(e) => setFormFields(e.target.value)}
+                      placeholder="email, nome, telefone"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
+                    />
+                    <p className="text-muted-foreground/60 text-xs">O campo "email" é obrigatório.</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-1.5">
+                      <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Botão</Label>
+                      <Input
+                        value={formButtonLabel}
+                        onChange={(e) => setFormButtonLabel(e.target.value)}
+                        placeholder="Enviar"
+                        className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Sucesso</Label>
+                      <Input
+                        value={formSuccessMessage}
+                        onChange={(e) => setFormSuccessMessage(e.target.value)}
+                        placeholder="Obrigado!"
+                        className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
+                      />
+                    </div>
+                  </div>
+                  <Button onClick={handleAddForm} disabled={isAdding} className="w-full btn-gold-glow bg-stylo-gold hover:bg-stylo-gold-hover text-black font-semibold h-10 mt-1">
+                    {isAdding ? "Adicionando..." : "Adicionar formulário"}
+                  </Button>
+                </>
+              )}
+
+              {activeType === "tiktok" && (
+                <>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Link do vídeo</Label>
+                    <Input
+                      value={tikTokUrl}
+                      onChange={(e) => {
+                        setTikTokUrl(e.target.value);
+                        setTikTokIdDetected(extractTikTokVideoId(e.target.value));
+                      }}
+                      placeholder="https://www.tiktok.com/@user/video/..."
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#010101] focus-visible:border-[#010101]/50 h-10"
+                    />
+                    {tikTokUrl && (
+                      <p className={`text-xs ${tikTokIdDetected ? "text-green-400" : "text-red-400"}`}>
+                        {tikTokIdDetected ? `✓ ID detectado: ${tikTokIdDetected}` : "URL inválida para TikTok"}
+                      </p>
+                    )}
+                  </div>
+                  <Button onClick={handleAddTikTok} disabled={isAdding || !tikTokIdDetected} className="w-full font-semibold h-10 mt-1 text-white bg-black hover:bg-zinc-900">
+                    {isAdding ? "Adicionando..." : "Adicionar TikTok"}
+                  </Button>
+                </>
+              )}
+
+              {activeType === "twitch" && (
+                <>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Link do canal ou clip</Label>
+                    <Input
+                      value={twitchUrl}
+                      onChange={(e) => {
+                        setTwitchUrl(e.target.value);
+                        setTwitchInfoDetected(extractTwitchInfo(e.target.value));
+                      }}
+                      placeholder="https://www.twitch.tv/channelname"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 h-10"
+                      style={{ "--tw-ring-color": "#9146FF" } as React.CSSProperties}
+                    />
+                    {twitchUrl && (
+                      <p className={`text-xs ${twitchInfoDetected ? "text-green-400" : "text-red-400"}`}>
+                        {twitchInfoDetected
+                          ? twitchInfoDetected.isClip
+                            ? `✓ Clip: ${twitchInfoDetected.clipSlug}`
+                            : `✓ Canal: ${twitchInfoDetected.channel}`
+                          : "URL inválida para Twitch"}
+                      </p>
+                    )}
+                  </div>
+                  <Button onClick={handleAddTwitch} disabled={isAdding || !twitchInfoDetected} className="w-full font-semibold h-10 mt-1 text-white" style={{ background: "#9146FF" }}>
+                    {isAdding ? "Adicionando..." : "Adicionar Twitch"}
+                  </Button>
+                </>
+              )}
+
+              {activeType === "soundcloud" && (
+                <>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Link da faixa ou playlist</Label>
+                    <Input
+                      value={soundCloudUrl}
+                      onChange={(e) => {
+                        setSoundCloudUrl(e.target.value);
+                        setSoundCloudDetected(extractSoundCloudUrl(e.target.value));
+                      }}
+                      placeholder="https://soundcloud.com/artista/faixa"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 h-10"
+                    />
+                    {soundCloudUrl && (
+                      <p className={`text-xs ${soundCloudDetected ? "text-green-400" : "text-red-400"}`}>
+                        {soundCloudDetected ? "✓ URL válida" : "URL inválida para SoundCloud"}
+                      </p>
+                    )}
+                  </div>
+                  <Button onClick={handleAddSoundCloud} disabled={isAdding || !soundCloudDetected} className="w-full font-semibold h-10 mt-1 text-white" style={{ background: "#FF5500" }}>
+                    {isAdding ? "Adicionando..." : "Adicionar SoundCloud"}
+                  </Button>
+                </>
+              )}
+
+              {activeType === "twitter" && (
+                <>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Link do tweet</Label>
+                    <Input
+                      value={twitterUrl}
+                      onChange={(e) => {
+                        setTwitterUrl(e.target.value);
+                        setTweetIdDetected(extractTweetId(e.target.value));
+                      }}
+                      placeholder="https://x.com/user/status/..."
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 h-10"
+                    />
+                    {twitterUrl && (
+                      <p className={`text-xs ${tweetIdDetected ? "text-green-400" : "text-red-400"}`}>
+                        {tweetIdDetected ? `✓ Tweet ID: ${tweetIdDetected}` : "URL inválida — use o link completo do tweet"}
+                      </p>
+                    )}
+                  </div>
+                  <Button onClick={handleAddTwitter} disabled={isAdding || !tweetIdDetected} className="w-full font-semibold h-10 mt-1 text-white bg-black hover:bg-zinc-900">
+                    {isAdding ? "Adicionando..." : "Adicionar Tweet"}
+                  </Button>
+                </>
+              )}
+
+              {activeType === "donation" && (
+                <>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Plataforma</Label>
+                    <select
+                      value={donationPlatform}
+                      onChange={(e) => setDonationPlatform(e.target.value as typeof donationPlatform)}
+                      className="w-full h-10 rounded-md bg-muted/50 border border-border text-foreground text-sm px-3 focus:outline-none focus:ring-1 focus:ring-[#FF5E5B]"
+                    >
+                      <option value="KOFI">Ko-fi</option>
+                      <option value="BUYMEACOFFEE">Buy Me a Coffee</option>
+                      <option value="PAYPAL">PayPal</option>
+                      <option value="OUTRO">Outro</option>
+                    </select>
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">URL</Label>
+                    <Input
+                      value={donationUrl}
+                      onChange={(e) => setDonationUrl(e.target.value)}
+                      placeholder="https://ko-fi.com/seuperfil"
+                      type="url"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#FF5E5B] focus-visible:border-[#FF5E5B]/50 h-10"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título (opcional)</Label>
+                    <Input
+                      value={donationTitle}
+                      onChange={(e) => setDonationTitle(e.target.value)}
+                      placeholder="Me apoie ☕"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#FF5E5B] focus-visible:border-[#FF5E5B]/50 h-10"
+                    />
+                  </div>
+                  <Button onClick={handleAddDonation} disabled={isAdding} className="w-full bg-[#FF5E5B] hover:bg-[#e54d4a] text-white font-semibold h-10 mt-1">
+                    {isAdding ? "Adicionando..." : "Adicionar doação"}
+                  </Button>
+                </>
+              )}
+
+              {activeType === "pix" && (
+                <>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Tipo de chave</Label>
+                    <select
+                      value={pixKeyType}
+                      onChange={(e) => setPixKeyType(e.target.value as typeof pixKeyType)}
+                      className="w-full h-10 rounded-md bg-muted/50 border border-border text-foreground text-sm px-3 focus:outline-none focus:ring-1 focus:ring-[#32BCAD]"
+                    >
+                      <option value="CPF">CPF</option>
+                      <option value="CNPJ">CNPJ</option>
+                      <option value="EMAIL">E-mail</option>
+                      <option value="TELEFONE">Telefone</option>
+                      <option value="ALEATORIA">Chave aleatória</option>
+                    </select>
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Chave PIX</Label>
+                    <Input
+                      value={pixKey}
+                      onChange={(e) => setPixKey(e.target.value)}
+                      placeholder="sua@chave.pix"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#32BCAD] focus-visible:border-[#32BCAD]/50 h-10"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título (opcional)</Label>
+                    <Input
+                      value={pixTitle}
+                      onChange={(e) => setPixTitle(e.target.value)}
+                      placeholder="Me pague um café ☕"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#32BCAD] focus-visible:border-[#32BCAD]/50 h-10"
+                    />
+                  </div>
+                  <Button onClick={handleAddPix} disabled={isAdding} className="w-full font-semibold h-10 mt-1 text-white" style={{ backgroundColor: "#32BCAD" }}>
+                    {isAdding ? "Adicionando..." : "Adicionar PIX"}
+                  </Button>
+                </>
+              )}
+
+              {activeType === "affiliate" && (
+                <>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título</Label>
+                    <Input
+                      value={affiliateTitle}
+                      onChange={(e) => setAffiliateTitle(e.target.value)}
+                      placeholder="Meu produto afiliado"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#8B5CF6] focus-visible:border-[#8B5CF6]/50 h-10"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">URL destino</Label>
+                    <Input
+                      value={affiliateUrl}
+                      onChange={(e) => setAffiliateUrl(e.target.value)}
+                      placeholder="https://hotmart.com/produto/xyz"
+                      type="url"
+                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#8B5CF6] focus-visible:border-[#8B5CF6]/50 h-10"
+                    />
+                    <p className="text-muted-foreground/60 text-xs">
+                      A URL real nunca é exposta — visitantes são redirecionados via código curto.
+                    </p>
+                  </div>
+                  <Button onClick={handleAddAffiliate} disabled={isAdding} className="w-full bg-[#8B5CF6] hover:bg-[#7c3aed] text-white font-semibold h-10 mt-1">
+                    {isAdding ? "Adicionando..." : "Adicionar afiliado 🔒 PRO"}
+                  </Button>
+                </>
+              )}
+            </div>
+
+            {/* Real-time Preview at the bottom */}
+            {(() => {
+              const activeContentType = CONTENT_TYPES.find(ct => ct.id === activeType);
+              if (!activeContentType) return null;
+
+              let currentTitle = "";
+              let currentUrl = "";
+
+              switch(activeType) {
+                case "link":      currentTitle = linkTitle; currentUrl = linkUrl; break;
+                case "youtube":   currentTitle = "Vídeo do YouTube"; currentUrl = videoId ? `youtube.com/watch?v=${videoId}` : ""; break;
+                case "spotify":   currentTitle = "Spotify"; currentUrl = spotifyUri; break;
+                case "whatsapp":  currentTitle = waTitle || "WhatsApp"; currentUrl = waPhone; break;
+                case "form":      currentTitle = formTitle; currentUrl = "Formulário de captura"; break;
+                case "tiktok":    currentTitle = "TikTok"; currentUrl = tikTokUrl; break;
+                case "twitch":    currentTitle = "Twitch"; currentUrl = twitchUrl; break;
+                case "soundcloud": currentTitle = "SoundCloud"; currentUrl = soundCloudUrl; break;
+                case "twitter":   currentTitle = "Twitter/X"; currentUrl = twitterUrl; break;
+                case "donation":  currentTitle = donationTitle || "Doação"; currentUrl = donationUrl; break;
+                case "pix":       currentTitle = pixTitle || "PIX"; currentUrl = pixKey; break;
+                case "affiliate": currentTitle = affiliateTitle; currentUrl = affiliateUrl; break;
+              }
+
               return (
-                <button
-                  key={ct.id}
-                  onClick={() => setActiveType(ct.id)}
-                  className="flex flex-col items-center gap-1.5 py-3 rounded-xl border transition-all duration-150"
-                  style={{
-                    background: isActive ? `${ct.color}18` : "rgba(255,255,255,0.04)",
-                    borderColor: isActive ? `${ct.color}60` : "rgba(255,255,255,0.08)",
-                    color: isActive ? ct.color : "rgba(255,255,255,0.45)",
-                  }}
-                >
-                  <span style={{ color: isActive ? ct.color : "rgba(255,255,255,0.35)" }}>
-                    {ct.icon}
-                  </span>
-                  <span className="text-xs font-medium">{ct.label}</span>
-                </button>
+                <AddLinkPreview 
+                  type={activeType}
+                  title={currentTitle}
+                  url={currentUrl}
+                  color={activeContentType.color}
+                  icon={activeContentType.icon}
+                />
               );
-            })}
-          </div>
-
-          {/* Form area */}
-          <div className="px-5 pb-5 pt-4 space-y-3">
-            {activeType === "link" && (
-              <>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título</Label>
-                  <Input
-                    value={linkTitle}
-                    onChange={(e) => setLinkTitle(e.target.value)}
-                    placeholder="Ex: Meu Instagram"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#3B82F6] focus-visible:border-[#3B82F6]/50 h-10"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">URL</Label>
-                  <Input
-                    value={linkUrl}
-                    onChange={(e) => setLinkUrl(e.target.value)}
-                    placeholder="https://..."
-                    type="url"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#3B82F6] focus-visible:border-[#3B82F6]/50 h-10"
-                  />
-                </div>
-                <Button onClick={handleAddLink} disabled={isAdding} className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-white font-semibold h-10 mt-1">
-                  {isAdding ? "Adicionando..." : "Adicionar link"}
-                </Button>
-              </>
-            )}
-
-            {activeType === "youtube" && (
-              <>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">ID do vídeo</Label>
-                  <Input
-                    value={videoId}
-                    onChange={(e) => setVideoId(e.target.value)}
-                    placeholder="Ex: dQw4w9WgXcQ"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#EF4444] focus-visible:border-[#EF4444]/50 h-10"
-                  />
-                  <p className="text-muted-foreground/60 text-xs">
-                    Cole o ID do final da URL: youtube.com/watch?v=<span className="text-foreground/55 font-mono">ID</span>
-                  </p>
-                </div>
-                <Button onClick={handleAddVideo} disabled={isAdding} className="w-full bg-[#EF4444] hover:bg-[#DC2626] text-white font-semibold h-10 mt-1">
-                  {isAdding ? "Adicionando..." : "Adicionar vídeo"}
-                </Button>
-              </>
-            )}
-
-            {activeType === "spotify" && (
-              <>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">URI do Spotify</Label>
-                  <Input
-                    value={spotifyUri}
-                    onChange={(e) => setSpotifyUri(e.target.value)}
-                    placeholder="spotify:track:4iV5W9uYEdYUVa79Axb7Rh"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#22C55E] focus-visible:border-[#22C55E]/50 h-10"
-                  />
-                  <p className="text-muted-foreground/60 text-xs">
-                    No Spotify: clique em ··· → Compartilhar → Copiar URI.
-                  </p>
-                </div>
-                <Button onClick={handleAddSpotify} disabled={isAdding} className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white font-semibold h-10 mt-1">
-                  {isAdding ? "Adicionando..." : "Adicionar Spotify"}
-                </Button>
-              </>
-            )}
-
-            {activeType === "whatsapp" && (
-              <>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Número (com DDI e DDD)</Label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 text-sm font-mono">+</span>
-                    <Input
-                      value={waPhone}
-                      onChange={(e) => setWaPhone(e.target.value)}
-                      placeholder="55 11 99999-9999"
-                      type="tel"
-                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#25D366] focus-visible:border-[#25D366]/50 h-10 pl-6"
-                    />
-                  </div>
-                  <p className="text-muted-foreground/60 text-xs">Ex: 5511999999999 — código do país + DDD + número</p>
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">
-                    Mensagem automática <span className="normal-case text-muted-foreground/60">(opcional)</span>
-                  </Label>
-                  <Input
-                    value={waMessage}
-                    onChange={(e) => setWaMessage(e.target.value)}
-                    placeholder="Olá! Vim pelo seu link..."
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#25D366] focus-visible:border-[#25D366]/50 h-10"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">
-                    Título do botão <span className="normal-case text-muted-foreground/60">(padrão: WhatsApp)</span>
-                  </Label>
-                  <Input
-                    value={waTitle}
-                    onChange={(e) => setWaTitle(e.target.value)}
-                    placeholder="WhatsApp"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#25D366] focus-visible:border-[#25D366]/50 h-10"
-                  />
-                </div>
-                <Button onClick={handleAddWhatsApp} disabled={isAdding} className="w-full font-semibold h-10 mt-1 text-white" style={{ background: "#25D366" }}>
-                  {isAdding ? "Adicionando..." : "Adicionar WhatsApp"}
-                </Button>
-              </>
-            )}
-
-            {activeType === "form" && (
-              <>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título</Label>
-                  <Input
-                    value={formTitle}
-                    onChange={(e) => setFormTitle(e.target.value)}
-                    placeholder="Ex: Receba meu e-book grátis"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Campos <span className="normal-case text-muted-foreground/60">(separados por vírgula)</span></Label>
-                  <Input
-                    value={formFields}
-                    onChange={(e) => setFormFields(e.target.value)}
-                    placeholder="email, nome, telefone"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
-                  />
-                  <p className="text-muted-foreground/60 text-xs">O campo "email" é obrigatório.</p>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="space-y-1.5">
-                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Botão</Label>
-                    <Input
-                      value={formButtonLabel}
-                      onChange={(e) => setFormButtonLabel(e.target.value)}
-                      placeholder="Enviar"
-                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Sucesso</Label>
-                    <Input
-                      value={formSuccessMessage}
-                      onChange={(e) => setFormSuccessMessage(e.target.value)}
-                      placeholder="Obrigado!"
-                      className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-stylo-gold focus-visible:border-stylo-gold/50 h-10"
-                    />
-                  </div>
-                </div>
-                <Button onClick={handleAddForm} disabled={isAdding} className="w-full btn-gold-glow bg-stylo-gold hover:bg-stylo-gold-hover text-black font-semibold h-10 mt-1">
-                  {isAdding ? "Adicionando..." : "Adicionar formulário"}
-                </Button>
-              </>
-            )}
-
-            {activeType === "tiktok" && (
-              <>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Link do vídeo</Label>
-                  <Input
-                    value={tikTokUrl}
-                    onChange={(e) => {
-                      setTikTokUrl(e.target.value);
-                      setTikTokIdDetected(extractTikTokVideoId(e.target.value));
-                    }}
-                    placeholder="https://www.tiktok.com/@user/video/..."
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#010101] focus-visible:border-[#010101]/50 h-10"
-                  />
-                  {tikTokUrl && (
-                    <p className={`text-xs ${tikTokIdDetected ? "text-green-400" : "text-red-400"}`}>
-                      {tikTokIdDetected ? `✓ ID detectado: ${tikTokIdDetected}` : "URL inválida para TikTok"}
-                    </p>
-                  )}
-                </div>
-                <Button onClick={handleAddTikTok} disabled={isAdding || !tikTokIdDetected} className="w-full font-semibold h-10 mt-1 text-white bg-black hover:bg-zinc-900">
-                  {isAdding ? "Adicionando..." : "Adicionar TikTok"}
-                </Button>
-              </>
-            )}
-
-            {activeType === "twitch" && (
-              <>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Link do canal ou clip</Label>
-                  <Input
-                    value={twitchUrl}
-                    onChange={(e) => {
-                      setTwitchUrl(e.target.value);
-                      setTwitchInfoDetected(extractTwitchInfo(e.target.value));
-                    }}
-                    placeholder="https://www.twitch.tv/channelname"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 h-10"
-                    style={{ "--tw-ring-color": "#9146FF" } as React.CSSProperties}
-                  />
-                  {twitchUrl && (
-                    <p className={`text-xs ${twitchInfoDetected ? "text-green-400" : "text-red-400"}`}>
-                      {twitchInfoDetected
-                        ? twitchInfoDetected.isClip
-                          ? `✓ Clip: ${twitchInfoDetected.clipSlug}`
-                          : `✓ Canal: ${twitchInfoDetected.channel}`
-                        : "URL inválida para Twitch"}
-                    </p>
-                  )}
-                </div>
-                <Button onClick={handleAddTwitch} disabled={isAdding || !twitchInfoDetected} className="w-full font-semibold h-10 mt-1 text-white" style={{ background: "#9146FF" }}>
-                  {isAdding ? "Adicionando..." : "Adicionar Twitch"}
-                </Button>
-              </>
-            )}
-
-            {activeType === "soundcloud" && (
-              <>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Link da faixa ou playlist</Label>
-                  <Input
-                    value={soundCloudUrl}
-                    onChange={(e) => {
-                      setSoundCloudUrl(e.target.value);
-                      setSoundCloudDetected(extractSoundCloudUrl(e.target.value));
-                    }}
-                    placeholder="https://soundcloud.com/artista/faixa"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 h-10"
-                  />
-                  {soundCloudUrl && (
-                    <p className={`text-xs ${soundCloudDetected ? "text-green-400" : "text-red-400"}`}>
-                      {soundCloudDetected ? "✓ URL válida" : "URL inválida para SoundCloud"}
-                    </p>
-                  )}
-                </div>
-                <Button onClick={handleAddSoundCloud} disabled={isAdding || !soundCloudDetected} className="w-full font-semibold h-10 mt-1 text-white" style={{ background: "#FF5500" }}>
-                  {isAdding ? "Adicionando..." : "Adicionar SoundCloud"}
-                </Button>
-              </>
-            )}
-
-            {activeType === "twitter" && (
-              <>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Link do tweet</Label>
-                  <Input
-                    value={twitterUrl}
-                    onChange={(e) => {
-                      setTwitterUrl(e.target.value);
-                      setTweetIdDetected(extractTweetId(e.target.value));
-                    }}
-                    placeholder="https://x.com/user/status/..."
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 h-10"
-                  />
-                  {twitterUrl && (
-                    <p className={`text-xs ${tweetIdDetected ? "text-green-400" : "text-red-400"}`}>
-                      {tweetIdDetected ? `✓ Tweet ID: ${tweetIdDetected}` : "URL inválida — use o link completo do tweet"}
-                    </p>
-                  )}
-                </div>
-                <Button onClick={handleAddTwitter} disabled={isAdding || !tweetIdDetected} className="w-full font-semibold h-10 mt-1 text-white bg-black hover:bg-zinc-900">
-                  {isAdding ? "Adicionando..." : "Adicionar Tweet"}
-                </Button>
-              </>
-            )}
-
-            {activeType === "donation" && (
-              <>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Plataforma</Label>
-                  <select
-                    value={donationPlatform}
-                    onChange={(e) => setDonationPlatform(e.target.value as typeof donationPlatform)}
-                    className="w-full h-10 rounded-md bg-muted/50 border border-border text-foreground text-sm px-3 focus:outline-none focus:ring-1 focus:ring-[#FF5E5B]"
-                  >
-                    <option value="KOFI">Ko-fi</option>
-                    <option value="BUYMEACOFFEE">Buy Me a Coffee</option>
-                    <option value="PAYPAL">PayPal</option>
-                    <option value="OUTRO">Outro</option>
-                  </select>
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">URL</Label>
-                  <Input
-                    value={donationUrl}
-                    onChange={(e) => setDonationUrl(e.target.value)}
-                    placeholder="https://ko-fi.com/seuperfil"
-                    type="url"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#FF5E5B] focus-visible:border-[#FF5E5B]/50 h-10"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título (opcional)</Label>
-                  <Input
-                    value={donationTitle}
-                    onChange={(e) => setDonationTitle(e.target.value)}
-                    placeholder="Me apoie ☕"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#FF5E5B] focus-visible:border-[#FF5E5B]/50 h-10"
-                  />
-                </div>
-                <Button onClick={handleAddDonation} disabled={isAdding} className="w-full bg-[#FF5E5B] hover:bg-[#e54d4a] text-white font-semibold h-10 mt-1">
-                  {isAdding ? "Adicionando..." : "Adicionar doação"}
-                </Button>
-              </>
-            )}
-
-            {activeType === "pix" && (
-              <>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Tipo de chave</Label>
-                  <select
-                    value={pixKeyType}
-                    onChange={(e) => setPixKeyType(e.target.value as typeof pixKeyType)}
-                    className="w-full h-10 rounded-md bg-muted/50 border border-border text-foreground text-sm px-3 focus:outline-none focus:ring-1 focus:ring-[#32BCAD]"
-                  >
-                    <option value="CPF">CPF</option>
-                    <option value="CNPJ">CNPJ</option>
-                    <option value="EMAIL">E-mail</option>
-                    <option value="TELEFONE">Telefone</option>
-                    <option value="ALEATORIA">Chave aleatória</option>
-                  </select>
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Chave PIX</Label>
-                  <Input
-                    value={pixKey}
-                    onChange={(e) => setPixKey(e.target.value)}
-                    placeholder="sua@chave.pix"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#32BCAD] focus-visible:border-[#32BCAD]/50 h-10"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título (opcional)</Label>
-                  <Input
-                    value={pixTitle}
-                    onChange={(e) => setPixTitle(e.target.value)}
-                    placeholder="Me pague um café ☕"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#32BCAD] focus-visible:border-[#32BCAD]/50 h-10"
-                  />
-                </div>
-                <Button onClick={handleAddPix} disabled={isAdding} className="w-full font-semibold h-10 mt-1 text-white" style={{ backgroundColor: "#32BCAD" }}>
-                  {isAdding ? "Adicionando..." : "Adicionar PIX"}
-                </Button>
-              </>
-            )}
-
-            {activeType === "affiliate" && (
-              <>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">Título</Label>
-                  <Input
-                    value={affiliateTitle}
-                    onChange={(e) => setAffiliateTitle(e.target.value)}
-                    placeholder="Meu produto afiliado"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#8B5CF6] focus-visible:border-[#8B5CF6]/50 h-10"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-foreground/60 text-xs font-medium uppercase tracking-wide">URL destino</Label>
-                  <Input
-                    value={affiliateUrl}
-                    onChange={(e) => setAffiliateUrl(e.target.value)}
-                    placeholder="https://hotmart.com/produto/xyz"
-                    type="url"
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/40 focus-visible:ring-[#8B5CF6] focus-visible:border-[#8B5CF6]/50 h-10"
-                  />
-                  <p className="text-muted-foreground/60 text-xs">
-                    A URL real nunca é exposta — visitantes são redirecionados via código curto.
-                  </p>
-                </div>
-                <Button onClick={handleAddAffiliate} disabled={isAdding} className="w-full bg-[#8B5CF6] hover:bg-[#7c3aed] text-white font-semibold h-10 mt-1">
-                  {isAdding ? "Adicionando..." : "Adicionar afiliado 🔒 PRO"}
-                </Button>
-              </>
-            )}
+            })()}
           </div>
         </DialogContent>
       </Dialog>
